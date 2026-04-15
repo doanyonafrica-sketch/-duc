@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>EduPro — Messagerie</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css"/>
+</head>
+<body class="student-page">
+  <aside class="sidebar">
+    <div class="sidebar-brand"><span class="brand-icon">⚡</span><span class="brand-name">EduPro</span></div>
+    <nav class="sidebar-nav">
+      <a href="dashboard.html" class="nav-item"><span class="nav-icon">🏠</span> Accueil</a>
+      <a href="#" class="nav-item active" data-section="inbox"><span class="nav-icon">✉</span> Messages</a>
+      <a href="#" class="nav-item" data-section="announces"><span class="nav-icon">📢</span> Annonces</a>
+      <a href="planning.html" class="nav-item"><span class="nav-icon">📅</span> Planning</a>
+    </nav>
+    <div class="sidebar-role-badge" id="role-badge-msg">—</div>
+    <button class="btn-logout" onclick="logout()"><span>↩</span> Déconnexion</button>
+  </aside>
+
+  <main class="admin-main">
+    <div class="admin-header">
+      <div><h1 id="msg-title">Messagerie</h1><p id="msg-sub">Conversations et annonces</p></div>
+      <div class="admin-user"><span id="user-name-msg">—</span><div class="admin-avatar" id="msg-avatar">?</div></div>
+    </div>
+
+    <!-- INBOX -->
+    <section id="section-inbox" class="content-section active">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1.5rem">
+        <div style="font-family:'Syne',sans-serif;font-weight:700;font-size:1rem">Conversations</div>
+        <button class="btn-primary btn-sm" id="new-msg-btn" onclick="openNewMessage()">+ Nouveau message</button>
+      </div>
+      <div class="messages-layout">
+        <div class="conversations-list" id="conversations-list">
+          <div class="table-loading">Chargement...</div>
+        </div>
+        <div class="chat-panel" id="chat-panel">
+          <div style="display:flex;align-items:center;justify-content:center;height:100%;color:var(--text-muted);font-size:0.9rem">
+            Sélectionnez une conversation
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ANNONCES -->
+    <section id="section-announces" class="content-section">
+      <div id="announces-list">
+        <div class="table-loading">Chargement...</div>
+      </div>
+      <div id="new-announce-form" class="hidden" style="margin-top:1.5rem">
+        <div class="table-card">
+          <h3 style="font-family:'Syne',sans-serif;margin-bottom:1rem">Nouvelle annonce</h3>
+          <div class="form-group"><label>Titre</label><input type="text" id="ann-title" placeholder="Ex: Examen la semaine prochaine"/></div>
+          <div class="form-group"><label>Message</label><textarea id="ann-body" rows="4" placeholder="Contenu de l'annonce..."></textarea></div>
+          <div class="modal-actions">
+            <button class="btn-secondary" onclick="document.getElementById('new-announce-form').classList.add('hidden')">Annuler</button>
+            <button class="btn-primary" onclick="publishAnnounce()">Publier</button>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- MODAL: New Message -->
+  <div class="modal-overlay hidden" id="modal-new-msg">
+    <div class="modal">
+      <div class="modal-header">
+        <h3>Nouveau message</h3>
+        <button class="modal-close" onclick="closeModal('modal-new-msg')">✕</button>
+      </div>
+      <div class="form-group"><label>Destinataire</label>
+        <select id="msg-recipient"><option value="">— Choisir —</option></select>
+      </div>
+      <div class="form-group"><label>Message</label><textarea id="msg-body" rows="4" placeholder="Votre message..."></textarea></div>
+      <div class="modal-actions">
+        <button class="btn-secondary" onclick="closeModal('modal-new-msg')">Annuler</button>
+        <button class="btn-primary" onclick="sendNewMessage()">Envoyer</button>
+      </div>
+    </div>
+  </div>
+
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+    import { getAuth, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+    import { getFirestore, collection, doc, getDoc, getDocs, addDoc, setDoc, updateDoc, serverTimestamp, query, orderBy, where, onSnapshot }
+      from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+    const firebaseConfig = { apiKey:"YOUR_API_KEY",authDomain:"YOUR_PROJECT.firebaseapp.com",projectId:"YOUR_PROJECT_ID",storageBucket:"YOUR_PROJECT.appspot.com",messagingSenderId:"YOUR_SENDER_ID",appId:"YOUR_APP_ID" };
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app); const db = getFirestore(app);
+    window._auth=auth;window._db=db;window._signOut=signOut;
+    window._collection=collection;window._doc=doc;window._getDoc=getDoc;window._getDocs=getDocs;
+    window._addDoc=addDoc;window._setDoc=setDoc;window._updateDoc=updateDoc;
+    window._serverTimestamp=serverTimestamp;window._query=query;window._orderBy=orderBy;
+    window._where=where;window._onSnapshot=onSnapshot;
+    onAuthStateChanged(auth, async user => {
+      if (!user) { window.location.href="index.html"; return; }
+      const d = await getDoc(doc(db,"users",user.uid));
+      if (!d.exists()) { window.location.href="index.html"; return; }
+      const data = d.data();
+      window._currentUser = { uid:user.uid, ...data };
+      const name = data.fullName||"—";
+      document.getElementById("user-name-msg").textContent = name;
+      document.getElementById("msg-avatar").textContent = name[0].toUpperCase();
+      if (data.role==="teacher"||data.role==="admin") {
+        document.getElementById("role-badge-msg").textContent = data.role==="admin"?"Administrateur":"Professeur";
+        document.getElementById("role-badge-msg").style.cssText="background:rgba(64,96,240,0.15);color:#6888f8";
+        document.getElementById("new-msg-btn").style.display="inline-flex";
+        document.getElementById("section-announces").insertAdjacentHTML("beforeend","");
+        // Bouton annonce pour admin/prof
+        document.querySelector('[data-section="announces"]').insertAdjacentHTML("afterend",
+          `<a href="#" class="nav-item" data-section="announces" onclick="document.getElementById('new-announce-form').classList.remove('hidden')"><span class="nav-icon">➕</span> Créer annonce</a>`);
+      } else {
+        document.getElementById("role-badge-msg").textContent = "Élève";
+      }
+      initMessaging();
+    });
+  </script>
+  <script src="messages.js"></script>
+</body>
+</html>

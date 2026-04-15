@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>EduPro — Administration</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css"/>
+</head>
+<body class="admin-page">
+
+  <aside class="sidebar">
+    <div class="sidebar-brand">
+      <span class="brand-icon">⚡</span>
+      <span class="brand-name">EduPro</span>
+    </div>
+    <nav class="sidebar-nav">
+      <a href="#" class="nav-item active admin-only" data-section="students"><span class="nav-icon">👥</span> Élèves</a>
+      <a href="#" class="nav-item admin-only" data-section="teachers"><span class="nav-icon">🎓</span> Professeurs</a>
+      <a href="#" class="nav-item" data-section="courses"><span class="nav-icon">📚</span> Cours</a>
+      <a href="#" class="nav-item" data-section="quizzes"><span class="nav-icon">📝</span> Quiz</a>
+      <a href="#" class="nav-item" data-section="stats"><span class="nav-icon">📊</span> Statistiques</a>
+    </nav>
+    <div class="sidebar-role-badge" id="role-badge">Admin</div>
+    <button class="btn-logout" onclick="logout()"><span>↩</span> Déconnexion</button>
+  </aside>
+
+  <main class="admin-main">
+    <div class="admin-header">
+      <div>
+        <h1 id="section-title">Gestion des Élèves</h1>
+        <p id="section-sub">Créez et gérez les comptes élèves</p>
+      </div>
+      <div class="admin-user">
+        <span id="admin-name">—</span>
+        <div class="admin-avatar" id="admin-avatar-letter">A</div>
+      </div>
+    </div>
+
+    <!-- STUDENTS (admin only) -->
+    <section id="section-students" class="content-section active">
+      <div class="section-toolbar">
+        <input type="text" id="search-students" placeholder="Rechercher un élève..." class="search-input" oninput="filterStudents()"/>
+        <button class="btn-primary" onclick="openModal('modal-add-user', 'student')">+ Nouvel élève</button>
+      </div>
+      <div id="students-alert" class="alert hidden"></div>
+      <div class="table-card">
+        <table class="data-table">
+          <thead><tr><th>Nom complet</th><th>Email</th><th>Filière</th><th>Progression</th><th>Actions</th></tr></thead>
+          <tbody id="students-tbody"><tr><td colspan="5" class="table-loading">Chargement...</td></tr></tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- TEACHERS (admin only) -->
+    <section id="section-teachers" class="content-section">
+      <div class="section-toolbar">
+        <input type="text" id="search-teachers" placeholder="Rechercher un professeur..." class="search-input" oninput="filterTeachers()"/>
+        <button class="btn-primary" onclick="openModal('modal-add-user', 'teacher')">+ Nouveau professeur</button>
+      </div>
+      <div id="teachers-alert" class="alert hidden"></div>
+      <div class="table-card">
+        <table class="data-table">
+          <thead><tr><th>Nom complet</th><th>Email</th><th>Spécialité</th><th>Cours publiés</th><th>Actions</th></tr></thead>
+          <tbody id="teachers-tbody"><tr><td colspan="5" class="table-loading">Chargement...</td></tr></tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- COURSES -->
+    <section id="section-courses" class="content-section">
+      <div class="section-toolbar">
+        <input type="text" id="search-courses" placeholder="Rechercher un cours..." class="search-input" oninput="filterCourses()"/>
+        <button class="btn-primary" onclick="openModal('modal-add-course')">+ Nouveau cours</button>
+      </div>
+      <div id="courses-alert" class="alert hidden"></div>
+      <div class="courses-grid" id="courses-grid"><div class="table-loading">Chargement...</div></div>
+    </section>
+
+    <!-- QUIZZES -->
+    <section id="section-quizzes" class="content-section">
+      <div class="section-toolbar">
+        <input type="text" placeholder="Rechercher un quiz..." class="search-input"/>
+        <button class="btn-primary" onclick="openModal('modal-add-quiz')">+ Nouveau quiz</button>
+      </div>
+      <div id="quizzes-alert" class="alert hidden"></div>
+      <div class="table-card">
+        <table class="data-table">
+          <thead><tr><th>Titre</th><th>Cours lié</th><th>Questions</th><th>Auteur</th><th>Actions</th></tr></thead>
+          <tbody id="quizzes-tbody"><tr><td colspan="5" class="table-loading">Chargement...</td></tr></tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- STATS -->
+    <section id="section-stats" class="content-section">
+      <div class="stats-grid">
+        <div class="stat-card"><div class="stat-icon">👥</div><div class="stat-val" id="stat-students">—</div><div class="stat-label">Élèves inscrits</div></div>
+        <div class="stat-card"><div class="stat-icon">🎓</div><div class="stat-val" id="stat-teachers">—</div><div class="stat-label">Professeurs</div></div>
+        <div class="stat-card"><div class="stat-icon">📚</div><div class="stat-val" id="stat-courses">—</div><div class="stat-label">Cours publiés</div></div>
+        <div class="stat-card"><div class="stat-icon">📝</div><div class="stat-val" id="stat-quizzes">—</div><div class="stat-label">Quiz créés</div></div>
+      </div>
+      <div class="table-card" style="margin-top:2rem">
+        <h3 style="margin-bottom:1rem;font-family:'Syne',sans-serif">Top élèves</h3>
+        <table class="data-table">
+          <thead><tr><th>Élève</th><th>Cours suivis</th><th>Quiz réussis</th><th>Score moy.</th></tr></thead>
+          <tbody id="top-students-tbody"><tr><td colspan="4" class="table-loading">Chargement...</td></tr></tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+
+  <!-- MODAL: ADD USER (élève ou prof selon contexte) -->
+  <div class="modal-overlay hidden" id="modal-add-user">
+    <div class="modal">
+      <div class="modal-header">
+        <h3 id="modal-user-title">Créer un compte</h3>
+        <button class="modal-close" onclick="closeModal('modal-add-user')">✕</button>
+      </div>
+      <div id="modal-user-error" class="alert alert-error hidden"></div>
+      <div style="margin-bottom:1rem"><span id="modal-role-badge" class="badge">—</span></div>
+      <input type="hidden" id="new-user-role" value="student"/>
+      <div class="form-group"><label>Nom complet</label><input type="text" id="new-fullname" placeholder="Ex: Kofi Mensah"/></div>
+      <div class="form-group"><label>Email (identifiant de connexion)</label><input type="email" id="new-email" placeholder="kofi.mensah@ecole.tg"/></div>
+      <div class="form-group"><label>Mot de passe</label><input type="password" id="new-password" placeholder="Minimum 6 caractères"/></div>
+      <div class="form-group" id="field-class-wrap">
+        <label id="field-class-label">Filière / Classe</label>
+        <input type="text" id="new-class" placeholder="Ex: Électricité Industrielle — L2"/>
+      </div>
+      <div class="modal-actions">
+        <button class="btn-secondary" onclick="closeModal('modal-add-user')">Annuler</button>
+        <button class="btn-primary" id="create-user-btn" onclick="createUser()">Créer le compte</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL: ADD COURSE -->
+  <div class="modal-overlay hidden" id="modal-add-course">
+    <div class="modal">
+      <div class="modal-header">
+        <h3>Ajouter un cours</h3>
+        <button class="modal-close" onclick="closeModal('modal-add-course')">✕</button>
+      </div>
+      <div id="modal-course-error" class="alert alert-error hidden"></div>
+      <div class="form-group"><label>Titre du cours</label><input type="text" id="new-course-title" placeholder="Ex: Protection différentielle"/></div>
+      <div class="form-group"><label>Description courte</label><input type="text" id="new-course-desc" placeholder="Résumé en une phrase"/></div>
+      <div class="form-group"><label>Catégorie</label><input type="text" id="new-course-cat" placeholder="Ex: Haute tension, Domotique..."/></div>
+      <div class="form-group"><label>Contenu (texte ou lien YouTube)</label><textarea id="new-course-content" rows="5" placeholder="Colle le contenu du cours ici, ou un lien YouTube..."></textarea></div>
+      <div class="modal-actions">
+        <button class="btn-secondary" onclick="closeModal('modal-add-course')">Annuler</button>
+        <button class="btn-primary" onclick="createCourse()">Publier le cours</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL: ADD QUIZ -->
+  <div class="modal-overlay hidden" id="modal-add-quiz">
+    <div class="modal modal-wide">
+      <div class="modal-header">
+        <h3>Créer un quiz</h3>
+        <button class="modal-close" onclick="closeModal('modal-add-quiz')">✕</button>
+      </div>
+      <div id="modal-quiz-error" class="alert alert-error hidden"></div>
+      <div class="form-group"><label>Titre du quiz</label><input type="text" id="new-quiz-title" placeholder="Ex: Quiz protection différentielle"/></div>
+      <div class="form-group"><label>Cours associé</label><select id="new-quiz-course"><option value="">— Choisir un cours —</option></select></div>
+      <div id="questions-container">
+        <div class="question-block" id="question-1">
+          <div class="question-header"><strong>Question 1</strong></div>
+          <div class="form-group"><input type="text" class="q-text" placeholder="Texte de la question"/></div>
+          <div class="options-list">
+            <div class="option-row"><input type="radio" name="q1-correct" value="0"/><input type="text" class="q-option" placeholder="Option A"/></div>
+            <div class="option-row"><input type="radio" name="q1-correct" value="1"/><input type="text" class="q-option" placeholder="Option B"/></div>
+            <div class="option-row"><input type="radio" name="q1-correct" value="2"/><input type="text" class="q-option" placeholder="Option C"/></div>
+            <div class="option-row"><input type="radio" name="q1-correct" value="3"/><input type="text" class="q-option" placeholder="Option D"/></div>
+          </div>
+          <small style="color:var(--text-muted)">● = bonne réponse</small>
+        </div>
+      </div>
+      <button class="btn-secondary" style="margin-top:1rem" onclick="addQuestion()">+ Ajouter une question</button>
+      <div class="modal-actions" style="margin-top:1.5rem">
+        <button class="btn-secondary" onclick="closeModal('modal-add-quiz')">Annuler</button>
+        <button class="btn-primary" onclick="createQuiz()">Publier le quiz</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL: VIEW STUDENT -->
+  <div class="modal-overlay hidden" id="modal-view-student">
+    <div class="modal modal-wide">
+      <div class="modal-header">
+        <h3 id="view-student-name">Fiche élève</h3>
+        <button class="modal-close" onclick="closeModal('modal-view-student')">✕</button>
+      </div>
+      <div id="student-detail-content">Chargement...</div>
+    </div>
+  </div>
+
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+    import { getAuth, createUserWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+    import { getFirestore, collection, doc, getDoc, getDocs, addDoc, setDoc, serverTimestamp, query, orderBy, where } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+    const firebaseConfig = {
+  apiKey: "AIzaSyD2Xh778RDqztmHPBLcw96DWew03PkL2qU",
+  authDomain: "edupro-school.firebaseapp.com",
+  projectId: "edupro-school",
+  storageBucket: "edupro-school.firebasestorage.app",
+  messagingSenderId: "552814359641",
+  appId: "1:552814359641:web:2c47cb3835953679776d48"
+};
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db = getFirestore(app);
+
+    window._auth = auth;
+    window._db = db;
+    window._createUser = createUserWithEmailAndPassword;
+    window._signOut = signOut;
+    window._collection = collection;
+    window._doc = doc;
+    window._getDoc = getDoc;
+    window._getDocs = getDocs;
+    window._addDoc = addDoc;
+    window._setDoc = setDoc;
+    window._serverTimestamp = serverTimestamp;
+    window._query = query;
+    window._orderBy = orderBy;
+    window._where = where;
+
+    onAuthStateChanged(auth, async (user) => {
+      if (!user) { window.location.href = "index.html"; return; }
+      const userDoc = await getDoc(doc(db, "users", user.uid));
+      const data = userDoc.data();
+
+      if (!userDoc.exists() || (data.role !== "admin" && data.role !== "teacher")) {
+        window.location.href = "index.html";
+        return;
+      }
+
+      window._currentRole = data.role;
+      window._currentUID = user.uid;
+      window._currentName = data.fullName || data.role;
+
+      const name = data.fullName || (data.role === "teacher" ? "Professeur" : "Admin");
+      document.getElementById("admin-name").textContent = name;
+      document.getElementById("admin-avatar-letter").textContent = name[0].toUpperCase();
+
+      const badge = document.getElementById("role-badge");
+      if (data.role === "teacher") {
+        badge.textContent = "Professeur";
+        badge.style.cssText = "background:rgba(64,96,240,0.15);color:#6888f8";
+        // Masquer sections réservées admin
+        document.querySelectorAll(".admin-only").forEach(el => el.style.display = "none");
+        // Activer Cours comme première section
+        document.querySelectorAll(".nav-item").forEach(i => i.classList.remove("active"));
+        document.querySelectorAll(".content-section").forEach(s => s.classList.remove("active"));
+        document.querySelector('[data-section="courses"]').classList.add("active");
+        document.getElementById("section-courses").classList.add("active");
+        document.getElementById("section-title").textContent = "Gestion des Cours";
+        document.getElementById("section-sub").textContent = "Publiez vos modules de formation";
+      } else {
+        badge.textContent = "Administrateur";
+      }
+
+      loadAllData();
+    });
+  </script>
+  <script src="admin.js"></script>
+</body>
+</html>

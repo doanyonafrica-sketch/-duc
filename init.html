@@ -1,0 +1,797 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>EduPro — Initialisation Firebase</title>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Mono:wght@400;500&family=DM+Sans:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #0a0c10;
+      --bg2: #12151d;
+      --bg3: #1a1f2e;
+      --border: rgba(255,255,255,0.07);
+      --accent: #f0c040;
+      --success: #3dd68c;
+      --error: #f05c5c;
+      --warn: #f09040;
+      --info: #6888f8;
+      --text: #e8eaf2;
+      --muted: #6a7290;
+      --radius: 10px;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; padding: 2rem 1rem; }
+
+    .container { max-width: 780px; margin: 0 auto; }
+
+    .header { text-align: center; margin-bottom: 2.5rem; }
+    .brand { font-family: 'Syne', sans-serif; font-size: 2rem; font-weight: 800; color: var(--accent); margin-bottom: 0.3rem; }
+    .subtitle { color: var(--muted); font-size: 0.9rem; }
+
+    .card {
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.8rem;
+      margin-bottom: 1.5rem;
+    }
+    .card-title {
+      font-family: 'Syne', sans-serif;
+      font-size: 1rem;
+      font-weight: 700;
+      margin-bottom: 1.2rem;
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+    }
+    .step-badge {
+      width: 26px; height: 26px;
+      background: var(--accent);
+      color: #000;
+      border-radius: 50%;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.78rem;
+      font-weight: 800;
+      flex-shrink: 0;
+    }
+
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+    .form-group { margin-bottom: 1rem; }
+    .form-group label {
+      display: block;
+      font-size: 0.78rem;
+      font-weight: 500;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.4px;
+      margin-bottom: 0.4rem;
+    }
+    .form-group input, .form-group textarea {
+      width: 100%;
+      background: var(--bg3);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      color: var(--text);
+      padding: 0.65rem 0.9rem;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.9rem;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+    .form-group input:focus, .form-group textarea:focus { border-color: var(--accent); }
+    .form-group textarea { resize: vertical; min-height: 80px; font-family: 'DM Mono', monospace; font-size: 0.82rem; }
+
+    .hint { font-size: 0.78rem; color: var(--muted); margin-top: 0.3rem; }
+    .hint a { color: var(--info); }
+
+    /* Seed data toggle */
+    .seed-section { border: 1px solid var(--border); border-radius: 8px; overflow: hidden; margin-bottom: 1rem; }
+    .seed-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0.9rem 1rem;
+      background: var(--bg3);
+      cursor: pointer;
+      user-select: none;
+    }
+    .seed-header:hover { background: rgba(255,255,255,0.04); }
+    .seed-header span { font-size: 0.9rem; font-weight: 500; }
+    .seed-header .toggle { color: var(--muted); font-size: 0.8rem; }
+    .seed-body { padding: 1rem; display: none; }
+    .seed-body.open { display: block; }
+
+    .checkbox-row {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      margin-bottom: 0.6rem;
+      font-size: 0.88rem;
+    }
+    .checkbox-row input[type="checkbox"] { accent-color: var(--accent); width: 16px; height: 16px; }
+
+    /* Launch button */
+    .launch-btn {
+      width: 100%;
+      padding: 1rem;
+      background: var(--accent);
+      color: #000;
+      border: none;
+      border-radius: var(--radius);
+      font-family: 'Syne', sans-serif;
+      font-size: 1rem;
+      font-weight: 800;
+      cursor: pointer;
+      transition: all 0.2s;
+      margin-bottom: 1.5rem;
+    }
+    .launch-btn:hover { background: #e0b030; transform: translateY(-1px); }
+    .launch-btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+
+    /* Terminal log */
+    .terminal {
+      background: #060810;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.2rem;
+      font-family: 'DM Mono', monospace;
+      font-size: 0.82rem;
+      line-height: 1.9;
+      min-height: 120px;
+      max-height: 420px;
+      overflow-y: auto;
+      display: none;
+    }
+    .terminal.visible { display: block; }
+    .log-line { display: flex; gap: 0.8rem; }
+    .log-time { color: var(--muted); flex-shrink: 0; }
+    .log-success { color: var(--success); }
+    .log-error { color: var(--error); }
+    .log-warn { color: var(--warn); }
+    .log-info { color: var(--info); }
+    .log-accent { color: var(--accent); }
+
+    /* Rules output */
+    .rules-box {
+      background: #060810;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.2rem;
+      font-family: 'DM Mono', monospace;
+      font-size: 0.78rem;
+      line-height: 1.8;
+      white-space: pre;
+      overflow-x: auto;
+      position: relative;
+      display: none;
+    }
+    .rules-box.visible { display: block; }
+    .copy-btn {
+      position: absolute;
+      top: 0.8rem; right: 0.8rem;
+      background: var(--bg3);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      color: var(--text);
+      padding: 0.35rem 0.8rem;
+      font-size: 0.78rem;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .copy-btn:hover { background: var(--accent); color: #000; border-color: var(--accent); }
+
+    /* Result banner */
+    .result-banner {
+      padding: 1.2rem 1.5rem;
+      border-radius: var(--radius);
+      font-weight: 600;
+      font-size: 0.95rem;
+      margin-bottom: 1.5rem;
+      display: none;
+    }
+    .result-banner.visible { display: flex; align-items: center; gap: 0.8rem; }
+    .result-banner.success { background: rgba(61,214,140,0.1); border: 1px solid var(--success); color: var(--success); }
+    .result-banner.error { background: rgba(240,92,92,0.1); border: 1px solid var(--error); color: var(--error); }
+
+    @media (max-width: 600px) { .form-row { grid-template-columns: 1fr; } }
+  </style>
+</head>
+<body>
+<div class="container">
+
+  <div class="header">
+    <div class="brand">⚡ EduPro</div>
+    <div class="subtitle">Script d'initialisation Firebase — à lancer une seule fois</div>
+  </div>
+
+  <!-- STEP 1: Config -->
+  <div class="card">
+    <div class="card-title"><span class="step-badge">1</span> Configuration Firebase</div>
+    <p class="hint" style="margin-bottom:1rem">
+      Récupère ta config sur
+      <a href="https://console.firebase.google.com" target="_blank">console.firebase.google.com</a>
+      → Paramètres du projet → Tes applications web
+    </p>
+    <div class="form-row">
+      <div class="form-group"><label>API Key</label><input id="cfg-apiKey" placeholder="AIzaSy..."/></div>
+      <div class="form-group"><label>Auth Domain</label><input id="cfg-authDomain" placeholder="projet.firebaseapp.com"/></div>
+    </div>
+    <div class="form-row">
+      <div class="form-group"><label>Project ID</label><input id="cfg-projectId" placeholder="mon-projet-id"/></div>
+      <div class="form-group"><label>Storage Bucket</label><input id="cfg-storageBucket" placeholder="projet.appspot.com"/></div>
+    </div>
+    <div class="form-row">
+      <div class="form-group"><label>Messaging Sender ID</label><input id="cfg-messagingSenderId" placeholder="123456789"/></div>
+      <div class="form-group"><label>App ID</label><input id="cfg-appId" placeholder="1:123:web:abc..."/></div>
+    </div>
+  </div>
+
+  <!-- STEP 2: Admin account -->
+  <div class="card">
+    <div class="card-title"><span class="step-badge">2</span> Compte Administrateur</div>
+    <p class="hint" style="margin-bottom:1rem">Ce compte sera créé dans Firebase Auth et Firestore avec le rôle <strong>admin</strong>.</p>
+    <div class="form-row">
+      <div class="form-group"><label>Nom complet</label><input id="admin-name" placeholder="Ex: Directeur École" value="Administrateur"/></div>
+      <div class="form-group"><label>Email admin</label><input id="admin-email" type="email" placeholder="admin@ecole.tg"/></div>
+    </div>
+    <div class="form-row">
+      <div class="form-group"><label>Mot de passe admin</label><input id="admin-password" type="password" placeholder="Minimum 8 caractères"/></div>
+      <div class="form-group"></div>
+    </div>
+  </div>
+
+  <!-- STEP 3: Seed data -->
+  <div class="card">
+    <div class="card-title"><span class="step-badge">3</span> Données de démarrage (seed)</div>
+    <p class="hint" style="margin-bottom:1rem">Choisissez ce que vous voulez créer automatiquement pour tester la plateforme.</p>
+
+    <div class="seed-section">
+      <div class="seed-header" onclick="toggleSeed('seed-students')">
+        <span>👥 Élèves de démonstration</span>
+        <span class="toggle" id="seed-students-toggle">▼ 3 élèves</span>
+      </div>
+      <div class="seed-body" id="seed-students">
+        <div class="checkbox-row"><input type="checkbox" id="s1" checked/><label for="s1">Kofi Mensah — kofi.mensah@ecole.tg — Électricité Industrielle L1</label></div>
+        <div class="checkbox-row"><input type="checkbox" id="s2" checked/><label for="s2">Ama Koffi — ama.koffi@ecole.tg — Électronique Appliquée L2</label></div>
+        <div class="checkbox-row"><input type="checkbox" id="s3" checked/><label for="s3">Kossivi Dodzi — kossivi.dodzi@ecole.tg — Automatisme Industriel L1</label></div>
+        <p class="hint" style="margin-top:0.6rem">Mot de passe par défaut : <strong>Eleve2024!</strong></p>
+      </div>
+    </div>
+
+    <div class="seed-section">
+      <div class="seed-header" onclick="toggleSeed('seed-courses')">
+        <span>📚 Cours de démonstration</span>
+        <span class="toggle" id="seed-courses-toggle">▼ 4 cours</span>
+      </div>
+      <div class="seed-body" id="seed-courses">
+        <div class="checkbox-row"><input type="checkbox" id="c1" checked/><label for="c1">Protection différentielle — DDR, disjoncteurs, fusibles</label></div>
+        <div class="checkbox-row"><input type="checkbox" id="c2" checked/><label for="c2">Schémas électriques — Lecture et interprétation</label></div>
+        <div class="checkbox-row"><input type="checkbox" id="c3" checked/><label for="c3">Habilitation électrique — Niveaux B0, B1, H0</label></div>
+        <div class="checkbox-row"><input type="checkbox" id="c4" checked/><label for="c4">Éclairage public — Installation et maintenance</label></div>
+      </div>
+    </div>
+
+    <div class="seed-section">
+      <div class="seed-header" onclick="toggleSeed('seed-quizzes')">
+        <span>📝 Quiz de démonstration</span>
+        <span class="toggle" id="seed-quizzes-toggle">▼ 2 quiz</span>
+      </div>
+      <div class="seed-body" id="seed-quizzes">
+        <div class="checkbox-row"><input type="checkbox" id="q1" checked/><label for="q1">Quiz : Protection différentielle (5 questions)</label></div>
+        <div class="checkbox-row"><input type="checkbox" id="q2" checked/><label for="q2">Quiz : Habilitation électrique (4 questions)</label></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- STEP 4: Rules -->
+  <div class="card">
+    <div class="card-title"><span class="step-badge">4</span> Règles de sécurité Firestore</div>
+    <p style="font-size:0.88rem;color:var(--muted);margin-bottom:1rem">
+      Ces règles seront générées et affichées pour que tu puisses les copier-coller dans
+      <a href="https://console.firebase.google.com" target="_blank" style="color:var(--info)">Firestore → Règles</a>.
+    </p>
+    <div class="checkbox-row" style="margin-bottom:0">
+      <input type="checkbox" id="show-rules" checked/>
+      <label for="show-rules">Afficher les règles après l'initialisation</label>
+    </div>
+  </div>
+
+  <!-- LAUNCH -->
+  <button class="launch-btn" id="launch-btn" onclick="runInit()">
+    🚀 Lancer l'initialisation complète
+  </button>
+
+  <!-- Result banner -->
+  <div class="result-banner" id="result-banner"></div>
+
+  <!-- Terminal -->
+  <div class="card" id="terminal-card" style="display:none;padding:0">
+    <div style="padding:1rem 1.2rem;border-bottom:1px solid var(--border);font-family:'Syne',sans-serif;font-size:0.9rem;font-weight:700;">
+      📟 Journal d'exécution
+    </div>
+    <div class="terminal visible" id="terminal"></div>
+  </div>
+
+  <!-- Rules output -->
+  <div class="card" id="rules-card" style="display:none">
+    <div class="card-title" style="justify-content:space-between;margin-bottom:0.8rem">
+      <span><span class="step-badge" style="background:var(--info)">🔒</span> Règles Firestore — à copier</span>
+    </div>
+    <p class="hint" style="margin-bottom:1rem">Va sur <a href="https://console.firebase.google.com" target="_blank">Firestore → Règles</a>, efface tout et colle ceci :</p>
+    <div style="position:relative">
+      <div class="rules-box visible" id="rules-output"></div>
+      <button class="copy-btn" onclick="copyRules()">Copier</button>
+    </div>
+  </div>
+
+</div>
+
+<!-- Firebase SDK -->
+<script type="module">
+  import { initializeApp, getApps, deleteApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+  import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut }
+    from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+  import { getFirestore, doc, setDoc, collection, addDoc, serverTimestamp, getDoc }
+    from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+  window._fb = { initializeApp, getApps, deleteApp, getAuth, createUserWithEmailAndPassword,
+    signInWithEmailAndPassword, signOut, getFirestore, doc, setDoc, collection, addDoc,
+    serverTimestamp, getDoc };
+</script>
+<script>
+// ===== SEED DATA =====
+const SEED_STUDENTS = [
+  { id: "s1", fullName: "Kofi Mensah",     email: "kofi.mensah@ecole.tg",    class: "Électricité Industrielle — L1" },
+  { id: "s2", fullName: "Ama Koffi",       email: "ama.koffi@ecole.tg",      class: "Électronique Appliquée — L2" },
+  { id: "s3", fullName: "Kossivi Dodzi",   email: "kossivi.dodzi@ecole.tg",  class: "Automatisme Industriel — L1" },
+];
+
+const SEED_COURSES = [
+  {
+    id: "c1",
+    title: "Protection différentielle",
+    description: "Comprendre le fonctionnement des DDR, disjoncteurs et fusibles.",
+    category: "Protection électrique",
+    content: `La protection différentielle est un dispositif de sécurité électrique fondamental.
+
+🔹 Le Disjoncteur Différentiel Résiduel (DDR)
+Le DDR détecte les fuites de courant vers la terre. Il mesure la différence entre le courant entrant (phase) et sortant (neutre). Si cette différence dépasse le seuil de déclenchement (30 mA pour les installations domestiques), il coupe le circuit en moins de 30 ms.
+
+🔹 Types de sensibilité
+- 10 mA : zones humides (salles de bains, piscines)
+- 30 mA : protection des personnes (standard)
+- 300 mA / 500 mA : protection contre les incendies
+
+🔹 Le disjoncteur magnétothermique
+Protège contre les surcharges (bimétallique thermique) et les courts-circuits (électromagnétique). Il ne protège PAS contre les chocs électriques — c'est le rôle du DDR.
+
+🔹 Les fusibles
+Protection passive, non réarmable. Le fil fusible fond en cas de surintensité. Utilisés en protection de circuits industriels ou de tableaux.
+
+📌 Règle d'or : DDR + Disjoncteur magnétothermique = protection complète de l'installation.`
+  },
+  {
+    id: "c2",
+    title: "Schémas électriques",
+    description: "Apprendre à lire et interpréter les schémas unifilaires et multifilaires.",
+    category: "Dessin technique",
+    content: `La lecture de schémas électriques est une compétence fondamentale pour tout électricien.
+
+🔹 Types de schémas
+1. Schéma unifilaire : représentation simplifiée où chaque conducteur est représenté par un seul trait. Utilisé pour la vue d'ensemble d'une installation.
+
+2. Schéma multifilaire (développé) : chaque conducteur est représenté séparément. Utilisé pour le câblage réel.
+
+3. Schéma architectural (de situation) : montre l'emplacement physique des équipements dans le bâtiment.
+
+🔹 Symboles normalisés (CEI/IEC)
+- Résistance : rectangle ou zigzag
+- Condensateur : deux traits parallèles
+- Disjoncteur : carré avec flèche diagonale
+- DDR : rectangle avec test-bouton
+- Contacteur : bobine + contacts
+
+🔹 Lecture méthodique
+1. Identifier l'alimentation (réseau ou batterie)
+2. Suivre le circuit de puissance (de haut en bas)
+3. Analyser le circuit de commande
+4. Vérifier les protections
+
+📌 Norme de référence : NF C 15-100 pour les installations basse tension en France et Afrique francophone.`
+  },
+  {
+    id: "c3",
+    title: "Habilitation électrique",
+    description: "Niveaux d'habilitation B0, B1, H0 et règles de sécurité.",
+    category: "Sécurité électrique",
+    content: `L'habilitation électrique est une reconnaissance par l'employeur de la capacité d'une personne à effectuer des travaux sur des installations électriques en toute sécurité.
+
+🔹 Structure des symboles d'habilitation
+[Lettre de domaine][Chiffre de niveau][Lettre attribut]
+Exemple : B1V = Basse tension, niveau 1, avec Voisinage
+
+🔹 Domaines de tension
+- B = Basse Tension (BT) : 0 à 1 000 V en alternatif
+- H = Haute Tension (HT) : au-delà de 1 000 V
+
+🔹 Niveaux
+- 0 : Non-électricien (accès accompagné uniquement)
+- 1 : Exécutant électricien (travaux sous ordre)
+- 2 : Chargé de travaux (dirige une équipe)
+- C : Chargé de consignation
+- R : Chargé d'interventions de raccordement
+- T : Travaux sous tension
+
+🔹 Les 5 règles de sécurité (consignation)
+1. Séparer (couper l'alimentation)
+2. Condamner (verrouiller le disjoncteur)
+3. Identifier (vérifier l'installation concernée)
+4. Vérifier l'absence de tension (VAT)
+5. Mettre à la terre et en court-circuit (MALT+CC)
+
+⚠️ Toute intervention sans habilitation appropriée est illégale et potentiellement mortelle.`
+  },
+  {
+    id: "c4",
+    title: "Éclairage public",
+    description: "Installation, câblage et maintenance des réseaux d'éclairage public.",
+    category: "Réseaux extérieurs",
+    content: `L'éclairage public est un domaine spécifique de l'électricité qui combine réseau souterrain, appareillage de commande et luminaires adaptés.
+
+🔹 Architecture d'un réseau d'éclairage public
+1. Armoire de commande (AC) : contient les protections, l'horloge astronomique ou le cellule photoélectrique, et le contacteur principal.
+2. Câble d'alimentation : généralement U1000 R2V, enterré à 0,80 m minimum.
+3. Candélabres : mâts avec crosse, hauteur 6 à 12 m selon la voirie.
+4. Luminaires : anciennement sodium haute pression (SHP), aujourd'hui LED majoritairement.
+
+🔹 Commande de l'allumage
+- Cellule photoélectrique : détecte le niveau lumineux ambiant (seuil ~50 lux)
+- Horloge astronomique : calcule les heures de lever/coucher selon la date et la latitude
+- Télécommande radio (systèmes modernes) : gestion centralisée
+
+🔹 Technologies de lampes
+| Type       | Efficacité | Durée vie | Usage |
+|------------|-----------|-----------|-------|
+| SHP        | 100 lm/W  | 24 000 h  | Voiries principales |
+| LED        | 150 lm/W  | 50 000 h  | Standard actuel |
+| Induction  | 70 lm/W   | 60 000 h  | Zones difficiles |
+
+🔹 Maintenance préventive
+- Vérification des connexions chaque 2 ans
+- Nettoyage des optiques chaque 3 ans
+- Remplacement préventif des lampes SHP à 80% de durée de vie
+
+📌 En Afrique, les réseaux d'éclairage public utilisent souvent du 230V/50Hz en BT avec protection différentielle 300 mA au niveau de l'armoire.`
+  }
+];
+
+const SEED_QUIZZES = [
+  {
+    id: "q1",
+    title: "Quiz : Protection différentielle",
+    courseKey: "c1",
+    questions: [
+      {
+        text: "Quel est le seuil de déclenchement standard d'un DDR pour la protection des personnes ?",
+        options: ["10 mA", "30 mA", "100 mA", "300 mA"],
+        correct: 1
+      },
+      {
+        text: "Quelle est la différence principale entre un DDR et un disjoncteur magnétothermique ?",
+        options: [
+          "Le DDR protège contre les surcharges",
+          "Le DDR protège contre les fuites à la terre / chocs électriques",
+          "Le disjoncteur protège contre les fuites à la terre",
+          "Ils ont exactement le même rôle"
+        ],
+        correct: 1
+      },
+      {
+        text: "Dans quelle zone faut-il installer un DDR 10 mA ?",
+        options: ["Chambre à coucher", "Bureau", "Salle de bains / zone humide", "Couloir"],
+        correct: 2
+      },
+      {
+        text: "Un fusible peut-il être réarmé après fusion ?",
+        options: ["Oui, en appuyant sur le bouton test", "Oui, après refroidissement", "Non, il doit être remplacé", "Oui, si la surintensité était faible"],
+        correct: 2
+      },
+      {
+        text: "Quelle combinaison offre une protection complète d'une installation ?",
+        options: [
+          "DDR seul",
+          "Disjoncteur magnétothermique seul",
+          "Fusible + DDR",
+          "DDR + Disjoncteur magnétothermique"
+        ],
+        correct: 3
+      }
+    ]
+  },
+  {
+    id: "q2",
+    title: "Quiz : Habilitation électrique",
+    courseKey: "c3",
+    questions: [
+      {
+        text: "Que signifie la lettre 'B' dans un symbole d'habilitation ?",
+        options: ["Batterie", "Basse tension", "Bureau", "Blindé"],
+        correct: 1
+      },
+      {
+        text: "Combien y a-t-il d'étapes dans la procédure de consignation ?",
+        options: ["3", "4", "5", "6"],
+        correct: 2
+      },
+      {
+        text: "Qu'est-ce que la VAT ?",
+        options: [
+          "Valeur Admissible de Tension",
+          "Vérification de l'Absence de Tension",
+          "Voltage Alternatif Triphasé",
+          "Vanne d'Arrêt Total"
+        ],
+        correct: 1
+      },
+      {
+        text: "Quel niveau d'habilitation permet de diriger une équipe de travaux ?",
+        options: ["B0", "B1", "B2", "BC"],
+        correct: 2
+      }
+    ]
+  }
+];
+
+const FIRESTORE_RULES = `rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Profils utilisateurs
+    match /users/{userId} {
+      // Lecture : soi-même OU admin
+      allow read: if request.auth != null &&
+        (request.auth.uid == userId || isAdmin());
+
+      // Écriture : admin seulement (l'admin crée les comptes)
+      allow create, update, delete: if request.auth != null && isAdmin();
+
+      // Sous-collections élève (progression, quiz, activité)
+      match /completedCourses/{docId} {
+        allow read, write: if request.auth != null &&
+          (request.auth.uid == userId || isAdmin());
+      }
+      match /quizResults/{docId} {
+        allow read, write: if request.auth != null &&
+          (request.auth.uid == userId || isAdmin());
+      }
+      match /activity/{docId} {
+        allow read, write: if request.auth != null &&
+          (request.auth.uid == userId || isAdmin());
+      }
+    }
+
+    // Cours : lecture pour tous les connectés, écriture admin
+    match /courses/{courseId} {
+      allow read: if request.auth != null;
+      allow create, update, delete: if request.auth != null && isAdmin();
+    }
+
+    // Quiz : lecture pour tous les connectés, écriture admin
+    match /quizzes/{quizId} {
+      allow read: if request.auth != null;
+      allow create, update, delete: if request.auth != null && isAdmin();
+    }
+
+    // Fonction helper : vérifie si l'utilisateur est admin
+    function isAdmin() {
+      return request.auth != null &&
+        get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'admin';
+    }
+  }
+}`;
+
+// ===== UI HELPERS =====
+let logEl, terminalCard;
+
+function log(msg, type = "info") {
+  if (!logEl) { logEl = document.getElementById("terminal"); terminalCard = document.getElementById("terminal-card"); }
+  terminalCard.style.display = "block";
+  const time = new Date().toLocaleTimeString("fr-FR", { hour: "2-digit", minute: "2-digit", second: "2-digit" });
+  const line = document.createElement("div");
+  line.className = "log-line";
+  line.innerHTML = `<span class="log-time">[${time}]</span><span class="log-${type}">${msg}</span>`;
+  logEl.appendChild(line);
+  logEl.scrollTop = logEl.scrollHeight;
+}
+
+function toggleSeed(id) {
+  const body = document.getElementById(id);
+  body.classList.toggle("open");
+}
+
+function copyRules() {
+  navigator.clipboard.writeText(FIRESTORE_RULES).then(() => {
+    document.querySelector(".copy-btn").textContent = "✓ Copié !";
+    setTimeout(() => document.querySelector(".copy-btn").textContent = "Copier", 2000);
+  });
+}
+
+// ===== MAIN INIT =====
+async function runInit() {
+  const btn = document.getElementById("launch-btn");
+  const banner = document.getElementById("result-banner");
+  banner.className = "result-banner";
+  banner.style.display = "none";
+
+  // Collect config
+  const cfg = {
+    apiKey: document.getElementById("cfg-apiKey").value.trim(),
+    authDomain: document.getElementById("cfg-authDomain").value.trim(),
+    projectId: document.getElementById("cfg-projectId").value.trim(),
+    storageBucket: document.getElementById("cfg-storageBucket").value.trim(),
+    messagingSenderId: document.getElementById("cfg-messagingSenderId").value.trim(),
+    appId: document.getElementById("cfg-appId").value.trim(),
+  };
+
+  const adminName = document.getElementById("admin-name").value.trim();
+  const adminEmail = document.getElementById("admin-email").value.trim();
+  const adminPass = document.getElementById("admin-password").value.trim();
+
+  if (!cfg.apiKey || !cfg.projectId || !adminEmail || !adminPass) {
+    log("❌ Remplis tous les champs obligatoires (config Firebase + compte admin).", "error");
+    return;
+  }
+  if (adminPass.length < 8) { log("❌ Le mot de passe admin doit faire au moins 8 caractères.", "error"); return; }
+
+  btn.disabled = true;
+  btn.textContent = "⏳ Initialisation en cours...";
+
+  const fb = window._fb;
+
+  try {
+    // Init Firebase
+    log("🔌 Connexion à Firebase...", "info");
+    if (fb.getApps().length) fb.getApps().forEach(a => fb.deleteApp(a));
+    const app = fb.initializeApp(cfg);
+    const auth = fb.getAuth(app);
+    const db = fb.getFirestore(app);
+    log(`✓ Projet Firebase connecté : ${cfg.projectId}`, "success");
+
+    // ── ADMIN ACCOUNT ──
+    log("👤 Création du compte administrateur...", "accent");
+    let adminUID;
+    try {
+      const cred = await fb.createUserWithEmailAndPassword(auth, adminEmail, adminPass);
+      adminUID = cred.user.uid;
+      log(`✓ Compte Auth créé : ${adminEmail} (UID: ${adminUID.slice(0,8)}...)`, "success");
+    } catch (e) {
+      if (e.code === "auth/email-already-in-use") {
+        const cred = await fb.signInWithEmailAndPassword(auth, adminEmail, adminPass);
+        adminUID = cred.user.uid;
+        log(`⚠ Compte Auth déjà existant, connexion réussie (UID: ${adminUID.slice(0,8)}...)`, "warn");
+      } else throw e;
+    }
+
+    await fb.setDoc(fb.doc(db, "users", adminUID), {
+      fullName: adminName || "Administrateur",
+      email: adminEmail,
+      role: "admin",
+      createdAt: fb.serverTimestamp()
+    }, { merge: true });
+    log(`✓ Profil Firestore admin enregistré dans users/${adminUID.slice(0,8)}...`, "success");
+
+    // ── COLLECTIONS STRUCTURE (marqueurs de structure) ──
+    log("🗂 Création des collections Firestore...", "accent");
+    await fb.setDoc(fb.doc(db, "_meta", "init"), {
+      initializedAt: fb.serverTimestamp(),
+      version: "1.0",
+      collections: ["users", "courses", "quizzes"]
+    });
+    log("✓ Collection _meta créée (marqueur d'initialisation)", "success");
+
+    // ── SEED STUDENTS ──
+    const studentsToCreate = SEED_STUDENTS.filter(s => document.getElementById(s.id)?.checked);
+    if (studentsToCreate.length > 0) {
+      log(`👥 Création de ${studentsToCreate.length} élève(s)...`, "accent");
+      for (const s of studentsToCreate) {
+        try {
+          const cred = await fb.createUserWithEmailAndPassword(auth, s.email, "Eleve2024!");
+          await fb.setDoc(fb.doc(db, "users", cred.user.uid), {
+            fullName: s.fullName, email: s.email, class: s.class,
+            role: "student", progressPct: 0,
+            progress: { coursesDone: 0, quizzesDone: 0 },
+            createdAt: fb.serverTimestamp()
+          });
+          log(`✓ Élève créé : ${s.fullName} (${s.email})`, "success");
+        } catch (e) {
+          if (e.code === "auth/email-already-in-use") {
+            log(`⚠ Élève déjà existant : ${s.email}`, "warn");
+          } else {
+            log(`✗ Erreur élève ${s.email} : ${e.message}`, "error");
+          }
+        }
+      }
+    }
+
+    // ── SEED COURSES ──
+    const coursesToCreate = SEED_COURSES.filter(c => document.getElementById(c.id)?.checked);
+    const courseIdMap = {};
+    if (coursesToCreate.length > 0) {
+      log(`📚 Création de ${coursesToCreate.length} cours...`, "accent");
+
+      // Sign in as admin first for Firestore writes
+      await fb.signInWithEmailAndPassword(auth, adminEmail, adminPass);
+
+      for (const c of coursesToCreate) {
+        const ref = await fb.addDoc(fb.collection(db, "courses"), {
+          title: c.title, description: c.description,
+          category: c.category, content: c.content,
+          createdAt: fb.serverTimestamp()
+        });
+        courseIdMap[c.id] = ref.id;
+        log(`✓ Cours créé : "${c.title}" (ID: ${ref.id.slice(0,8)}...)`, "success");
+      }
+    }
+
+    // ── SEED QUIZZES ──
+    const quizzesToCreate = SEED_QUIZZES.filter(q => document.getElementById(q.id)?.checked);
+    if (quizzesToCreate.length > 0) {
+      log(`📝 Création de ${quizzesToCreate.length} quiz...`, "accent");
+      for (const q of quizzesToCreate) {
+        const courseFirestoreId = courseIdMap[q.courseKey] || null;
+        const courseObj = SEED_COURSES.find(c => c.id === q.courseKey);
+        await fb.addDoc(fb.collection(db, "quizzes"), {
+          title: q.title,
+          courseId: courseFirestoreId,
+          courseTitle: courseObj?.title || "",
+          questions: q.questions,
+          createdAt: fb.serverTimestamp()
+        });
+        log(`✓ Quiz créé : "${q.title}" (${q.questions.length} questions)`, "success");
+      }
+    }
+
+    // ── SIGN OUT ──
+    await fb.signOut(auth);
+
+    // ── SHOW RULES ──
+    if (document.getElementById("show-rules").checked) {
+      document.getElementById("rules-card").style.display = "block";
+      document.getElementById("rules-output").textContent = FIRESTORE_RULES;
+      log("🔒 Règles Firestore générées ci-dessous.", "info");
+    }
+
+    // ── SUCCESS ──
+    log("", "info");
+    log("════════════════════════════════════════", "accent");
+    log("✅ INITIALISATION TERMINÉE AVEC SUCCÈS", "success");
+    log("════════════════════════════════════════", "accent");
+    log(`Admin : ${adminEmail}`, "info");
+    if (studentsToCreate.length) log(`Élèves créés : ${studentsToCreate.length} (mot de passe : Eleve2024!)`, "info");
+    if (coursesToCreate.length) log(`Cours créés : ${coursesToCreate.length}`, "info");
+    if (quizzesToCreate.length) log(`Quiz créés : ${quizzesToCreate.length}`, "info");
+    log("⚠ Supprime ou protège ce fichier init.html après usage.", "warn");
+
+    banner.innerHTML = "✅ Initialisation réussie ! Tu peux maintenant aller sur <a href='index.html' style='color:inherit;font-weight:700;text-decoration:underline'>index.html</a> et te connecter.";
+    banner.className = "result-banner success visible";
+
+  } catch (err) {
+    log(`❌ ERREUR CRITIQUE : ${err.message}`, "error");
+    log("Vérifie ta config Firebase et que l'authentification Email/Password est activée.", "warn");
+    banner.innerHTML = `❌ Erreur : ${err.message}`;
+    banner.className = "result-banner error visible";
+  }
+
+  btn.disabled = false;
+  btn.textContent = "🚀 Relancer l'initialisation";
+}
+
+window.runInit = runInit;
+window.toggleSeed = toggleSeed;
+window.copyRules = copyRules;
+</script>
+</body>
+</html>

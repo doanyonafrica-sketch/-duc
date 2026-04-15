@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>EduPro — Mon espace</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css"/>
+</head>
+<body class="student-page">
+  <aside class="sidebar">
+    <div class="sidebar-brand"><span class="brand-icon">⚡</span><span class="brand-name">EduPro</span></div>
+    <nav class="sidebar-nav">
+      <a href="#" class="nav-item active" data-section="home"><span class="nav-icon">🏠</span> Accueil</a>
+      <a href="#" class="nav-item" data-section="courses"><span class="nav-icon">📚</span> Mes cours</a>
+      <a href="#" class="nav-item" data-section="quizzes"><span class="nav-icon">📝</span> Quiz</a>
+      <a href="#" class="nav-item" data-section="grades"><span class="nav-icon">📊</span> Mes notes</a>
+      <a href="#" class="nav-item" data-section="attendance"><span class="nav-icon">📋</span> Présences</a>
+      <a href="#" class="nav-item" data-section="progress"><span class="nav-icon">📈</span> Progression</a>
+      <a href="#" class="nav-item" data-section="leaderboard"><span class="nav-icon">🏆</span> Classement</a>
+      <a href="#" class="nav-item" data-section="certificates"><span class="nav-icon">🎓</span> Certificats</a>
+      <a href="messages.html" class="nav-item"><span class="nav-icon">✉</span> Messages</a>
+      <a href="planning.html" class="nav-item"><span class="nav-icon">📅</span> Planning</a>
+    </nav>
+    <button class="btn-logout" onclick="logout()"><span>↩</span> Déconnexion</button>
+  </aside>
+
+  <main class="admin-main">
+    <div class="admin-header">
+      <div><h1 id="section-title">Bonjour 👋</h1><p id="section-sub">Bienvenue sur votre espace</p></div>
+      <div class="admin-user">
+        <span id="student-name-header">—</span>
+        <div class="admin-avatar student-av" id="student-avatar-letter">?</div>
+      </div>
+    </div>
+
+    <!-- HOME -->
+    <section id="section-home" class="content-section active">
+      <div class="stats-grid" style="margin-bottom:2rem">
+        <div class="stat-card"><div class="stat-icon">📚</div><div class="stat-val" id="home-courses-done">0</div><div class="stat-label">Cours vus</div></div>
+        <div class="stat-card"><div class="stat-icon">📝</div><div class="stat-val" id="home-quizzes-done">0</div><div class="stat-label">Quiz faits</div></div>
+        <div class="stat-card"><div class="stat-icon">🏆</div><div class="stat-val" id="home-best-score">—</div><div class="stat-label">Meilleur score</div></div>
+        <div class="stat-card"><div class="stat-icon">📊</div><div class="stat-val" id="home-avg-grade">—</div><div class="stat-label">Moyenne générale</div></div>
+      </div>
+      <div class="table-card">
+        <h3 style="font-family:'Syne',sans-serif;margin-bottom:1.2rem">Activité récente</h3>
+        <div id="recent-activity">Chargement...</div>
+      </div>
+    </section>
+
+    <!-- COURSES -->
+    <section id="section-courses" class="content-section">
+      <div class="section-toolbar">
+        <input type="text" id="search-courses-student" placeholder="Rechercher un cours..." class="search-input" oninput="filterCoursesStudent()"/>
+      </div>
+      <div class="courses-grid" id="student-courses-grid">Chargement...</div>
+    </section>
+
+    <!-- COURSE VIEWER -->
+    <section id="section-course-viewer" class="content-section">
+      <div style="margin-bottom:1.5rem">
+        <button class="btn-secondary" onclick="backToCourses()" style="margin-bottom:1rem">← Retour aux cours</button>
+        <h2 id="course-viewer-title" style="font-family:'Syne',sans-serif">—</h2>
+        <span id="course-viewer-cat" class="badge">—</span>
+      </div>
+      <div class="table-card">
+        <div id="course-viewer-content" style="line-height:1.8;white-space:pre-wrap"></div>
+      </div>
+      <div style="margin-top:1.5rem;text-align:right">
+        <button class="btn-primary" id="mark-done-btn" onclick="markCourseDone()">✓ Marquer comme vu</button>
+      </div>
+    </section>
+
+    <!-- QUIZZES -->
+    <section id="section-quizzes" class="content-section">
+      <div class="courses-grid" id="student-quizzes-grid">Chargement...</div>
+    </section>
+
+    <!-- QUIZ RUNNER -->
+    <section id="section-quiz-runner" class="content-section">
+      <button class="btn-secondary" onclick="backToQuizzes()" style="margin-bottom:1.5rem">← Retour aux quiz</button>
+      <div class="table-card">
+        <h2 id="quiz-runner-title" style="font-family:'Syne',sans-serif;margin-bottom:1.5rem">—</h2>
+        <div id="quiz-questions-container"></div>
+        <div id="quiz-result" class="hidden"></div>
+        <div style="margin-top:1.5rem;text-align:right">
+          <button class="btn-primary hidden" id="submit-quiz-btn" onclick="submitQuiz()">Soumettre mes réponses</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- NOTES -->
+    <section id="section-grades" class="content-section">
+      <div id="grades-content">Chargement...</div>
+    </section>
+
+    <!-- PRESENCES -->
+    <section id="section-attendance" class="content-section">
+      <div class="attendance-summary">
+        <div class="att-stat"><div class="att-stat-val" id="att-present" style="color:var(--success)">0</div><div class="att-stat-label">Présences</div></div>
+        <div class="att-stat"><div class="att-stat-val" id="att-absent" style="color:var(--error)">0</div><div class="att-stat-label">Absences</div></div>
+        <div class="att-stat"><div class="att-stat-val" id="att-late" style="color:var(--accent)">0</div><div class="att-stat-label">Retards</div></div>
+        <div class="att-stat"><div class="att-stat-val" id="att-rate" style="color:var(--accent)">—</div><div class="att-stat-label">Taux présence</div></div>
+      </div>
+      <div class="table-card">
+        <h3 style="font-family:'Syne',sans-serif;margin-bottom:1rem">Historique des présences</h3>
+        <table class="data-table">
+          <thead><tr><th>Date</th><th>Séance</th><th>Statut</th><th>Note</th></tr></thead>
+          <tbody id="attendance-tbody"><tr><td colspan="4" class="table-loading">Chargement...</td></tr></tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- PROGRESSION -->
+    <section id="section-progress" class="content-section">
+      <div class="stats-grid" style="margin-bottom:2rem">
+        <div class="stat-card"><div class="stat-icon">📚</div><div class="stat-val" id="prog-total-courses">—</div><div class="stat-label">Cours disponibles</div></div>
+        <div class="stat-card"><div class="stat-icon">✅</div><div class="stat-val" id="prog-done-courses">—</div><div class="stat-label">Cours terminés</div></div>
+        <div class="stat-card"><div class="stat-icon">📝</div><div class="stat-val" id="prog-total-quizzes">—</div><div class="stat-label">Quiz disponibles</div></div>
+        <div class="stat-card"><div class="stat-icon">🎯</div><div class="stat-val" id="prog-done-quizzes">—</div><div class="stat-label">Quiz complétés</div></div>
+      </div>
+      <div class="table-card" style="margin-bottom:2rem">
+        <h3 style="font-family:'Syne',sans-serif;margin-bottom:1rem">Progression globale</h3>
+        <div class="progress-bar-wrap">
+          <div class="progress-bar-track"><div class="progress-bar-fill" id="global-progress-bar" style="width:0%"></div></div>
+          <span id="global-progress-pct">0%</span>
+        </div>
+      </div>
+      <div class="table-card">
+        <h3 style="font-family:'Syne',sans-serif;margin-bottom:1rem">Historique des quiz</h3>
+        <table class="data-table">
+          <thead><tr><th>Quiz</th><th>Score</th><th>Date</th></tr></thead>
+          <tbody id="quiz-history-tbody"><tr><td colspan="3" class="table-loading">Chargement...</td></tr></tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- LEADERBOARD -->
+    <section id="section-leaderboard" class="content-section">
+      <div class="leaderboard-tabs">
+        <button class="lb-tab active" id="tab-score" onclick="switchLeaderboard('score')">🏆 Meilleurs scores</button>
+        <button class="lb-tab" id="tab-progress" onclick="switchLeaderboard('progress')">📈 Progression</button>
+      </div>
+      <div class="my-rank-banner">
+        <div class="my-rank-info">
+          <span class="my-rank-label">Mon classement</span>
+          <span class="my-rank-position" id="my-rank-pos">—</span>
+        </div>
+        <div class="my-rank-stats">
+          <span id="my-rank-score">Score moy. : —</span>
+          <span style="margin:0 0.5rem;opacity:0.4">|</span>
+          <span id="my-rank-prog">Progression : —</span>
+        </div>
+      </div>
+      <div class="table-card" style="padding:0;overflow:hidden">
+        <table class="data-table">
+          <thead><tr><th style="width:60px;text-align:center">Rang</th><th>Élève</th><th>Filière</th><th style="text-align:center">Score moy.</th><th style="text-align:center">Progression</th><th style="text-align:center">Quiz</th></tr></thead>
+          <tbody id="leaderboard-tbody"><tr><td colspan="6" class="table-loading">Chargement...</td></tr></tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- CERTIFICATS -->
+    <section id="section-certificates" class="content-section">
+      <div id="certificates-content">
+        <div class="empty-state">Chargement...</div>
+      </div>
+    </section>
+
+  </main>
+
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+    import { getAuth, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+    import { getFirestore, collection, doc, getDoc, getDocs, addDoc, setDoc, updateDoc, serverTimestamp, query, orderBy, where, limit }
+      from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+     const firebaseConfig = {
+  apiKey: "AIzaSyD2Xh778RDqztmHPBLcw96DWew03PkL2qU",
+  authDomain: "edupro-school.firebaseapp.com",
+  projectId: "edupro-school",
+  storageBucket: "edupro-school.firebasestorage.app",
+  messagingSenderId: "552814359641",
+  appId: "1:552814359641:web:2c47cb3835953679776d48"
+};
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db = getFirestore(app);
+
+    window._auth = auth; window._db = db; window._signOut = signOut;
+    window._collection = collection; window._doc = doc; window._getDoc = getDoc;
+    window._getDocs = getDocs; window._addDoc = addDoc; window._setDoc = setDoc;
+    window._updateDoc = updateDoc; window._serverTimestamp = serverTimestamp;
+    window._query = query; window._orderBy = orderBy; window._where = where; window._limit = limit;
+
+    onAuthStateChanged(auth, async (user) => {
+      if (!user) { window.location.href = "index.html"; return; }
+      const userDoc = await getDoc(doc(db, "users", user.uid));
+      if (!userDoc.exists() || userDoc.data().role === "admin" || userDoc.data().role === "teacher") {
+        window.location.href = "index.html"; return;
+      }
+      const data = userDoc.data();
+      window._currentUser = { uid: user.uid, ...data };
+      const name = data.fullName || "Élève";
+      document.getElementById("student-name-header").textContent = name;
+      document.getElementById("section-title").textContent = `Bonjour, ${name.split(" ")[0]} 👋`;
+      document.getElementById("student-avatar-letter").textContent = name[0].toUpperCase();
+      loadStudentData();
+    });
+  </script>
+  <script src="student.js"></script>
+</body>
+</html>

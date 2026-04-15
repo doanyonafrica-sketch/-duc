@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>EduPro — Plateforme de Formation</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css"/>
+</head>
+<body class="login-page">
+
+  <div class="login-bg">
+    <div class="bg-shape s1"></div>
+    <div class="bg-shape s2"></div>
+    <div class="bg-shape s3"></div>
+  </div>
+
+  <div class="login-container">
+    <div class="login-brand">
+      <span class="brand-icon">⚡</span>
+      <span class="brand-name">EduPro</span>
+    </div>
+    <p class="login-subtitle">Plateforme de formation professionnelle</p>
+
+    <div class="login-card">
+      <h2 class="login-title">Connexion</h2>
+
+      <div id="login-error" class="alert alert-error hidden"></div>
+
+      <div class="form-group">
+        <label>Identifiant</label>
+        <input type="text" id="login-username" placeholder="Votre identifiant" autocomplete="off"/>
+      </div>
+      <div class="form-group">
+        <label>Mot de passe</label>
+        <input type="password" id="login-password" placeholder="••••••••"/>
+      </div>
+      <button class="btn-primary" id="login-btn" onclick="handleLogin()">
+        <span class="btn-text">Se connecter</span>
+        <span class="btn-loader hidden">...</span>
+      </button>
+    </div>
+
+    <p class="login-note">Accès réservé aux membres de l'établissement</p>
+  </div>
+
+  <!-- Firebase SDK -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+    import { getAuth, signInWithEmailAndPassword, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+    import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+    // ======= 🔥 REMPLACE PAR TA CONFIG FIREBASE =======
+    const firebaseConfig = {
+  apiKey: "AIzaSyD2Xh778RDqztmHPBLcw96DWew03PkL2qU",
+  authDomain: "edupro-school.firebaseapp.com",
+  projectId: "edupro-school",
+  storageBucket: "edupro-school.firebasestorage.app",
+  messagingSenderId: "552814359641",
+  appId: "1:552814359641:web:2c47cb3835953679776d48"
+};
+
+    // ====================================================
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db = getFirestore(app);
+
+    // Expose globalement
+    window._auth = auth;
+    window._db = db;
+    window._signIn = signInWithEmailAndPassword;
+    window._doc = doc;
+    window._getDoc = getDoc;
+    window._onAuthStateChanged = onAuthStateChanged;
+
+    // Si déjà connecté → redirect
+    onAuthStateChanged(auth, async (user) => {
+      if (user) {
+        const userDoc = await getDoc(doc(db, "users", user.uid));
+        if (userDoc.exists()) {
+          const role = userDoc.data().role;
+          if (role === "admin") window.location.href = "admin.html";
+          else window.location.href = "dashboard.html";
+        }
+      }
+    });
+  </script>
+
+  <script src="login.js"></script>
+</body>
+</html>

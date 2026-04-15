@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>EduPro — Planning</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css"/>
+</head>
+<body class="student-page">
+  <aside class="sidebar">
+    <div class="sidebar-brand"><span class="brand-icon">⚡</span><span class="brand-name">EduPro</span></div>
+    <nav class="sidebar-nav">
+      <a href="dashboard.html" class="nav-item"><span class="nav-icon">🏠</span> Accueil</a>
+      <a href="messages.html" class="nav-item"><span class="nav-icon">✉</span> Messages</a>
+      <a href="#" class="nav-item active"><span class="nav-icon">📅</span> Planning</a>
+    </nav>
+    <div class="sidebar-role-badge" id="role-badge-plan">—</div>
+    <button class="btn-logout" onclick="logout()"><span>↩</span> Déconnexion</button>
+  </aside>
+
+  <main class="admin-main">
+    <div class="admin-header">
+      <div><h1>Planning des cours</h1><p>Calendrier hebdomadaire</p></div>
+      <div class="admin-user"><span id="plan-user-name">—</span><div class="admin-avatar" id="plan-avatar">?</div></div>
+    </div>
+
+    <div class="planning-nav">
+      <button class="btn-secondary btn-sm" onclick="changeWeek(-1)">← Semaine précédente</button>
+      <div class="week-label" id="week-label">—</div>
+      <button class="btn-secondary btn-sm" onclick="changeWeek(1)">Semaine suivante →</button>
+      <button class="btn-primary btn-sm admin-teacher-only hidden" onclick="openModal('modal-add-slot')">+ Ajouter séance</button>
+    </div>
+
+    <div class="planning-week" id="planning-week">
+      <div class="table-loading" style="grid-column:1/-1">Chargement...</div>
+    </div>
+  </main>
+
+  <!-- MODAL: Ajouter séance (admin/prof) -->
+  <div class="modal-overlay hidden" id="modal-add-slot">
+    <div class="modal">
+      <div class="modal-header"><h3>Ajouter une séance</h3><button class="modal-close" onclick="closeModal('modal-add-slot')">✕</button></div>
+      <div class="form-group"><label>Jour</label>
+        <select id="slot-day"><option value="0">Lundi</option><option value="1">Mardi</option><option value="2">Mercredi</option><option value="3">Jeudi</option><option value="4">Vendredi</option></select>
+      </div>
+      <div class="form-group"><label>Horaire</label>
+        <select id="slot-time">
+          <option>07h00 - 08h30</option><option>08h30 - 10h00</option><option>10h00 - 11h30</option>
+          <option>11h30 - 13h00</option><option>14h00 - 15h30</option><option>15h30 - 17h00</option><option>17h00 - 18h30</option>
+        </select>
+      </div>
+      <div class="form-group"><label>Cours / Matière</label><input type="text" id="slot-course" placeholder="Ex: Protection différentielle"/></div>
+      <div class="form-group"><label>Salle</label><input type="text" id="slot-room" placeholder="Ex: Salle A3"/></div>
+      <div class="form-group"><label>Semaine (lundi)</label><input type="date" id="slot-week"/></div>
+      <div class="modal-actions">
+        <button class="btn-secondary" onclick="closeModal('modal-add-slot')">Annuler</button>
+        <button class="btn-primary" onclick="addSlot()">Ajouter</button>
+      </div>
+    </div>
+  </div>
+
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+    import { getAuth, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+    import { getFirestore, collection, doc, getDoc, getDocs, addDoc, deleteDoc, serverTimestamp, query, where, orderBy }
+      from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+    const firebaseConfig={apiKey:"YOUR_API_KEY",authDomain:"YOUR_PROJECT.firebaseapp.com",projectId:"YOUR_PROJECT_ID",storageBucket:"YOUR_PROJECT.appspot.com",messagingSenderId:"YOUR_SENDER_ID",appId:"YOUR_APP_ID"};
+    const app=initializeApp(firebaseConfig); const auth=getAuth(app); const db=getFirestore(app);
+    window._auth=auth;window._db=db;window._signOut=signOut;
+    window._collection=collection;window._doc=doc;window._getDoc=getDoc;window._getDocs=getDocs;
+    window._addDoc=addDoc;window._deleteDoc=deleteDoc;window._serverTimestamp=serverTimestamp;
+    window._query=query;window._where=where;window._orderBy=orderBy;
+    onAuthStateChanged(auth, async user=>{
+      if(!user){window.location.href="index.html";return;}
+      const d=await getDoc(doc(db,"users",user.uid));
+      if(!d.exists()){window.location.href="index.html";return;}
+      const data=d.data();
+      window._currentUser={uid:user.uid,...data};
+      const name=data.fullName||"—";
+      document.getElementById("plan-user-name").textContent=name;
+      document.getElementById("plan-avatar").textContent=name[0].toUpperCase();
+      const badge=document.getElementById("role-badge-plan");
+      if(data.role==="admin"||data.role==="teacher"){
+        badge.textContent=data.role==="admin"?"Administrateur":"Professeur";
+        badge.style.cssText="background:rgba(64,96,240,0.15);color:#6888f8";
+        document.querySelector(".admin-teacher-only").classList.remove("hidden");
+      } else { badge.textContent="Élève"; }
+      initPlanning();
+    });
+  </script>
+  <script src="planning.js"></script>
+</body>
+</html>

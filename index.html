@@ -81,7 +81,8 @@
         const userDoc = await getDoc(doc(db, "users", user.uid));
         if (userDoc.exists()) {
           const role = userDoc.data().role;
-          if (role === "admin") window.location.href = "admin.html";
+          if (role === "admin" || role === "teacher") window.location.href = "admin.html";
+          else if (role === "parent") window.location.href = "parent.html";
           else window.location.href = "dashboard.html";
         }
       }

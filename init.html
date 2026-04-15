@@ -551,44 +551,102 @@ service cloud.firestore {
 
     // Profils utilisateurs
     match /users/{userId} {
-      // Lecture : soi-même OU admin
       allow read: if request.auth != null &&
-        (request.auth.uid == userId || isAdmin());
-
-      // Écriture : admin seulement (l'admin crée les comptes)
+        (request.auth.uid == userId || isAdminOrTeacher());
       allow create, update, delete: if request.auth != null && isAdmin();
 
-      // Sous-collections élève (progression, quiz, activité)
       match /completedCourses/{docId} {
         allow read, write: if request.auth != null &&
-          (request.auth.uid == userId || isAdmin());
+          (request.auth.uid == userId || isAdminOrTeacher());
       }
       match /quizResults/{docId} {
         allow read, write: if request.auth != null &&
-          (request.auth.uid == userId || isAdmin());
+          (request.auth.uid == userId || isAdminOrTeacher());
       }
       match /activity/{docId} {
         allow read, write: if request.auth != null &&
-          (request.auth.uid == userId || isAdmin());
+          (request.auth.uid == userId || isAdminOrTeacher());
+      }
+      match /grades/{docId} {
+        allow read: if request.auth != null &&
+          (request.auth.uid == userId || isAdminOrTeacher());
+        allow write: if request.auth != null && isAdminOrTeacher();
+      }
+      match /certificates/{docId} {
+        allow read, write: if request.auth != null &&
+          (request.auth.uid == userId || isAdminOrTeacher());
       }
     }
 
-    // Cours : lecture pour tous les connectés, écriture admin
+    // Cours : lecture pour tous, écriture admin + profs
     match /courses/{courseId} {
       allow read: if request.auth != null;
-      allow create, update, delete: if request.auth != null && isAdmin();
+      allow create, update, delete: if request.auth != null && isAdminOrTeacher();
     }
 
-    // Quiz : lecture pour tous les connectés, écriture admin
+    // Quiz : lecture pour tous, écriture admin + profs
     match /quizzes/{quizId} {
       allow read: if request.auth != null;
-      allow create, update, delete: if request.auth != null && isAdmin();
+      allow create, update, delete: if request.auth != null && isAdminOrTeacher();
     }
 
-    // Fonction helper : vérifie si l'utilisateur est admin
+    // Présences : lecture élève concerné + admin/prof, écriture admin/prof
+    match /attendance/{docId} {
+      allow read: if request.auth != null &&
+        (resource.data.studentId == request.auth.uid || isAdminOrTeacher());
+      allow write: if request.auth != null && isAdminOrTeacher();
+    }
+
+    // Conversations & messages
+    match /conversations/{convId} {
+      allow read, write: if request.auth != null &&
+        request.auth.uid in resource.data.participants;
+      allow create: if request.auth != null;
+      match /messages/{msgId} {
+        allow read, write: if request.auth != null;
+      }
+    }
+
+    // Annonces : lecture tous, écriture admin/profs
+    match /announces/{docId} {
+      allow read: if request.auth != null;
+      allow write: if request.auth != null && isAdminOrTeacher();
+    }
+
+    // Planning
+    match /schedule/{docId} {
+      allow read: if request.auth != null;
+      allow write: if request.auth != null && isAdminOrTeacher();
+    }
+
+    // Liens parent-enfant
+    match /parentLinks/{docId} {
+      allow read: if request.auth != null &&
+        (resource.data.parentId == request.auth.uid || isAdmin());
+      allow write: if request.auth != null && isAdmin();
+    }
+
+    // Messages des parents
+    match /parentMessages/{docId} {
+      allow read: if request.auth != null &&
+        (resource.data.fromId == request.auth.uid ||
+         resource.data.toId == request.auth.uid || isAdmin());
+      allow create: if request.auth != null;
+      allow update, delete: if request.auth != null && isAdmin();
+    }
+
+    // Méta d'initialisation
+    match /_meta/{docId} {
+      allow read, write: if request.auth != null && isAdmin();
+    }
+
     function isAdmin() {
       return request.auth != null &&
         get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'admin';
+    }
+    function isAdminOrTeacher() {
+      let role = get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role;
+      return request.auth != null && (role == 'admin' || role == 'teacher');
     }
   }
 }`;

@@ -106,7 +106,8 @@ async function createUser() {
   btn.textContent = "Création...";
 
   try {
-    const cred = await window._createUser(window._auth, email, password);
+    const cred = await window._createUser(window._secondaryAuth, email, password);
+    await window._secondaryAuth.signOut();
     await window._setDoc(window._doc(window._db, "users", cred.user.uid), {
       fullName,
       email,
@@ -563,7 +564,8 @@ async function linkParent(studentId, studentName) {
     if (!parentPass || parentPass.length < 6) return;
     const parentName = prompt("Nom du parent :") || "Parent";
     try {
-      const cred = await window._createUser(window._auth, parentEmail, parentPass);
+      const cred = await window._createUser(window._secondaryAuth, parentEmail, parentPass);
+      await window._secondaryAuth.signOut();
       await window._setDoc(window._doc(db, "users", cred.user.uid), {
         fullName: parentName, email: parentEmail, role: "parent", createdAt: window._serverTimestamp()
       });

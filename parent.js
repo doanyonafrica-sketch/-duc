@@ -14,7 +14,7 @@ document.querySelectorAll(".nav-item[data-section]").forEach(item=>{
     if(t==="grades"&&currentChildUID) loadChildGrades(currentChildUID);
     if(t==="attendance"&&currentChildUID) loadChildAttendance(currentChildUID);
     if(t==="progress"&&currentChildUID) loadChildProgress(currentChildUID);
-    if(t==="messages") loadContacts();
+    if(t==="messages") { loadContacts(); loadSentMessages(); }
   });
 });
 

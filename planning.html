@@ -65,7 +65,14 @@
     import { getAuth, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
     import { getFirestore, collection, doc, getDoc, getDocs, addDoc, deleteDoc, serverTimestamp, query, where, orderBy }
       from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
-    const firebaseConfig={apiKey:"YOUR_API_KEY",authDomain:"YOUR_PROJECT.firebaseapp.com",projectId:"YOUR_PROJECT_ID",storageBucket:"YOUR_PROJECT.appspot.com",messagingSenderId:"YOUR_SENDER_ID",appId:"YOUR_APP_ID"};
+    const firebaseConfig = {
+      apiKey: "AIzaSyD2Xh778RDqztmHPBLcw96DWew03PkL2qU",
+      authDomain: "edupro-school.firebaseapp.com",
+      projectId: "edupro-school",
+      storageBucket: "edupro-school.firebasestorage.app",
+      messagingSenderId: "552814359641",
+      appId: "1:552814359641:web:2c47cb3835953679776d48"
+    };
     const app=initializeApp(firebaseConfig); const auth=getAuth(app); const db=getFirestore(app);
     window._auth=auth;window._db=db;window._signOut=signOut;
     window._collection=collection;window._doc=doc;window._getDoc=getDoc;window._getDocs=getDocs;

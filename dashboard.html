@@ -9,6 +9,22 @@
   <link rel="stylesheet" href="styles.css"/>
 </head>
 <body class="student-page">
+
+  <!-- Topbar mobile -->
+  <div class="topbar">
+    <button class="hamburger" onclick="openMobileSidebar()">☰</button>
+    <div class="topbar-brand">
+      <span class="brand-icon">⚡</span>
+      <span class="brand-name">EduPro</span>
+    </div>
+    <div class="topbar-right">
+      <div class="admin-avatar student-av" id="topbar-avatar-student">?</div>
+    </div>
+  </div>
+
+  <!-- Overlay -->
+  <div class="sidebar-overlay"></div>
+
   <aside class="sidebar">
     <div class="sidebar-brand"><span class="brand-icon">⚡</span><span class="brand-name">EduPro</span></div>
     <nav class="sidebar-nav">
@@ -37,14 +53,14 @@
 
     <!-- HOME -->
     <section id="section-home" class="content-section active">
-      <div class="stats-grid" style="margin-bottom:2rem">
+      <div class="stats-grid" style="margin-bottom:1.5rem">
         <div class="stat-card"><div class="stat-icon">📚</div><div class="stat-val" id="home-courses-done">0</div><div class="stat-label">Cours vus</div></div>
         <div class="stat-card"><div class="stat-icon">📝</div><div class="stat-val" id="home-quizzes-done">0</div><div class="stat-label">Quiz faits</div></div>
         <div class="stat-card"><div class="stat-icon">🏆</div><div class="stat-val" id="home-best-score">—</div><div class="stat-label">Meilleur score</div></div>
-        <div class="stat-card"><div class="stat-icon">📊</div><div class="stat-val" id="home-avg-grade">—</div><div class="stat-label">Moyenne générale</div></div>
+        <div class="stat-card"><div class="stat-icon">📊</div><div class="stat-val" id="home-avg-grade">—</div><div class="stat-label">Moyenne</div></div>
       </div>
       <div class="table-card">
-        <h3 style="font-family:'Syne',sans-serif;margin-bottom:1.2rem">Activité récente</h3>
+        <h3 style="font-family:'Syne',sans-serif;margin-bottom:1rem">Activité récente</h3>
         <div id="recent-activity">Chargement...</div>
       </div>
     </section>
@@ -59,15 +75,15 @@
 
     <!-- COURSE VIEWER -->
     <section id="section-course-viewer" class="content-section">
-      <div style="margin-bottom:1.5rem">
-        <button class="btn-secondary" onclick="backToCourses()" style="margin-bottom:1rem">← Retour aux cours</button>
-        <h2 id="course-viewer-title" style="font-family:'Syne',sans-serif">—</h2>
+      <div style="margin-bottom:1.2rem">
+        <button class="btn-secondary btn-sm" onclick="backToCourses()" style="margin-bottom:0.8rem">← Retour</button>
+        <h2 id="course-viewer-title" style="font-family:'Syne',sans-serif;font-size:1.2rem;margin-bottom:0.4rem">—</h2>
         <span id="course-viewer-cat" class="badge">—</span>
       </div>
       <div class="table-card">
-        <div id="course-viewer-content" style="line-height:1.8;white-space:pre-wrap"></div>
+        <div id="course-viewer-content" style="line-height:1.8;white-space:pre-wrap;font-size:0.9rem"></div>
       </div>
-      <div style="margin-top:1.5rem;text-align:right">
+      <div style="margin-top:1.2rem;text-align:right">
         <button class="btn-primary" id="mark-done-btn" onclick="markCourseDone()">✓ Marquer comme vu</button>
       </div>
     </section>
@@ -79,13 +95,13 @@
 
     <!-- QUIZ RUNNER -->
     <section id="section-quiz-runner" class="content-section">
-      <button class="btn-secondary" onclick="backToQuizzes()" style="margin-bottom:1.5rem">← Retour aux quiz</button>
+      <button class="btn-secondary btn-sm" onclick="backToQuizzes()" style="margin-bottom:1.2rem">← Retour</button>
       <div class="table-card">
-        <h2 id="quiz-runner-title" style="font-family:'Syne',sans-serif;margin-bottom:1.5rem">—</h2>
+        <h2 id="quiz-runner-title" style="font-family:'Syne',sans-serif;margin-bottom:1.2rem;font-size:1.1rem">—</h2>
         <div id="quiz-questions-container"></div>
         <div id="quiz-result" class="hidden"></div>
-        <div style="margin-top:1.5rem;text-align:right">
-          <button class="btn-primary hidden" id="submit-quiz-btn" onclick="submitQuiz()">Soumettre mes réponses</button>
+        <div style="margin-top:1.2rem;text-align:right">
+          <button class="btn-primary hidden btn-block" id="submit-quiz-btn" onclick="submitQuiz()">Soumettre mes réponses</button>
         </div>
       </div>
     </section>
@@ -101,73 +117,75 @@
         <div class="att-stat"><div class="att-stat-val" id="att-present" style="color:var(--success)">0</div><div class="att-stat-label">Présences</div></div>
         <div class="att-stat"><div class="att-stat-val" id="att-absent" style="color:var(--error)">0</div><div class="att-stat-label">Absences</div></div>
         <div class="att-stat"><div class="att-stat-val" id="att-late" style="color:var(--accent)">0</div><div class="att-stat-label">Retards</div></div>
-        <div class="att-stat"><div class="att-stat-val" id="att-rate" style="color:var(--accent)">—</div><div class="att-stat-label">Taux présence</div></div>
+        <div class="att-stat"><div class="att-stat-val" id="att-rate" style="color:var(--accent)">—</div><div class="att-stat-label">Taux</div></div>
       </div>
       <div class="table-card">
-        <h3 style="font-family:'Syne',sans-serif;margin-bottom:1rem">Historique des présences</h3>
-        <table class="data-table">
-          <thead><tr><th>Date</th><th>Séance</th><th>Statut</th><th>Note</th></tr></thead>
-          <tbody id="attendance-tbody"><tr><td colspan="4" class="table-loading">Chargement...</td></tr></tbody>
-        </table>
+        <h3 style="font-family:'Syne',sans-serif;margin-bottom:0.8rem">Historique</h3>
+        <div class="table-responsive">
+          <table class="data-table">
+            <thead><tr><th>Date</th><th>Séance</th><th>Statut</th><th class="hide-mobile">Note</th></tr></thead>
+            <tbody id="attendance-tbody"><tr><td colspan="4" class="table-loading">Chargement...</td></tr></tbody>
+          </table>
+        </div>
       </div>
     </section>
 
     <!-- PROGRESSION -->
     <section id="section-progress" class="content-section">
-      <div class="stats-grid" style="margin-bottom:2rem">
-        <div class="stat-card"><div class="stat-icon">📚</div><div class="stat-val" id="prog-total-courses">—</div><div class="stat-label">Cours disponibles</div></div>
-        <div class="stat-card"><div class="stat-icon">✅</div><div class="stat-val" id="prog-done-courses">—</div><div class="stat-label">Cours terminés</div></div>
-        <div class="stat-card"><div class="stat-icon">📝</div><div class="stat-val" id="prog-total-quizzes">—</div><div class="stat-label">Quiz disponibles</div></div>
-        <div class="stat-card"><div class="stat-icon">🎯</div><div class="stat-val" id="prog-done-quizzes">—</div><div class="stat-label">Quiz complétés</div></div>
+      <div class="stats-grid" style="margin-bottom:1.5rem">
+        <div class="stat-card"><div class="stat-icon">📚</div><div class="stat-val" id="prog-total-courses">—</div><div class="stat-label">Cours dispo.</div></div>
+        <div class="stat-card"><div class="stat-icon">✅</div><div class="stat-val" id="prog-done-courses">—</div><div class="stat-label">Terminés</div></div>
+        <div class="stat-card"><div class="stat-icon">📝</div><div class="stat-val" id="prog-total-quizzes">—</div><div class="stat-label">Quiz dispo.</div></div>
+        <div class="stat-card"><div class="stat-icon">🎯</div><div class="stat-val" id="prog-done-quizzes">—</div><div class="stat-label">Complétés</div></div>
       </div>
-      <div class="table-card" style="margin-bottom:2rem">
-        <h3 style="font-family:'Syne',sans-serif;margin-bottom:1rem">Progression globale</h3>
+      <div class="table-card" style="margin-bottom:1.5rem">
+        <h3 style="font-family:'Syne',sans-serif;margin-bottom:0.8rem">Progression globale</h3>
         <div class="progress-bar-wrap">
           <div class="progress-bar-track"><div class="progress-bar-fill" id="global-progress-bar" style="width:0%"></div></div>
           <span id="global-progress-pct">0%</span>
         </div>
       </div>
       <div class="table-card">
-        <h3 style="font-family:'Syne',sans-serif;margin-bottom:1rem">Historique des quiz</h3>
-        <table class="data-table">
-          <thead><tr><th>Quiz</th><th>Score</th><th>Date</th></tr></thead>
-          <tbody id="quiz-history-tbody"><tr><td colspan="3" class="table-loading">Chargement...</td></tr></tbody>
-        </table>
+        <h3 style="font-family:'Syne',sans-serif;margin-bottom:0.8rem">Historique quiz</h3>
+        <div class="table-responsive">
+          <table class="data-table">
+            <thead><tr><th>Quiz</th><th>Score</th><th>Date</th></tr></thead>
+            <tbody id="quiz-history-tbody"><tr><td colspan="3" class="table-loading">Chargement...</td></tr></tbody>
+          </table>
+        </div>
       </div>
     </section>
 
     <!-- LEADERBOARD -->
     <section id="section-leaderboard" class="content-section">
       <div class="leaderboard-tabs">
-        <button class="lb-tab active" id="tab-score" onclick="switchLeaderboard('score')">🏆 Meilleurs scores</button>
+        <button class="lb-tab active" id="tab-score" onclick="switchLeaderboard('score')">🏆 Scores</button>
         <button class="lb-tab" id="tab-progress" onclick="switchLeaderboard('progress')">📈 Progression</button>
       </div>
       <div class="my-rank-banner">
         <div class="my-rank-info">
-          <span class="my-rank-label">Mon classement</span>
+          <span class="my-rank-label">Mon rang</span>
           <span class="my-rank-position" id="my-rank-pos">—</span>
         </div>
         <div class="my-rank-stats">
-          <span id="my-rank-score">Score moy. : —</span>
-          <span style="margin:0 0.5rem;opacity:0.4">|</span>
-          <span id="my-rank-prog">Progression : —</span>
+          <div id="my-rank-score">Score moy. : —</div>
+          <div id="my-rank-prog">Progression : —</div>
         </div>
       </div>
       <div class="table-card" style="padding:0;overflow:hidden">
-        <table class="data-table">
-          <thead><tr><th style="width:60px;text-align:center">Rang</th><th>Élève</th><th>Filière</th><th style="text-align:center">Score moy.</th><th style="text-align:center">Progression</th><th style="text-align:center">Quiz</th></tr></thead>
-          <tbody id="leaderboard-tbody"><tr><td colspan="6" class="table-loading">Chargement...</td></tr></tbody>
-        </table>
+        <div class="table-responsive">
+          <table class="data-table">
+            <thead><tr><th style="width:50px;text-align:center">Rang</th><th>Élève</th><th class="hide-mobile">Filière</th><th style="text-align:center">Score</th><th style="text-align:center">Prog.</th><th class="hide-mobile" style="text-align:center">Quiz</th></tr></thead>
+            <tbody id="leaderboard-tbody"><tr><td colspan="6" class="table-loading">Chargement...</td></tr></tbody>
+          </table>
+        </div>
       </div>
     </section>
 
     <!-- CERTIFICATS -->
     <section id="section-certificates" class="content-section">
-      <div id="certificates-content">
-        <div class="empty-state">Chargement...</div>
-      </div>
+      <div id="certificates-content"><div class="empty-state">Chargement...</div></div>
     </section>
-
   </main>
 
   <script type="module">
@@ -175,31 +193,27 @@
     import { getAuth, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
     import { getFirestore, collection, doc, getDoc, getDocs, addDoc, setDoc, updateDoc, serverTimestamp, query, orderBy, where, limit }
       from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
-
-     const firebaseConfig = {
-  apiKey: "AIzaSyD2Xh778RDqztmHPBLcw96DWew03PkL2qU",
-  authDomain: "edupro-school.firebaseapp.com",
-  projectId: "edupro-school",
-  storageBucket: "edupro-school.firebasestorage.app",
-  messagingSenderId: "552814359641",
-  appId: "1:552814359641:web:2c47cb3835953679776d48"
-};
-
+    const firebaseConfig = {
+      apiKey: "AIzaSyD2Xh778RDqztmHPBLcw96DWew03PkL2qU",
+      authDomain: "edupro-school.firebaseapp.com",
+      projectId: "edupro-school",
+      storageBucket: "edupro-school.firebasestorage.app",
+      messagingSenderId: "552814359641",
+      appId: "1:552814359641:web:2c47cb3835953679776d48"
+    };
     const app = initializeApp(firebaseConfig);
     const auth = getAuth(app);
     const db = getFirestore(app);
-
-    window._auth = auth; window._db = db; window._signOut = signOut;
-    window._collection = collection; window._doc = doc; window._getDoc = getDoc;
-    window._getDocs = getDocs; window._addDoc = addDoc; window._setDoc = setDoc;
-    window._updateDoc = updateDoc; window._serverTimestamp = serverTimestamp;
-    window._query = query; window._orderBy = orderBy; window._where = where; window._limit = limit;
-
+    window._auth=auth; window._db=db; window._signOut=signOut;
+    window._collection=collection; window._doc=doc; window._getDoc=getDoc;
+    window._getDocs=getDocs; window._addDoc=addDoc; window._setDoc=setDoc;
+    window._updateDoc=updateDoc; window._serverTimestamp=serverTimestamp;
+    window._query=query; window._orderBy=orderBy; window._where=where; window._limit=limit;
     onAuthStateChanged(auth, async (user) => {
-      if (!user) { window.location.href = "index.html"; return; }
-      const userDoc = await getDoc(doc(db, "users", user.uid));
-      if (!userDoc.exists() || userDoc.data().role === "admin" || userDoc.data().role === "teacher") {
-        window.location.href = "index.html"; return;
+      if (!user) { window.location.href="index.html"; return; }
+      const userDoc = await getDoc(doc(db,"users",user.uid));
+      if (!userDoc.exists() || userDoc.data().role==="admin" || userDoc.data().role==="teacher") {
+        window.location.href="index.html"; return;
       }
       const data = userDoc.data();
       window._currentUser = { uid: user.uid, ...data };
@@ -207,6 +221,7 @@
       document.getElementById("student-name-header").textContent = name;
       document.getElementById("section-title").textContent = `Bonjour, ${name.split(" ")[0]} 👋`;
       document.getElementById("student-avatar-letter").textContent = name[0].toUpperCase();
+      document.getElementById("topbar-avatar-student").textContent = name[0].toUpperCase();
       loadStudentData();
     });
   </script>

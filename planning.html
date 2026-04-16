@@ -8,6 +8,15 @@
   <link rel="stylesheet" href="styles.css"/>
 </head>
 <body class="student-page">
+
+  <!-- Topbar mobile -->
+  <div class="topbar">
+    <button class="hamburger" onclick="openMobileSidebar()">☰</button>
+    <div class="topbar-brand"><span class="brand-icon">⚡</span><span class="brand-name">EduPro</span></div>
+    <div class="topbar-right"><div class="admin-avatar" id="topbar-avatar-plan">?</div></div>
+  </div>
+  <div class="sidebar-overlay"></div>
+
   <aside class="sidebar">
     <div class="sidebar-brand"><span class="brand-icon">⚡</span><span class="brand-name">EduPro</span></div>
     <nav class="sidebar-nav">
@@ -26,18 +35,20 @@
     </div>
 
     <div class="planning-nav">
-      <button class="btn-secondary btn-sm" onclick="changeWeek(-1)">← Semaine précédente</button>
+      <button class="btn-secondary btn-sm" onclick="changeWeek(-1)">← Préc.</button>
       <div class="week-label" id="week-label">—</div>
-      <button class="btn-secondary btn-sm" onclick="changeWeek(1)">Semaine suivante →</button>
-      <button class="btn-primary btn-sm admin-teacher-only hidden" onclick="openModal('modal-add-slot')">+ Ajouter séance</button>
+      <button class="btn-secondary btn-sm" onclick="changeWeek(1)">Suiv. →</button>
+      <button class="btn-primary btn-sm admin-teacher-only hidden" onclick="openModal('modal-add-slot')">+ Séance</button>
     </div>
 
-    <div class="planning-week" id="planning-week">
-      <div class="table-loading" style="grid-column:1/-1">Chargement...</div>
+    <div style="overflow-x:auto;-webkit-overflow-scrolling:touch">
+      <div class="planning-week" id="planning-week" style="min-width:700px">
+        <div class="table-loading" style="grid-column:1/-1">Chargement...</div>
+      </div>
     </div>
   </main>
 
-  <!-- MODAL: Ajouter séance (admin/prof) -->
+  <!-- MODAL: Ajouter séance -->
   <div class="modal-overlay hidden" id="modal-add-slot">
     <div class="modal">
       <div class="modal-header"><h3>Ajouter une séance</h3><button class="modal-close" onclick="closeModal('modal-add-slot')">✕</button></div>
@@ -74,25 +85,26 @@
       appId: "1:552814359641:web:2c47cb3835953679776d48"
     };
     const app=initializeApp(firebaseConfig); const auth=getAuth(app); const db=getFirestore(app);
-    window._auth=auth;window._db=db;window._signOut=signOut;
-    window._collection=collection;window._doc=doc;window._getDoc=getDoc;window._getDocs=getDocs;
-    window._addDoc=addDoc;window._deleteDoc=deleteDoc;window._serverTimestamp=serverTimestamp;
-    window._query=query;window._where=where;window._orderBy=orderBy;
-    onAuthStateChanged(auth, async user=>{
-      if(!user){window.location.href="index.html";return;}
-      const d=await getDoc(doc(db,"users",user.uid));
-      if(!d.exists()){window.location.href="index.html";return;}
-      const data=d.data();
-      window._currentUser={uid:user.uid,...data};
-      const name=data.fullName||"—";
-      document.getElementById("plan-user-name").textContent=name;
-      document.getElementById("plan-avatar").textContent=name[0].toUpperCase();
-      const badge=document.getElementById("role-badge-plan");
-      if(data.role==="admin"||data.role==="teacher"){
-        badge.textContent=data.role==="admin"?"Administrateur":"Professeur";
-        badge.style.cssText="background:rgba(64,96,240,0.15);color:#6888f8";
+    window._auth=auth; window._db=db; window._signOut=signOut;
+    window._collection=collection; window._doc=doc; window._getDoc=getDoc; window._getDocs=getDocs;
+    window._addDoc=addDoc; window._deleteDoc=deleteDoc; window._serverTimestamp=serverTimestamp;
+    window._query=query; window._where=where; window._orderBy=orderBy;
+    onAuthStateChanged(auth, async user => {
+      if (!user) { window.location.href="index.html"; return; }
+      const d = await getDoc(doc(db,"users",user.uid));
+      if (!d.exists()) { window.location.href="index.html"; return; }
+      const data = d.data();
+      window._currentUser = { uid: user.uid, ...data };
+      const name = data.fullName || "—";
+      document.getElementById("plan-user-name").textContent = name;
+      document.getElementById("plan-avatar").textContent = name[0].toUpperCase();
+      document.getElementById("topbar-avatar-plan").textContent = name[0].toUpperCase();
+      const badge = document.getElementById("role-badge-plan");
+      if (data.role==="admin"||data.role==="teacher") {
+        badge.textContent = data.role==="admin"?"Administrateur":"Professeur";
+        badge.style.cssText = "background:rgba(64,96,240,0.15);color:#6888f8";
         document.querySelector(".admin-teacher-only").classList.remove("hidden");
-      } else { badge.textContent="Élève"; }
+      } else { badge.textContent = "Élève"; }
       initPlanning();
     });
   </script>

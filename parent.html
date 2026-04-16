@@ -8,6 +8,15 @@
   <link rel="stylesheet" href="styles.css"/>
 </head>
 <body class="parent-page">
+
+  <!-- Topbar mobile -->
+  <div class="topbar">
+    <button class="hamburger" onclick="openMobileSidebar()">☰</button>
+    <div class="topbar-brand"><span class="brand-icon">⚡</span><span class="brand-name">EduPro</span></div>
+    <div class="topbar-right"><div class="admin-avatar parent-av" id="topbar-avatar-parent">P</div></div>
+  </div>
+  <div class="sidebar-overlay"></div>
+
   <aside class="sidebar">
     <div class="sidebar-brand"><span class="brand-icon">⚡</span><span class="brand-name">EduPro</span></div>
     <nav class="sidebar-nav">
@@ -27,30 +36,29 @@
       <div class="admin-user"><span id="parent-name">—</span><div class="admin-avatar parent-av" id="parent-avatar">P</div></div>
     </div>
 
-    <!-- Sélecteur d'enfant (si plusieurs) -->
     <div class="child-selector" id="child-selector"></div>
 
     <!-- OVERVIEW -->
     <section id="section-overview" class="content-section active">
       <div class="parent-child-header" id="child-header" style="display:none">
         <div class="child-avatar" id="child-av-letter">?</div>
-        <div>
+        <div style="flex:1">
           <div class="child-name" id="child-name-display">—</div>
           <div class="child-class" id="child-class-display">—</div>
         </div>
-        <div style="margin-left:auto;text-align:right">
-          <div style="font-family:'Syne',sans-serif;font-size:1.8rem;font-weight:800;color:var(--accent)" id="child-progress-pct">—</div>
-          <div style="font-size:0.78rem;color:var(--text-muted)">Progression globale</div>
+        <div style="text-align:right">
+          <div style="font-family:'Syne',sans-serif;font-size:1.6rem;font-weight:800;color:var(--accent)" id="child-progress-pct">—</div>
+          <div style="font-size:0.75rem;color:var(--text-muted)">Progression</div>
         </div>
       </div>
-      <div class="stats-grid" style="margin-bottom:2rem">
+      <div class="stats-grid" style="margin-bottom:1.5rem">
         <div class="stat-card"><div class="stat-icon">📚</div><div class="stat-val" id="ov-courses">—</div><div class="stat-label">Cours vus</div></div>
         <div class="stat-card"><div class="stat-icon">📝</div><div class="stat-val" id="ov-quizzes">—</div><div class="stat-label">Quiz faits</div></div>
-        <div class="stat-card"><div class="stat-icon">🏆</div><div class="stat-val" id="ov-score">—</div><div class="stat-label">Score moyen</div></div>
-        <div class="stat-card"><div class="stat-icon">📊</div><div class="stat-val" id="ov-grade">—</div><div class="stat-label">Moyenne /20</div></div>
+        <div class="stat-card"><div class="stat-icon">🏆</div><div class="stat-val" id="ov-score">—</div><div class="stat-label">Score moy.</div></div>
+        <div class="stat-card"><div class="stat-icon">📊</div><div class="stat-val" id="ov-grade">—</div><div class="stat-label">Moyenne</div></div>
       </div>
       <div class="table-card">
-        <h3 style="font-family:'Syne',sans-serif;margin-bottom:1rem">Activité récente</h3>
+        <h3 style="font-family:'Syne',sans-serif;margin-bottom:0.8rem">Activité récente</h3>
         <div id="parent-activity">Chargement...</div>
       </div>
     </section>
@@ -66,31 +74,35 @@
         <div class="att-stat"><div class="att-stat-val" id="p-att-present" style="color:var(--success)">0</div><div class="att-stat-label">Présences</div></div>
         <div class="att-stat"><div class="att-stat-val" id="p-att-absent" style="color:var(--error)">0</div><div class="att-stat-label">Absences</div></div>
         <div class="att-stat"><div class="att-stat-val" id="p-att-late" style="color:var(--accent)">0</div><div class="att-stat-label">Retards</div></div>
-        <div class="att-stat"><div class="att-stat-val" id="p-att-rate" style="color:var(--accent)">—</div><div class="att-stat-label">Taux présence</div></div>
+        <div class="att-stat"><div class="att-stat-val" id="p-att-rate" style="color:var(--accent)">—</div><div class="att-stat-label">Taux</div></div>
       </div>
       <div class="table-card">
-        <table class="data-table">
-          <thead><tr><th>Date</th><th>Séance</th><th>Statut</th><th>Note</th></tr></thead>
-          <tbody id="parent-att-tbody"><tr><td colspan="4" class="table-loading">Chargement...</td></tr></tbody>
-        </table>
+        <div class="table-responsive">
+          <table class="data-table">
+            <thead><tr><th>Date</th><th>Séance</th><th>Statut</th><th class="hide-mobile">Note</th></tr></thead>
+            <tbody id="parent-att-tbody"><tr><td colspan="4" class="table-loading">Chargement...</td></tr></tbody>
+          </table>
+        </div>
       </div>
     </section>
 
     <!-- PROGRESSION -->
     <section id="section-progress" class="content-section">
-      <div class="table-card" style="margin-bottom:2rem">
-        <h3 style="font-family:'Syne',sans-serif;margin-bottom:1rem">Progression globale</h3>
+      <div class="table-card" style="margin-bottom:1.5rem">
+        <h3 style="font-family:'Syne',sans-serif;margin-bottom:0.8rem">Progression globale</h3>
         <div class="progress-bar-wrap">
           <div class="progress-bar-track"><div class="progress-bar-fill" id="p-prog-bar" style="width:0%"></div></div>
           <span id="p-prog-pct">0%</span>
         </div>
       </div>
       <div class="table-card">
-        <h3 style="font-family:'Syne',sans-serif;margin-bottom:1rem">Résultats des quiz</h3>
-        <table class="data-table">
-          <thead><tr><th>Quiz</th><th>Score</th><th>Date</th></tr></thead>
-          <tbody id="parent-quiz-tbody"><tr><td colspan="3" class="table-loading">Chargement...</td></tr></tbody>
-        </table>
+        <h3 style="font-family:'Syne',sans-serif;margin-bottom:0.8rem">Résultats des quiz</h3>
+        <div class="table-responsive">
+          <table class="data-table">
+            <thead><tr><th>Quiz</th><th>Score</th><th>Date</th></tr></thead>
+            <tbody id="parent-quiz-tbody"><tr><td colspan="3" class="table-loading">Chargement...</td></tr></tbody>
+          </table>
+        </div>
       </div>
     </section>
 
@@ -100,12 +112,12 @@
         <h3 style="font-family:'Syne',sans-serif;margin-bottom:1rem">Contacter un responsable</h3>
         <div class="form-group"><label>Destinataire</label><select id="parent-msg-to"><option value="">— Choisir —</option></select></div>
         <div class="form-group"><label>Objet</label><input type="text" id="parent-msg-subject" placeholder="Ex: Question sur les notes de mon enfant"/></div>
-        <div class="form-group"><label>Message</label><textarea id="parent-msg-body" rows="5" placeholder="Votre message..."></textarea></div>
-        <div style="text-align:right"><button class="btn-primary" onclick="sendParentMessage()">Envoyer le message</button></div>
+        <div class="form-group"><label>Message</label><textarea id="parent-msg-body" rows="4" placeholder="Votre message..."></textarea></div>
+        <div style="text-align:right"><button class="btn-primary" onclick="sendParentMessage()">Envoyer</button></div>
         <div id="parent-msg-alert" class="alert hidden" style="margin-top:1rem"></div>
       </div>
-      <div class="table-card" style="margin-top:1.5rem">
-        <h3 style="font-family:'Syne',sans-serif;margin-bottom:1rem">Messages envoyés</h3>
+      <div class="table-card" style="margin-top:1.2rem">
+        <h3 style="font-family:'Syne',sans-serif;margin-bottom:0.8rem">Messages envoyés</h3>
         <div id="parent-sent-msgs">Chargement...</div>
       </div>
     </section>
@@ -124,20 +136,21 @@
       messagingSenderId: "552814359641",
       appId: "1:552814359641:web:2c47cb3835953679776d48"
     };
-    const app=initializeApp(firebaseConfig);const auth=getAuth(app);const db=getFirestore(app);
-    window._auth=auth;window._db=db;window._signOut=signOut;
-    window._collection=collection;window._doc=doc;window._getDoc=getDoc;window._getDocs=getDocs;
-    window._addDoc=addDoc;window._serverTimestamp=serverTimestamp;
-    window._query=query;window._orderBy=orderBy;window._where=where;
-    onAuthStateChanged(auth,async user=>{
-      if(!user){window.location.href="index.html";return;}
-      const d=await getDoc(doc(db,"users",user.uid));
-      if(!d.exists()||d.data().role!=="parent"){window.location.href="index.html";return;}
-      const data=d.data();
-      window._currentUser={uid:user.uid,...data};
-      const name=data.fullName||"Parent";
-      document.getElementById("parent-name").textContent=name;
-      document.getElementById("parent-avatar").textContent=name[0].toUpperCase();
+    const app=initializeApp(firebaseConfig); const auth=getAuth(app); const db=getFirestore(app);
+    window._auth=auth; window._db=db; window._signOut=signOut;
+    window._collection=collection; window._doc=doc; window._getDoc=getDoc; window._getDocs=getDocs;
+    window._addDoc=addDoc; window._serverTimestamp=serverTimestamp;
+    window._query=query; window._orderBy=orderBy; window._where=where;
+    onAuthStateChanged(auth, async user => {
+      if (!user) { window.location.href="index.html"; return; }
+      const d = await getDoc(doc(db,"users",user.uid));
+      if (!d.exists()||d.data().role!=="parent") { window.location.href="index.html"; return; }
+      const data = d.data();
+      window._currentUser = { uid: user.uid, ...data };
+      const name = data.fullName || "Parent";
+      document.getElementById("parent-name").textContent = name;
+      document.getElementById("parent-avatar").textContent = name[0].toUpperCase();
+      document.getElementById("topbar-avatar-parent").textContent = name[0].toUpperCase();
       initParentDashboard();
     });
   </script>

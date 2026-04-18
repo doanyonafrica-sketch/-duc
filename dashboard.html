@@ -10,221 +10,313 @@
 </head>
 <body class="student-page">
 
-  <!-- Topbar mobile -->
-  <div class="topbar">
-    <button class="hamburger" onclick="openMobileSidebar()">☰</button>
-    <div class="topbar-brand">
-      <span class="brand-icon">⚡</span>
-      <span class="brand-name">EduPro</span>
-    </div>
-    <div class="topbar-right">
-      <div class="admin-avatar student-av" id="topbar-avatar-student">?</div>
+<div class="topbar">
+  <button class="hamburger" onclick="openMobileSidebar()">☰</button>
+  <div class="topbar-brand"><span class="brand-icon">⚡</span><span class="brand-name">EduPro</span></div>
+  <div class="topbar-right"><div class="admin-avatar student-av" id="topbar-avatar-student">?</div></div>
+</div>
+<div class="sidebar-overlay"></div>
+
+<aside class="sidebar">
+  <div class="sidebar-brand"><span class="brand-icon">⚡</span><span class="brand-name">EduPro</span></div>
+  <nav class="sidebar-nav">
+    <div class="nav-section-title">Accueil</div>
+    <a href="#" class="nav-item active" data-section="home"><span class="nav-icon">🏠</span> Tableau de bord</a>
+    <div class="nav-section-title">Formation</div>
+    <a href="#" class="nav-item" data-section="courses"><span class="nav-icon">📚</span> Mes cours</a>
+    <a href="#" class="nav-item" data-section="exercises"><span class="nav-icon">✏️</span> Exercices</a>
+    <a href="#" class="nav-item" data-section="quizzes"><span class="nav-icon">📝</span> Quiz</a>
+    <a href="#" class="nav-item" data-section="polls"><span class="nav-icon">📊</span> Sondages</a>
+    <div class="nav-section-title">Mon dossier</div>
+    <a href="#" class="nav-item" data-section="grades"><span class="nav-icon">📊</span> Mes notes</a>
+    <a href="#" class="nav-item" data-section="attendance"><span class="nav-icon">📋</span> Présences</a>
+    <a href="#" class="nav-item" data-section="progress"><span class="nav-icon">📈</span> Progression</a>
+    <a href="#" class="nav-item" data-section="leaderboard"><span class="nav-icon">🏆</span> Classement</a>
+    <a href="#" class="nav-item" data-section="certificates"><span class="nav-icon">🎓</span> Attestations</a>
+    <div class="nav-section-title">Communication</div>
+    <a href="messages.html" class="nav-item"><span class="nav-icon">✉</span> Messages</a>
+    <a href="planning.html" class="nav-item"><span class="nav-icon">📅</span> Planning</a>
+  </nav>
+  <button class="btn-logout" onclick="logout()"><span>↩</span> Déconnexion</button>
+</aside>
+
+<main class="admin-main">
+  <div class="admin-header">
+    <div><h1 id="section-title">Bonjour 👋</h1><p id="section-sub">Bienvenue sur votre espace</p></div>
+    <div class="admin-user">
+      <span id="student-name-header">—</span>
+      <div class="admin-avatar student-av" id="student-avatar-letter">?</div>
     </div>
   </div>
 
-  <!-- Overlay -->
-  <div class="sidebar-overlay"></div>
+  <!-- HOME -->
+  <section id="section-home" class="content-section active">
+    <div class="stats-grid" style="margin-bottom:1.5rem">
+      <div class="stat-card"><div class="stat-icon">📚</div><div class="stat-val" id="home-courses-done">0</div><div class="stat-label">Cours vus</div></div>
+      <div class="stat-card"><div class="stat-icon">✏️</div><div class="stat-val" id="home-exo-done">0</div><div class="stat-label">Exercices</div></div>
+      <div class="stat-card"><div class="stat-icon">🏆</div><div class="stat-val" id="home-best-score">—</div><div class="stat-label">Meilleur score</div></div>
+      <div class="stat-card"><div class="stat-icon">📊</div><div class="stat-val" id="home-avg-grade">—</div><div class="stat-label">Moyenne</div></div>
+    </div>
+    <div class="table-card">
+      <h3 style="font-family:'Syne',sans-serif;margin-bottom:1rem">Activité récente</h3>
+      <div id="recent-activity">Chargement...</div>
+    </div>
+  </section>
 
-  <aside class="sidebar">
-    <div class="sidebar-brand"><span class="brand-icon">⚡</span><span class="brand-name">EduPro</span></div>
-    <nav class="sidebar-nav">
-      <a href="#" class="nav-item active" data-section="home"><span class="nav-icon">🏠</span> Accueil</a>
-      <a href="#" class="nav-item" data-section="courses"><span class="nav-icon">📚</span> Mes cours</a>
-      <a href="#" class="nav-item" data-section="quizzes"><span class="nav-icon">📝</span> Quiz</a>
-      <a href="#" class="nav-item" data-section="grades"><span class="nav-icon">📊</span> Mes notes</a>
-      <a href="#" class="nav-item" data-section="attendance"><span class="nav-icon">📋</span> Présences</a>
-      <a href="#" class="nav-item" data-section="progress"><span class="nav-icon">📈</span> Progression</a>
-      <a href="#" class="nav-item" data-section="leaderboard"><span class="nav-icon">🏆</span> Classement</a>
-      <a href="#" class="nav-item" data-section="certificates"><span class="nav-icon">🎓</span> Certificats</a>
-      <a href="messages.html" class="nav-item"><span class="nav-icon">✉</span> Messages</a>
-      <a href="planning.html" class="nav-item"><span class="nav-icon">📅</span> Planning</a>
-    </nav>
-    <button class="btn-logout" onclick="logout()"><span>↩</span> Déconnexion</button>
-  </aside>
+  <!-- COURS -->
+  <section id="section-courses" class="content-section">
+    <div class="section-toolbar">
+      <input type="text" id="search-courses-student" placeholder="Rechercher un cours..." class="search-input" oninput="filterCoursesStudent()"/>
+    </div>
+    <div class="courses-grid" id="student-courses-grid">Chargement...</div>
+  </section>
 
-  <main class="admin-main">
-    <div class="admin-header">
-      <div><h1 id="section-title">Bonjour 👋</h1><p id="section-sub">Bienvenue sur votre espace</p></div>
-      <div class="admin-user">
-        <span id="student-name-header">—</span>
-        <div class="admin-avatar student-av" id="student-avatar-letter">?</div>
+  <!-- COURS VIEWER -->
+  <section id="section-course-viewer" class="content-section">
+    <div style="margin-bottom:1.2rem">
+      <button class="btn-secondary btn-sm" onclick="backToCourses()" style="margin-bottom:0.8rem">← Retour</button>
+      <h2 id="course-viewer-title" style="font-family:'Syne',sans-serif;font-size:1.2rem;margin-bottom:0.4rem">—</h2>
+      <span id="course-viewer-cat" class="badge">—</span>
+    </div>
+    <div class="table-card">
+      <div id="course-viewer-content" style="line-height:1.8;white-space:pre-wrap;font-size:0.9rem"></div>
+    </div>
+    <div style="margin-top:1.2rem;text-align:right">
+      <button class="btn-primary" id="mark-done-btn" onclick="markCourseDone()">✓ Marquer comme vu</button>
+    </div>
+  </section>
+
+  <!-- EXERCICES -->
+  <section id="section-exercises" class="content-section">
+    <div class="filter-tabs" id="exercises-filter-tabs">
+      <button class="filter-tab active" onclick="filterExercisesTab('all',this)">Tous</button>
+      <button class="filter-tab" onclick="filterExercisesTab('pending',this)">À faire</button>
+      <button class="filter-tab" onclick="filterExercisesTab('submitted',this)">Soumis</button>
+      <button class="filter-tab" onclick="filterExercisesTab('graded',this)">Corrigés</button>
+    </div>
+    <div class="courses-grid" id="student-exercises-grid">Chargement...</div>
+  </section>
+
+  <!-- SOUMISSION EXERCICE -->
+  <section id="section-exercise-submit" class="content-section">
+    <div style="margin-bottom:1.2rem">
+      <button class="btn-secondary btn-sm" onclick="backToExercises()" style="margin-bottom:0.8rem">← Retour</button>
+      <h2 id="exercise-submit-title" style="font-family:'Syne',sans-serif;font-size:1.1rem;margin-bottom:0.3rem">—</h2>
+      <div id="exercise-submit-meta" style="font-size:0.82rem;color:var(--text-muted);margin-bottom:0.8rem"></div>
+    </div>
+    <div class="table-card" style="margin-bottom:1.2rem">
+      <div id="exercise-submit-desc" style="font-size:0.9rem;line-height:1.8;white-space:pre-wrap"></div>
+    </div>
+    <!-- QCM section -->
+    <div id="exercise-qcm-section" class="hidden">
+      <div class="table-card">
+        <div id="exercise-qcm-questions"></div>
+        <div id="exercise-qcm-result" class="hidden"></div>
+        <div style="margin-top:1.2rem;text-align:right">
+          <button class="btn-primary" id="submit-exo-qcm-btn" onclick="submitExerciseQCM()">Soumettre mes réponses</button>
+        </div>
       </div>
     </div>
-
-    <!-- HOME -->
-    <section id="section-home" class="content-section active">
-      <div class="stats-grid" style="margin-bottom:1.5rem">
-        <div class="stat-card"><div class="stat-icon">📚</div><div class="stat-val" id="home-courses-done">0</div><div class="stat-label">Cours vus</div></div>
-        <div class="stat-card"><div class="stat-icon">📝</div><div class="stat-val" id="home-quizzes-done">0</div><div class="stat-label">Quiz faits</div></div>
-        <div class="stat-card"><div class="stat-icon">🏆</div><div class="stat-val" id="home-best-score">—</div><div class="stat-label">Meilleur score</div></div>
-        <div class="stat-card"><div class="stat-icon">📊</div><div class="stat-val" id="home-avg-grade">—</div><div class="stat-label">Moyenne</div></div>
-      </div>
+    <!-- PDF section -->
+    <div id="exercise-pdf-section" class="hidden">
       <div class="table-card">
-        <h3 style="font-family:'Syne',sans-serif;margin-bottom:1rem">Activité récente</h3>
-        <div id="recent-activity">Chargement...</div>
+        <div id="exercise-already-submitted" class="hidden"></div>
+        <div id="exercise-upload-form">
+          <div class="form-group">
+            <label>Votre fichier (PDF uniquement)</label>
+            <div class="file-upload-zone" id="upload-zone" onclick="document.getElementById('pdf-file-input').click()">
+              <div style="font-size:2rem">📄</div>
+              <div style="font-weight:600;margin-top:0.5rem">Cliquez pour choisir un fichier</div>
+              <p>ou glissez votre PDF ici</p>
+              <div id="file-chosen-name" class="file-chosen hidden"></div>
+              <input type="file" id="pdf-file-input" accept=".pdf,.doc,.docx" onchange="onFileChosen(this)"/>
+            </div>
+          </div>
+          <div id="upload-progress" class="hidden" style="margin-bottom:1rem">
+            <div class="progress-bar-wrap">
+              <div class="progress-bar-track"><div class="progress-bar-fill" id="upload-bar" style="width:0%"></div></div>
+              <span id="upload-pct">0%</span>
+            </div>
+          </div>
+          <div style="text-align:right">
+            <button class="btn-primary" id="submit-pdf-btn" onclick="submitExercisePDF()" disabled>📤 Soumettre</button>
+          </div>
+        </div>
       </div>
-    </section>
+    </div>
+  </section>
 
-    <!-- COURSES -->
-    <section id="section-courses" class="content-section">
-      <div class="section-toolbar">
-        <input type="text" id="search-courses-student" placeholder="Rechercher un cours..." class="search-input" oninput="filterCoursesStudent()"/>
-      </div>
-      <div class="courses-grid" id="student-courses-grid">Chargement...</div>
-    </section>
+  <!-- QUIZ -->
+  <section id="section-quizzes" class="content-section">
+    <div class="courses-grid" id="student-quizzes-grid">Chargement...</div>
+  </section>
 
-    <!-- COURSE VIEWER -->
-    <section id="section-course-viewer" class="content-section">
-      <div style="margin-bottom:1.2rem">
-        <button class="btn-secondary btn-sm" onclick="backToCourses()" style="margin-bottom:0.8rem">← Retour</button>
-        <h2 id="course-viewer-title" style="font-family:'Syne',sans-serif;font-size:1.2rem;margin-bottom:0.4rem">—</h2>
-        <span id="course-viewer-cat" class="badge">—</span>
-      </div>
-      <div class="table-card">
-        <div id="course-viewer-content" style="line-height:1.8;white-space:pre-wrap;font-size:0.9rem"></div>
-      </div>
+  <!-- QUIZ RUNNER -->
+  <section id="section-quiz-runner" class="content-section">
+    <button class="btn-secondary btn-sm" onclick="backToQuizzes()" style="margin-bottom:1.2rem">← Retour</button>
+    <div class="table-card">
+      <h2 id="quiz-runner-title" style="font-family:'Syne',sans-serif;margin-bottom:1.2rem;font-size:1.1rem">—</h2>
+      <div id="quiz-questions-container"></div>
+      <div id="quiz-result" class="hidden"></div>
       <div style="margin-top:1.2rem;text-align:right">
-        <button class="btn-primary" id="mark-done-btn" onclick="markCourseDone()">✓ Marquer comme vu</button>
+        <button class="btn-primary hidden btn-block" id="submit-quiz-btn" onclick="submitQuiz()">Soumettre mes réponses</button>
       </div>
-    </section>
+    </div>
+  </section>
 
-    <!-- QUIZZES -->
-    <section id="section-quizzes" class="content-section">
-      <div class="courses-grid" id="student-quizzes-grid">Chargement...</div>
-    </section>
+  <!-- SONDAGES -->
+  <section id="section-polls" class="content-section">
+    <div class="courses-grid" id="student-polls-grid">Chargement...</div>
+  </section>
 
-    <!-- QUIZ RUNNER -->
-    <section id="section-quiz-runner" class="content-section">
-      <button class="btn-secondary btn-sm" onclick="backToQuizzes()" style="margin-bottom:1.2rem">← Retour</button>
-      <div class="table-card">
-        <h2 id="quiz-runner-title" style="font-family:'Syne',sans-serif;margin-bottom:1.2rem;font-size:1.1rem">—</h2>
-        <div id="quiz-questions-container"></div>
-        <div id="quiz-result" class="hidden"></div>
-        <div style="margin-top:1.2rem;text-align:right">
-          <button class="btn-primary hidden btn-block" id="submit-quiz-btn" onclick="submitQuiz()">Soumettre mes réponses</button>
+  <!-- NOTES -->
+  <section id="section-grades" class="content-section">
+    <div id="grades-content">Chargement...</div>
+  </section>
+
+  <!-- PRESENCES -->
+  <section id="section-attendance" class="content-section">
+    <div class="attendance-summary">
+      <div class="att-stat"><div class="att-stat-val" id="att-present" style="color:var(--success)">0</div><div class="att-stat-label">Présences</div></div>
+      <div class="att-stat"><div class="att-stat-val" id="att-absent" style="color:var(--error)">0</div><div class="att-stat-label">Absences</div></div>
+      <div class="att-stat"><div class="att-stat-val" id="att-late" style="color:var(--accent)">0</div><div class="att-stat-label">Retards</div></div>
+      <div class="att-stat"><div class="att-stat-val" id="att-rate" style="color:var(--accent)">—</div><div class="att-stat-label">Taux</div></div>
+    </div>
+    <div class="table-card">
+      <h3 style="font-family:'Syne',sans-serif;margin-bottom:0.8rem">Historique</h3>
+      <div class="table-responsive">
+        <table class="data-table">
+          <thead><tr><th>Date</th><th>Séance</th><th>Statut</th><th class="hide-mobile">Note</th></tr></thead>
+          <tbody id="attendance-tbody"><tr><td colspan="4" class="table-loading">Chargement...</td></tr></tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- PROGRESSION -->
+  <section id="section-progress" class="content-section">
+    <div class="stats-grid" style="margin-bottom:1.5rem">
+      <div class="stat-card"><div class="stat-icon">📚</div><div class="stat-val" id="prog-total-courses">—</div><div class="stat-label">Cours dispo.</div></div>
+      <div class="stat-card"><div class="stat-icon">✅</div><div class="stat-val" id="prog-done-courses">—</div><div class="stat-label">Terminés</div></div>
+      <div class="stat-card"><div class="stat-icon">✏️</div><div class="stat-val" id="prog-total-exercises">—</div><div class="stat-label">Exercices</div></div>
+      <div class="stat-card"><div class="stat-icon">🎯</div><div class="stat-val" id="prog-done-quizzes">—</div><div class="stat-label">Quiz faits</div></div>
+    </div>
+    <div class="table-card" style="margin-bottom:1.5rem">
+      <h3 style="font-family:'Syne',sans-serif;margin-bottom:0.8rem">Progression globale</h3>
+      <div class="progress-bar-wrap">
+        <div class="progress-bar-track"><div class="progress-bar-fill" id="global-progress-bar" style="width:0%"></div></div>
+        <span id="global-progress-pct">0%</span>
+      </div>
+    </div>
+    <div class="table-card" style="margin-bottom:1rem">
+      <h3 style="font-family:'Syne',sans-serif;margin-bottom:0.8rem">Résultats des exercices</h3>
+      <div class="table-responsive">
+        <table class="data-table">
+          <thead><tr><th>Exercice</th><th>Type</th><th>Note</th><th>Date</th></tr></thead>
+          <tbody id="exo-history-tbody"><tr><td colspan="4" class="table-loading">Chargement...</td></tr></tbody>
+        </table>
+      </div>
+    </div>
+    <div class="table-card">
+      <h3 style="font-family:'Syne',sans-serif;margin-bottom:0.8rem">Historique quiz</h3>
+      <div class="table-responsive">
+        <table class="data-table">
+          <thead><tr><th>Quiz</th><th>Score</th><th>Date</th></tr></thead>
+          <tbody id="quiz-history-tbody"><tr><td colspan="3" class="table-loading">Chargement...</td></tr></tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- LEADERBOARD -->
+  <section id="section-leaderboard" class="content-section">
+    <div class="my-rank-banner">
+      <div class="my-rank-info">
+        <div>
+          <div class="my-rank-label">Mon rang</div>
+          <div class="my-rank-position" id="my-rank-pos">—</div>
         </div>
       </div>
-    </section>
+      <div class="my-rank-stats">
+        <div id="my-rank-score">Score moy. : —</div>
+        <div id="my-rank-prog">Progression : —</div>
+      </div>
+    </div>
+    <div class="table-card" style="padding:0;overflow:hidden">
+      <div class="table-responsive">
+        <table class="data-table">
+          <thead><tr><th style="width:50px;text-align:center">Rang</th><th>Élève</th><th class="hide-mobile">Groupe</th><th style="text-align:center">Score</th><th style="text-align:center">Prog.</th></tr></thead>
+          <tbody id="leaderboard-tbody"><tr><td colspan="5" class="table-loading">Chargement...</td></tr></tbody>
+        </table>
+      </div>
+    </div>
+  </section>
 
-    <!-- NOTES -->
-    <section id="section-grades" class="content-section">
-      <div id="grades-content">Chargement...</div>
-    </section>
+  <!-- CERTIFICATS -->
+  <section id="section-certificates" class="content-section">
+    <div id="certificates-content"><div class="empty-state">Chargement...</div></div>
+  </section>
+</main>
 
-    <!-- PRESENCES -->
-    <section id="section-attendance" class="content-section">
-      <div class="attendance-summary">
-        <div class="att-stat"><div class="att-stat-val" id="att-present" style="color:var(--success)">0</div><div class="att-stat-label">Présences</div></div>
-        <div class="att-stat"><div class="att-stat-val" id="att-absent" style="color:var(--error)">0</div><div class="att-stat-label">Absences</div></div>
-        <div class="att-stat"><div class="att-stat-val" id="att-late" style="color:var(--accent)">0</div><div class="att-stat-label">Retards</div></div>
-        <div class="att-stat"><div class="att-stat-val" id="att-rate" style="color:var(--accent)">—</div><div class="att-stat-label">Taux</div></div>
-      </div>
-      <div class="table-card">
-        <h3 style="font-family:'Syne',sans-serif;margin-bottom:0.8rem">Historique</h3>
-        <div class="table-responsive">
-          <table class="data-table">
-            <thead><tr><th>Date</th><th>Séance</th><th>Statut</th><th class="hide-mobile">Note</th></tr></thead>
-            <tbody id="attendance-tbody"><tr><td colspan="4" class="table-loading">Chargement...</td></tr></tbody>
-          </table>
-        </div>
-      </div>
-    </section>
+<!-- MODAL: Confirmation soumission -->
+<div class="modal-overlay hidden" id="modal-submit-confirm">
+  <div class="modal">
+    <div class="modal-header">
+      <h3>Confirmer la soumission</h3>
+      <button class="modal-close" onclick="closeModal('modal-submit-confirm')">✕</button>
+    </div>
+    <div id="submit-confirm-info" style="background:var(--bg3);border-radius:var(--radius-sm);padding:1rem;margin-bottom:1rem;font-size:0.88rem"></div>
+    <p style="font-size:0.85rem;color:var(--text-muted)">Vous ne pourrez plus modifier votre soumission après envoi.</p>
+    <div class="modal-actions">
+      <button class="btn-secondary" onclick="closeModal('modal-submit-confirm')">Annuler</button>
+      <button class="btn-primary" id="confirm-submit-btn">📤 Envoyer définitivement</button>
+    </div>
+  </div>
+</div>
 
-    <!-- PROGRESSION -->
-    <section id="section-progress" class="content-section">
-      <div class="stats-grid" style="margin-bottom:1.5rem">
-        <div class="stat-card"><div class="stat-icon">📚</div><div class="stat-val" id="prog-total-courses">—</div><div class="stat-label">Cours dispo.</div></div>
-        <div class="stat-card"><div class="stat-icon">✅</div><div class="stat-val" id="prog-done-courses">—</div><div class="stat-label">Terminés</div></div>
-        <div class="stat-card"><div class="stat-icon">📝</div><div class="stat-val" id="prog-total-quizzes">—</div><div class="stat-label">Quiz dispo.</div></div>
-        <div class="stat-card"><div class="stat-icon">🎯</div><div class="stat-val" id="prog-done-quizzes">—</div><div class="stat-label">Complétés</div></div>
-      </div>
-      <div class="table-card" style="margin-bottom:1.5rem">
-        <h3 style="font-family:'Syne',sans-serif;margin-bottom:0.8rem">Progression globale</h3>
-        <div class="progress-bar-wrap">
-          <div class="progress-bar-track"><div class="progress-bar-fill" id="global-progress-bar" style="width:0%"></div></div>
-          <span id="global-progress-pct">0%</span>
-        </div>
-      </div>
-      <div class="table-card">
-        <h3 style="font-family:'Syne',sans-serif;margin-bottom:0.8rem">Historique quiz</h3>
-        <div class="table-responsive">
-          <table class="data-table">
-            <thead><tr><th>Quiz</th><th>Score</th><th>Date</th></tr></thead>
-            <tbody id="quiz-history-tbody"><tr><td colspan="3" class="table-loading">Chargement...</td></tr></tbody>
-          </table>
-        </div>
-      </div>
-    </section>
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+  import { getAuth, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+  import { getFirestore, collection, doc, getDoc, getDocs, addDoc, setDoc, updateDoc, serverTimestamp, query, orderBy, where, limit }
+    from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+  import { getStorage, ref, uploadBytesResumable, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-storage.js";
 
-    <!-- LEADERBOARD -->
-    <section id="section-leaderboard" class="content-section">
-      <div class="leaderboard-tabs">
-        <button class="lb-tab active" id="tab-score" onclick="switchLeaderboard('score')">🏆 Scores</button>
-        <button class="lb-tab" id="tab-progress" onclick="switchLeaderboard('progress')">📈 Progression</button>
-      </div>
-      <div class="my-rank-banner">
-        <div class="my-rank-info">
-          <span class="my-rank-label">Mon rang</span>
-          <span class="my-rank-position" id="my-rank-pos">—</span>
-        </div>
-        <div class="my-rank-stats">
-          <div id="my-rank-score">Score moy. : —</div>
-          <div id="my-rank-prog">Progression : —</div>
-        </div>
-      </div>
-      <div class="table-card" style="padding:0;overflow:hidden">
-        <div class="table-responsive">
-          <table class="data-table">
-            <thead><tr><th style="width:50px;text-align:center">Rang</th><th>Élève</th><th class="hide-mobile">Filière</th><th style="text-align:center">Score</th><th style="text-align:center">Prog.</th><th class="hide-mobile" style="text-align:center">Quiz</th></tr></thead>
-            <tbody id="leaderboard-tbody"><tr><td colspan="6" class="table-loading">Chargement...</td></tr></tbody>
-          </table>
-        </div>
-      </div>
-    </section>
+  const firebaseConfig = {
+    apiKey: "AIzaSyD2Xh778RDqztmHPBLcw96DWew03PkL2qU",
+    authDomain: "edupro-school.firebaseapp.com",
+    projectId: "edupro-school",
+    storageBucket: "edupro-school.firebasestorage.app",
+    messagingSenderId: "552814359641",
+    appId: "1:552814359641:web:2c47cb3835953679776d48"
+  };
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+  const db = getFirestore(app);
+  const storage = getStorage(app);
 
-    <!-- CERTIFICATS -->
-    <section id="section-certificates" class="content-section">
-      <div id="certificates-content"><div class="empty-state">Chargement...</div></div>
-    </section>
-  </main>
+  window._auth=auth; window._db=db; window._storage=storage; window._signOut=signOut;
+  window._collection=collection; window._doc=doc; window._getDoc=getDoc;
+  window._getDocs=getDocs; window._addDoc=addDoc; window._setDoc=setDoc;
+  window._updateDoc=updateDoc; window._serverTimestamp=serverTimestamp;
+  window._query=query; window._orderBy=orderBy; window._where=where; window._limit=limit;
+  window._ref=ref; window._uploadBytesResumable=uploadBytesResumable; window._getDownloadURL=getDownloadURL;
 
-  <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-    import { getAuth, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
-    import { getFirestore, collection, doc, getDoc, getDocs, addDoc, setDoc, updateDoc, serverTimestamp, query, orderBy, where, limit }
-      from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
-    const firebaseConfig = {
-      apiKey: "AIzaSyD2Xh778RDqztmHPBLcw96DWew03PkL2qU",
-      authDomain: "edupro-school.firebaseapp.com",
-      projectId: "edupro-school",
-      storageBucket: "edupro-school.firebasestorage.app",
-      messagingSenderId: "552814359641",
-      appId: "1:552814359641:web:2c47cb3835953679776d48"
-    };
-    const app = initializeApp(firebaseConfig);
-    const auth = getAuth(app);
-    const db = getFirestore(app);
-    window._auth=auth; window._db=db; window._signOut=signOut;
-    window._collection=collection; window._doc=doc; window._getDoc=getDoc;
-    window._getDocs=getDocs; window._addDoc=addDoc; window._setDoc=setDoc;
-    window._updateDoc=updateDoc; window._serverTimestamp=serverTimestamp;
-    window._query=query; window._orderBy=orderBy; window._where=where; window._limit=limit;
-    onAuthStateChanged(auth, async (user) => {
-      if (!user) { window.location.href="index.html"; return; }
-      const userDoc = await getDoc(doc(db,"users",user.uid));
-      if (!userDoc.exists() || userDoc.data().role==="admin" || userDoc.data().role==="teacher") {
-        window.location.href="index.html"; return;
-      }
-      const data = userDoc.data();
-      window._currentUser = { uid: user.uid, ...data };
-      const name = data.fullName || "Élève";
-      document.getElementById("student-name-header").textContent = name;
-      document.getElementById("section-title").textContent = `Bonjour, ${name.split(" ")[0]} 👋`;
-      document.getElementById("student-avatar-letter").textContent = name[0].toUpperCase();
-      document.getElementById("topbar-avatar-student").textContent = name[0].toUpperCase();
-      loadStudentData();
-    });
-  </script>
-  <script src="student.js"></script>
+  onAuthStateChanged(auth, async (user) => {
+    if (!user) { window.location.href="index.html"; return; }
+    const userDoc = await getDoc(doc(db,"users",user.uid));
+    if (!userDoc.exists() || userDoc.data().role==="admin" || userDoc.data().role==="teacher") {
+      window.location.href="index.html"; return;
+    }
+    const data = userDoc.data();
+    window._currentUser = { uid: user.uid, ...data };
+    const name = data.fullName || "Élève";
+    document.getElementById("student-name-header").textContent = name;
+    document.getElementById("section-title").textContent = `Bonjour, ${name.split(" ")[0]} 👋`;
+    document.getElementById("student-avatar-letter").textContent = name[0].toUpperCase();
+    document.getElementById("topbar-avatar-student").textContent = name[0].toUpperCase();
+    loadStudentData();
+  });
+</script>
+<script src="student.js"></script>
 </body>
 </html>

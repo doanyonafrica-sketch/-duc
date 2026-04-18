@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-  <meta charset="UTF-8" />
+  <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>EduPro — Connexion</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -21,20 +21,32 @@
       <span class="brand-icon">⚡</span>
       <span class="brand-name">EduPro</span>
     </div>
-    <p class="login-subtitle">Plateforme de formation professionnelle</p>
+    <p class="login-subtitle">Plateforme de gestion scolaire</p>
 
     <div class="login-card">
       <h2 class="login-title">Connexion</h2>
       <div id="login-error" class="alert alert-error hidden"></div>
       <div class="form-group">
         <label>Identifiant</label>
-        <input type="text" id="login-username" placeholder="Votre identifiant" autocomplete="off" inputmode="email"/>
+        <input type="text" id="login-username" placeholder="Votre identifiant ou email" autocomplete="off" inputmode="email"/>
       </div>
       <div class="form-group">
         <label>Mot de passe</label>
-        <input type="password" id="login-password" placeholder="••••••••" autocomplete="current-password"/>
+        <div style="position:relative">
+          <input type="password" id="login-password" placeholder="••••••••" autocomplete="current-password" style="padding-right:2.8rem"/>
+          <button onclick="togglePassword()" type="button" style="position:absolute;right:0.8rem;top:50%;transform:translateY(-50%);background:none;border:none;color:var(--text-muted);cursor:pointer;font-size:1rem" id="pw-toggle">👁</button>
+        </div>
       </div>
       <button class="btn-primary btn-block" id="login-btn" onclick="handleLogin()">Se connecter</button>
+      <div style="margin-top:1rem;padding-top:1rem;border-top:1px solid var(--border)">
+        <div style="font-size:0.78rem;color:var(--text-dim);text-align:center">Rôles disponibles</div>
+        <div style="display:flex;gap:0.5rem;justify-content:center;margin-top:0.6rem;flex-wrap:wrap">
+          <span class="badge" style="font-size:0.72rem">👤 Élève</span>
+          <span class="badge badge-info" style="font-size:0.72rem">🎓 Professeur</span>
+          <span style="background:rgba(61,214,140,0.12);color:var(--success);padding:0.25rem 0.7rem;border-radius:20px;font-size:0.72rem;font-weight:600">👨‍👩‍👧 Parent</span>
+          <span style="background:rgba(240,92,92,0.12);color:var(--error);padding:0.25rem 0.7rem;border-radius:20px;font-size:0.72rem;font-weight:600">⚙ Admin</span>
+        </div>
+      </div>
     </div>
 
     <p class="login-note">Accès réservé aux membres de l'établissement</p>
@@ -69,9 +81,7 @@
         const userDoc = await getDoc(doc(db, "users", user.uid));
         if (userDoc.exists()) {
           const role = userDoc.data().role;
-          if (role === "admin" || role === "teacher") window.location.href = "admin.html";
-          else if (role === "parent") window.location.href = "parent.html";
-          else window.location.href = "dashboard.html";
+          redirectByRole(role);
         }
       }
     });

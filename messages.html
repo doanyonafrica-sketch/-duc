@@ -9,150 +9,166 @@
 </head>
 <body class="student-page">
 
-  <!-- Topbar mobile -->
-  <div class="topbar">
-    <button class="hamburger" onclick="openMobileSidebar()">☰</button>
-    <div class="topbar-brand">
-      <span class="brand-icon">⚡</span>
-      <span class="brand-name">EduPro</span>
+<div class="topbar">
+  <button class="hamburger" onclick="openMobileSidebar()">☰</button>
+  <div class="topbar-brand"><span class="brand-icon">⚡</span><span class="brand-name">EduPro</span></div>
+  <div class="topbar-right"><div class="admin-avatar" id="topbar-avatar">?</div></div>
+</div>
+<div class="sidebar-overlay"></div>
+
+<aside class="sidebar">
+  <div class="sidebar-brand"><span class="brand-icon">⚡</span><span class="brand-name">EduPro</span></div>
+  <nav class="sidebar-nav">
+    <!-- Lien retour dynamique selon rôle -->
+    <a href="#" class="nav-item" id="back-home-link"><span class="nav-icon">🏠</span> Accueil</a>
+    <div class="nav-section-title">Messagerie</div>
+    <a href="#" class="nav-item active" data-section="inbox"><span class="nav-icon">✉</span> Messages</a>
+    <a href="#" class="nav-item" data-section="announces"><span class="nav-icon">📢</span> Annonces</a>
+    <a href="planning.html" class="nav-item"><span class="nav-icon">📅</span> Planning</a>
+  </nav>
+  <div class="sidebar-role-badge" id="role-badge-msg">—</div>
+  <button class="btn-logout" onclick="logout()"><span>↩</span> Déconnexion</button>
+</aside>
+
+<main class="admin-main">
+  <div class="admin-header">
+    <div>
+      <h1 id="msg-title">Messagerie</h1>
+      <p id="msg-sub">Conversations et annonces</p>
     </div>
-    <div class="topbar-right">
-      <div class="admin-avatar" id="topbar-avatar">?</div>
+    <div class="admin-user">
+      <span id="user-name-msg">—</span>
+      <div class="admin-avatar" id="msg-avatar">?</div>
     </div>
   </div>
 
-  <!-- Overlay sidebar -->
-  <div class="sidebar-overlay"></div>
-
-  <aside class="sidebar">
-    <div class="sidebar-brand">
-      <span class="brand-icon">⚡</span>
-      <span class="brand-name">EduPro</span>
+  <!-- INBOX -->
+  <section id="section-inbox" class="content-section active">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1.2rem">
+      <div style="font-family:'Syne',sans-serif;font-weight:700;font-size:1rem">Conversations</div>
+      <button class="btn-primary btn-sm" onclick="openNewMessage()">+ Nouveau</button>
     </div>
-    <nav class="sidebar-nav">
-      <a href="dashboard.html" class="nav-item"><span class="nav-icon">🏠</span> Accueil</a>
-      <a href="#" class="nav-item active" data-section="inbox"><span class="nav-icon">✉</span> Messages</a>
-      <a href="#" class="nav-item" data-section="announces"><span class="nav-icon">📢</span> Annonces</a>
-      <a href="planning.html" class="nav-item"><span class="nav-icon">📅</span> Planning</a>
-    </nav>
-    <div class="sidebar-role-badge" id="role-badge-msg">—</div>
-    <button class="btn-logout" onclick="logout()"><span>↩</span> Déconnexion</button>
-  </aside>
-
-  <main class="admin-main">
-    <div class="admin-header">
-      <div>
-        <h1 id="msg-title">Messagerie</h1>
-        <p id="msg-sub">Conversations et annonces</p>
-      </div>
-      <div class="admin-user">
-        <span id="user-name-msg">—</span>
-        <div class="admin-avatar" id="msg-avatar">?</div>
-      </div>
-    </div>
-
-    <!-- INBOX -->
-    <section id="section-inbox" class="content-section active">
-      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1.2rem">
-        <div style="font-family:'Syne',sans-serif;font-weight:700;font-size:1rem">Conversations</div>
-        <button class="btn-primary btn-sm" id="new-msg-btn" onclick="openNewMessage()">+ Nouveau</button>
-      </div>
-      <div class="messages-layout">
-        <div class="conversations-list" id="conversations-list">
-          <div class="table-loading">Chargement...</div>
-        </div>
-        <div class="chat-panel" id="chat-panel">
-          <div style="display:flex;align-items:center;justify-content:center;height:100%;color:var(--text-muted);font-size:0.9rem;padding:1rem;text-align:center">
-            Sélectionnez une conversation
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- ANNONCES -->
-    <section id="section-announces" class="content-section">
-      <div id="announces-list">
+    <div class="messages-layout">
+      <div class="conversations-list" id="conversations-list">
         <div class="table-loading">Chargement...</div>
       </div>
-      <div id="new-announce-form" class="hidden" style="margin-top:1.5rem">
-        <div class="table-card">
-          <h3 style="font-family:'Syne',sans-serif;margin-bottom:1rem">Nouvelle annonce</h3>
-          <div class="form-group"><label>Titre</label><input type="text" id="ann-title" placeholder="Ex: Examen la semaine prochaine"/></div>
-          <div class="form-group"><label>Message</label><textarea id="ann-body" rows="4" placeholder="Contenu de l'annonce..."></textarea></div>
-          <div class="modal-actions">
-            <button class="btn-secondary" onclick="document.getElementById('new-announce-form').classList.add('hidden')">Annuler</button>
-            <button class="btn-primary" onclick="publishAnnounce()">Publier</button>
-          </div>
+      <div class="chat-panel" id="chat-panel">
+        <div style="display:flex;align-items:center;justify-content:center;height:100%;color:var(--text-muted);font-size:0.9rem;padding:1rem;text-align:center">
+          Sélectionnez une conversation
         </div>
       </div>
-    </section>
-  </main>
+    </div>
+  </section>
 
-  <!-- MODAL: New Message -->
-  <div class="modal-overlay hidden" id="modal-new-msg">
-    <div class="modal">
-      <div class="modal-header">
-        <h3>Nouveau message</h3>
-        <button class="modal-close" onclick="closeModal('modal-new-msg')">✕</button>
-      </div>
-      <div class="form-group">
-        <label>Destinataire</label>
-        <select id="msg-recipient"><option value="">— Choisir —</option></select>
-      </div>
-      <div class="form-group">
-        <label>Message</label>
-        <textarea id="msg-body" rows="4" placeholder="Votre message..."></textarea>
-      </div>
-      <div class="modal-actions">
-        <button class="btn-secondary" onclick="closeModal('modal-new-msg')">Annuler</button>
-        <button class="btn-primary" onclick="sendNewMessage()">Envoyer</button>
+  <!-- ANNONCES -->
+  <section id="section-announces" class="content-section">
+    <div id="announce-create-btn-wrap" class="hidden" style="margin-bottom:1.2rem">
+      <button class="btn-primary btn-sm" onclick="toggleAnnounceForm()">+ Créer une annonce</button>
+    </div>
+    <div id="new-announce-form" class="hidden" style="margin-bottom:1.5rem">
+      <div class="table-card">
+        <h3 style="font-family:'Syne',sans-serif;margin-bottom:1rem">Nouvelle annonce</h3>
+        <div class="form-group"><label>Titre</label><input type="text" id="ann-title" placeholder="Ex: Examen la semaine prochaine"/></div>
+        <div class="form-group"><label>Message</label><textarea id="ann-body" rows="4" placeholder="Contenu de l'annonce..."></textarea></div>
+        <div class="modal-actions">
+          <button class="btn-secondary" onclick="toggleAnnounceForm()">Annuler</button>
+          <button class="btn-primary" onclick="publishAnnounce()">Publier</button>
+        </div>
       </div>
     </div>
-  </div>
+    <div id="announces-list"><div class="table-loading">Chargement...</div></div>
+  </section>
+</main>
 
-  <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-    import { getAuth, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
-    import { getFirestore, collection, doc, getDoc, getDocs, addDoc, setDoc, updateDoc, serverTimestamp, query, orderBy, where, onSnapshot }
-      from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
-    const firebaseConfig = {
-      apiKey: "AIzaSyD2Xh778RDqztmHPBLcw96DWew03PkL2qU",
-      authDomain: "edupro-school.firebaseapp.com",
-      projectId: "edupro-school",
-      storageBucket: "edupro-school.firebasestorage.app",
-      messagingSenderId: "552814359641",
-      appId: "1:552814359641:web:2c47cb3835953679776d48"
-    };
-    const app = initializeApp(firebaseConfig);
-    const auth = getAuth(app); const db = getFirestore(app);
-    window._auth=auth; window._db=db; window._signOut=signOut;
-    window._collection=collection; window._doc=doc; window._getDoc=getDoc; window._getDocs=getDocs;
-    window._addDoc=addDoc; window._setDoc=setDoc; window._updateDoc=updateDoc;
-    window._serverTimestamp=serverTimestamp; window._query=query; window._orderBy=orderBy;
-    window._where=where; window._onSnapshot=onSnapshot;
-    onAuthStateChanged(auth, async user => {
-      if (!user) { window.location.href="index.html"; return; }
-      const d = await getDoc(doc(db, "users", user.uid));
-      if (!d.exists()) { window.location.href="index.html"; return; }
-      const data = d.data();
-      window._currentUser = { uid: user.uid, ...data };
-      const name = data.fullName || "—";
-      document.getElementById("user-name-msg").textContent = name;
-      document.getElementById("msg-avatar").textContent = name[0].toUpperCase();
-      document.getElementById("topbar-avatar").textContent = name[0].toUpperCase();
-      const badge = document.getElementById("role-badge-msg");
-      if (data.role === "teacher" || data.role === "admin") {
-        badge.textContent = data.role === "admin" ? "Administrateur" : "Professeur";
-        badge.style.cssText = "background:rgba(64,96,240,0.15);color:#6888f8";
-        // Bouton créer annonce
-        document.querySelector('[data-section="announces"]').insertAdjacentHTML("afterend",
-          `<a href="#" class="nav-item" onclick="event.preventDefault();document.querySelectorAll('.nav-item').forEach(i=>i.classList.remove('active'));document.querySelectorAll('.content-section').forEach(s=>s.classList.remove('active'));this.classList.add('active');document.getElementById('section-announces').classList.add('active');document.getElementById('new-announce-form').classList.remove('hidden');closeMobileSidebar()"><span class="nav-icon">➕</span> Créer annonce</a>`);
-      } else {
-        badge.textContent = data.role === "parent" ? "Parent" : "Élève";
-      }
-      initMessaging();
-    });
-  </script>
-  <script src="messages.js"></script>
+<!-- MODAL: Nouveau message -->
+<div class="modal-overlay hidden" id="modal-new-msg">
+  <div class="modal">
+    <div class="modal-header">
+      <h3>Nouveau message</h3>
+      <button class="modal-close" onclick="closeModal('modal-new-msg')">✕</button>
+    </div>
+    <div class="form-group">
+      <label>Destinataire</label>
+      <select id="msg-recipient"><option value="">— Choisir —</option></select>
+    </div>
+    <div class="form-group">
+      <label>Message</label>
+      <textarea id="msg-body" rows="4" placeholder="Votre message..."></textarea>
+    </div>
+    <div class="modal-actions">
+      <button class="btn-secondary" onclick="closeModal('modal-new-msg')">Annuler</button>
+      <button class="btn-primary" onclick="sendNewMessage()">Envoyer</button>
+    </div>
+  </div>
+</div>
+
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+  import { getAuth, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+  import { getFirestore, collection, doc, getDoc, getDocs, addDoc, setDoc, updateDoc,
+    serverTimestamp, query, orderBy, where, onSnapshot }
+    from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyD2Xh778RDqztmHPBLcw96DWew03PkL2qU",
+    authDomain: "edupro-school.firebaseapp.com",
+    projectId: "edupro-school",
+    storageBucket: "edupro-school.firebasestorage.app",
+    messagingSenderId: "552814359641",
+    appId: "1:552814359641:web:2c47cb3835953679776d48"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+  const db = getFirestore(app);
+
+  window._auth=auth; window._db=db; window._signOut=signOut;
+  window._collection=collection; window._doc=doc; window._getDoc=getDoc; window._getDocs=getDocs;
+  window._addDoc=addDoc; window._setDoc=setDoc; window._updateDoc=updateDoc;
+  window._serverTimestamp=serverTimestamp; window._query=query; window._orderBy=orderBy;
+  window._where=where; window._onSnapshot=onSnapshot;
+
+  onAuthStateChanged(auth, async user => {
+    if (!user) { window.location.href="index.html"; return; }
+    const d = await getDoc(doc(db, "users", user.uid));
+    if (!d.exists()) { window.location.href="index.html"; return; }
+    const data = d.data();
+    window._currentUser = { uid: user.uid, ...data };
+    const name = data.fullName || "—";
+
+    document.getElementById("user-name-msg").textContent = name;
+    document.getElementById("msg-avatar").textContent = name[0].toUpperCase();
+    document.getElementById("topbar-avatar").textContent = name[0].toUpperCase();
+
+    // Lien retour selon rôle
+    const backLink = document.getElementById("back-home-link");
+    if (data.role === "admin" || data.role === "teacher") {
+      backLink.href = "admin.html";
+    } else if (data.role === "parent") {
+      backLink.href = "parent.html";
+    } else {
+      backLink.href = "dashboard.html";
+    }
+
+    const badge = document.getElementById("role-badge-msg");
+    if (data.role === "admin") {
+      badge.textContent = "Administrateur";
+      badge.style.cssText = "background:rgba(64,96,240,0.15);color:#6888f8";
+      document.getElementById("announce-create-btn-wrap").classList.remove("hidden");
+    } else if (data.role === "teacher") {
+      badge.textContent = "Professeur";
+      badge.style.cssText = "background:rgba(64,96,240,0.15);color:#6888f8";
+      document.getElementById("announce-create-btn-wrap").classList.remove("hidden");
+    } else if (data.role === "parent") {
+      badge.textContent = "Parent";
+      badge.style.cssText = "background:rgba(61,214,140,0.12);color:var(--success)";
+    } else {
+      badge.textContent = "Élève";
+    }
+
+    initMessaging();
+  });
+</script>
+<script src="messages.js"></script>
 </body>
 </html>

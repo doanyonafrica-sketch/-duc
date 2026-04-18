@@ -10,275 +10,634 @@
 </head>
 <body class="admin-page">
 
-  <!-- Topbar mobile -->
-  <div class="topbar">
-    <button class="hamburger" onclick="openMobileSidebar()">☰</button>
-    <div class="topbar-brand">
-      <span class="brand-icon">⚡</span>
-      <span class="brand-name">EduPro</span>
+<div class="topbar">
+  <button class="hamburger" onclick="openMobileSidebar()">☰</button>
+  <div class="topbar-brand"><span class="brand-icon">⚡</span><span class="brand-name">EduPro</span></div>
+  <div class="topbar-right"><div class="admin-avatar" id="topbar-avatar-admin">A</div></div>
+</div>
+<div class="sidebar-overlay"></div>
+
+<aside class="sidebar">
+  <div class="sidebar-brand"><span class="brand-icon">⚡</span><span class="brand-name">EduPro</span></div>
+  <nav class="sidebar-nav">
+    <!-- ADMIN ONLY -->
+    <div class="nav-section-title admin-only">Organisation</div>
+    <a href="#" class="nav-item admin-only" data-section="formations"><span class="nav-icon">🏫</span> Formations</a>
+    <a href="#" class="nav-item admin-only" data-section="classes"><span class="nav-icon">📂</span> Classes</a>
+    <a href="#" class="nav-item admin-only" data-section="groups"><span class="nav-icon">👥</span> Groupes</a>
+    <div class="nav-section-title admin-only">Comptes</div>
+    <a href="#" class="nav-item admin-only" data-section="students"><span class="nav-icon">👤</span> Élèves</a>
+    <a href="#" class="nav-item admin-only" data-section="teachers"><span class="nav-icon">🎓</span> Professeurs</a>
+    <a href="#" class="nav-item admin-only" data-section="parents"><span class="nav-icon">👨‍👩‍👧</span> Parents</a>
+    <!-- TEACHER ONLY -->
+    <div class="nav-section-title teacher-only">Mes classes</div>
+    <a href="#" class="nav-item teacher-only" data-section="mygroups"><span class="nav-icon">🏫</span> Mes groupes</a>
+    <a href="#" class="nav-item teacher-only" data-section="attendance"><span class="nav-icon">📋</span> Présences</a>
+    <a href="#" class="nav-item teacher-only" data-section="tracking"><span class="nav-icon">📈</span> Mes élèves</a>
+    <!-- SHARED -->
+    <div class="nav-section-title">Pédagogie</div>
+    <a href="#" class="nav-item" data-section="courses"><span class="nav-icon">📚</span> Cours</a>
+    <a href="#" class="nav-item" data-section="exercises"><span class="nav-icon">✏️</span> Exercices</a>
+    <a href="#" class="nav-item" data-section="submissions"><span class="nav-icon">📤</span> Soumissions</a>
+    <a href="#" class="nav-item" data-section="polls"><span class="nav-icon">📊</span> Sondages</a>
+    <a href="#" class="nav-item" data-section="quizzes"><span class="nav-icon">📝</span> Quiz</a>
+    <!-- ADMIN ONLY -->
+    <div class="nav-section-title admin-only">Gestion</div>
+    <a href="#" class="nav-item admin-only" data-section="certificates"><span class="nav-icon">🏆</span> Attestations</a>
+    <a href="#" class="nav-item admin-only" data-section="stats"><span class="nav-icon">📈</span> Statistiques</a>
+    <div class="nav-section-title">Navigation</div>
+    <a href="messages.html" class="nav-item"><span class="nav-icon">✉</span> Messages</a>
+    <a href="planning.html" class="nav-item"><span class="nav-icon">📅</span> Planning</a>
+  </nav>
+  <div class="sidebar-role-badge" id="role-badge">Admin</div>
+  <button class="btn-logout" onclick="logout()"><span>↩</span> Déconnexion</button>
+</aside>
+
+<main class="admin-main">
+  <div class="admin-header">
+    <div>
+      <h1 id="section-title">Formations</h1>
+      <p id="section-sub">Gérez vos formations et programmes</p>
     </div>
-    <div class="topbar-right">
-      <div class="admin-avatar" id="topbar-avatar-admin">A</div>
-    </div>
-  </div>
-
-  <!-- Overlay -->
-  <div class="sidebar-overlay"></div>
-
-  <aside class="sidebar">
-    <div class="sidebar-brand">
-      <span class="brand-icon">⚡</span>
-      <span class="brand-name">EduPro</span>
-    </div>
-    <nav class="sidebar-nav">
-      <a href="#" class="nav-item active admin-only" data-section="students"><span class="nav-icon">👥</span> Élèves</a>
-      <a href="#" class="nav-item admin-only" data-section="teachers"><span class="nav-icon">🎓</span> Professeurs</a>
-      <a href="#" class="nav-item" data-section="courses"><span class="nav-icon">📚</span> Cours</a>
-      <a href="#" class="nav-item" data-section="quizzes"><span class="nav-icon">📝</span> Quiz</a>
-      <a href="#" class="nav-item" data-section="stats"><span class="nav-icon">📊</span> Statistiques</a>
-      <a href="messages.html" class="nav-item"><span class="nav-icon">✉</span> Messages</a>
-      <a href="planning.html" class="nav-item"><span class="nav-icon">📅</span> Planning</a>
-    </nav>
-    <div class="sidebar-role-badge" id="role-badge">Admin</div>
-    <button class="btn-logout" onclick="logout()"><span>↩</span> Déconnexion</button>
-  </aside>
-
-  <main class="admin-main">
-    <div class="admin-header">
-      <div>
-        <h1 id="section-title">Gestion des Élèves</h1>
-        <p id="section-sub">Créez et gérez les comptes élèves</p>
-      </div>
-      <div class="admin-user">
-        <span id="admin-name">—</span>
-        <div class="admin-avatar" id="admin-avatar-letter">A</div>
-      </div>
-    </div>
-
-    <!-- STUDENTS -->
-    <section id="section-students" class="content-section active">
-      <div class="section-toolbar">
-        <input type="text" id="search-students" placeholder="Rechercher un élève..." class="search-input" oninput="filterStudents()"/>
-        <button class="btn-primary" onclick="openModal('modal-add-user','student')">+ Nouvel élève</button>
-      </div>
-      <div id="students-alert" class="alert hidden"></div>
-      <div class="table-card">
-        <div class="table-responsive">
-          <table class="data-table">
-            <thead><tr><th>Nom</th><th class="hide-mobile">Email</th><th>Filière</th><th class="hide-mobile">Prog.</th><th>Actions</th></tr></thead>
-            <tbody id="students-tbody"><tr><td colspan="5" class="table-loading">Chargement...</td></tr></tbody>
-          </table>
-        </div>
-      </div>
-    </section>
-
-    <!-- TEACHERS -->
-    <section id="section-teachers" class="content-section">
-      <div class="section-toolbar">
-        <input type="text" id="search-teachers" placeholder="Rechercher un professeur..." class="search-input" oninput="filterTeachers()"/>
-        <button class="btn-primary" onclick="openModal('modal-add-user','teacher')">+ Nouveau prof</button>
-      </div>
-      <div id="teachers-alert" class="alert hidden"></div>
-      <div class="table-card">
-        <div class="table-responsive">
-          <table class="data-table">
-            <thead><tr><th>Nom</th><th class="hide-mobile">Email</th><th>Spécialité</th><th class="hide-mobile">Cours</th><th>Actions</th></tr></thead>
-            <tbody id="teachers-tbody"><tr><td colspan="5" class="table-loading">Chargement...</td></tr></tbody>
-          </table>
-        </div>
-      </div>
-    </section>
-
-    <!-- COURSES -->
-    <section id="section-courses" class="content-section">
-      <div class="section-toolbar">
-        <input type="text" id="search-courses" placeholder="Rechercher un cours..." class="search-input" oninput="filterCourses()"/>
-        <button class="btn-primary" onclick="openModal('modal-add-course')">+ Nouveau cours</button>
-      </div>
-      <div id="courses-alert" class="alert hidden"></div>
-      <div class="courses-grid" id="courses-grid"><div class="table-loading">Chargement...</div></div>
-    </section>
-
-    <!-- QUIZZES -->
-    <section id="section-quizzes" class="content-section">
-      <div class="section-toolbar">
-        <input type="text" id="search-quizzes" placeholder="Rechercher un quiz..." class="search-input" oninput="filterQuizzes()"/>
-        <button class="btn-primary" onclick="openModal('modal-add-quiz')">+ Nouveau quiz</button>
-      </div>
-      <div id="quizzes-alert" class="alert hidden"></div>
-      <div class="table-card">
-        <div class="table-responsive">
-          <table class="data-table">
-            <thead><tr><th>Titre</th><th class="hide-mobile">Cours lié</th><th>Questions</th><th class="hide-mobile">Auteur</th><th>Actions</th></tr></thead>
-            <tbody id="quizzes-tbody"><tr><td colspan="5" class="table-loading">Chargement...</td></tr></tbody>
-          </table>
-        </div>
-      </div>
-    </section>
-
-    <!-- STATS -->
-    <section id="section-stats" class="content-section">
-      <div class="stats-grid">
-        <div class="stat-card"><div class="stat-icon">👥</div><div class="stat-val" id="stat-students">—</div><div class="stat-label">Élèves</div></div>
-        <div class="stat-card"><div class="stat-icon">🎓</div><div class="stat-val" id="stat-teachers">—</div><div class="stat-label">Professeurs</div></div>
-        <div class="stat-card"><div class="stat-icon">📚</div><div class="stat-val" id="stat-courses">—</div><div class="stat-label">Cours</div></div>
-        <div class="stat-card"><div class="stat-icon">📝</div><div class="stat-val" id="stat-quizzes">—</div><div class="stat-label">Quiz</div></div>
-      </div>
-      <div class="table-card" style="margin-top:1.5rem">
-        <h3 style="margin-bottom:1rem;font-family:'Syne',sans-serif">Top élèves</h3>
-        <div class="table-responsive">
-          <table class="data-table">
-            <thead><tr><th>Élève</th><th>Cours</th><th>Quiz</th><th>Score</th></tr></thead>
-            <tbody id="top-students-tbody"><tr><td colspan="4" class="table-loading">Chargement...</td></tr></tbody>
-          </table>
-        </div>
-      </div>
-    </section>
-  </main>
-
-  <!-- MODAL: ADD USER -->
-  <div class="modal-overlay hidden" id="modal-add-user">
-    <div class="modal">
-      <div class="modal-header">
-        <h3 id="modal-user-title">Créer un compte</h3>
-        <button class="modal-close" onclick="closeModal('modal-add-user')">✕</button>
-      </div>
-      <div id="modal-user-error" class="alert alert-error hidden"></div>
-      <div style="margin-bottom:1rem"><span id="modal-role-badge" class="badge">—</span></div>
-      <input type="hidden" id="new-user-role" value="student"/>
-      <div class="form-group"><label>Nom complet</label><input type="text" id="new-fullname" placeholder="Ex: Kofi Mensah"/></div>
-      <div class="form-group"><label>Email</label><input type="email" id="new-email" placeholder="kofi.mensah@ecole.tg" inputmode="email"/></div>
-      <div class="form-group"><label>Mot de passe</label><input type="password" id="new-password" placeholder="Minimum 6 caractères"/></div>
-      <div class="form-group" id="field-class-wrap">
-        <label id="field-class-label">Filière / Classe</label>
-        <input type="text" id="new-class" placeholder="Ex: Électricité Industrielle — L2"/>
-      </div>
-      <div class="modal-actions">
-        <button class="btn-secondary" onclick="closeModal('modal-add-user')">Annuler</button>
-        <button class="btn-primary" id="create-user-btn" onclick="createUser()">Créer le compte</button>
-      </div>
+    <div class="admin-user">
+      <span id="admin-name">—</span>
+      <div class="admin-avatar" id="admin-avatar-letter">A</div>
     </div>
   </div>
 
-  <!-- MODAL: ADD COURSE -->
-  <div class="modal-overlay hidden" id="modal-add-course">
-    <div class="modal">
-      <div class="modal-header">
-        <h3>Ajouter un cours</h3>
-        <button class="modal-close" onclick="closeModal('modal-add-course')">✕</button>
-      </div>
-      <div id="modal-course-error" class="alert alert-error hidden"></div>
-      <div class="form-group"><label>Titre</label><input type="text" id="new-course-title" placeholder="Ex: Protection différentielle"/></div>
-      <div class="form-group"><label>Description courte</label><input type="text" id="new-course-desc" placeholder="Résumé en une phrase"/></div>
-      <div class="form-group"><label>Catégorie</label><input type="text" id="new-course-cat" placeholder="Ex: Haute tension, Domotique..."/></div>
-      <div class="form-group"><label>Contenu (texte ou lien YouTube)</label><textarea id="new-course-content" rows="5" placeholder="Contenu du cours ou lien YouTube..."></textarea></div>
-      <div class="modal-actions">
-        <button class="btn-secondary" onclick="closeModal('modal-add-course')">Annuler</button>
-        <button class="btn-primary" onclick="createCourse()">Publier</button>
+  <!-- FORMATIONS -->
+  <section id="section-formations" class="content-section active">
+    <div class="section-toolbar">
+      <input type="text" id="search-formations" placeholder="Rechercher une formation..." class="search-input" oninput="filterFormations()"/>
+      <button class="btn-primary" onclick="openModal('modal-add-formation')">+ Nouvelle formation</button>
+    </div>
+    <div id="formations-alert" class="alert hidden"></div>
+    <div class="courses-grid" id="formations-grid"><div class="table-loading">Chargement...</div></div>
+  </section>
+
+  <!-- CLASSES -->
+  <section id="section-classes" class="content-section">
+    <div class="class-selector-wrap">
+      <div class="class-selector-label">Choisir une formation</div>
+      <select id="class-formation-filter" onchange="loadClassesForFormation(this.value)" style="max-width:400px">
+        <option value="">— Sélectionner —</option>
+      </select>
+    </div>
+    <div class="section-toolbar">
+      <div style="flex:1"></div>
+      <button class="btn-primary" onclick="openModalAddClass()">+ Nouvelle classe</button>
+    </div>
+    <div id="classes-alert" class="alert hidden"></div>
+    <div id="classes-list"><div class="empty-state">Sélectionnez une formation pour voir ses classes.</div></div>
+  </section>
+
+  <!-- GROUPES -->
+  <section id="section-groups" class="content-section">
+    <div class="section-toolbar">
+      <input type="text" id="search-groups" placeholder="Rechercher un groupe..." class="search-input" oninput="filterGroups()"/>
+      <button class="btn-primary" onclick="openModal('modal-add-group')">+ Nouveau groupe</button>
+    </div>
+    <div id="groups-alert" class="alert hidden"></div>
+    <div class="courses-grid" id="groups-grid"><div class="table-loading">Chargement...</div></div>
+  </section>
+
+  <!-- ÉLÈVES -->
+  <section id="section-students" class="content-section">
+    <div class="section-toolbar">
+      <input type="text" id="search-students" placeholder="Rechercher un élève..." class="search-input" oninput="filterStudents()"/>
+      <button class="btn-primary" onclick="openModal('modal-add-user','student')">+ Nouvel élève</button>
+    </div>
+    <div id="students-alert" class="alert hidden"></div>
+    <div class="table-card">
+      <div class="table-responsive">
+        <table class="data-table">
+          <thead><tr><th>Nom</th><th class="hide-mobile">Email</th><th>Groupe</th><th class="hide-mobile">Filière</th><th>Actions</th></tr></thead>
+          <tbody id="students-tbody"><tr><td colspan="5" class="table-loading">Chargement...</td></tr></tbody>
+        </table>
       </div>
     </div>
-  </div>
+  </section>
 
-  <!-- MODAL: ADD QUIZ -->
-  <div class="modal-overlay hidden" id="modal-add-quiz">
-    <div class="modal modal-wide">
-      <div class="modal-header">
-        <h3>Créer un quiz</h3>
-        <button class="modal-close" onclick="closeModal('modal-add-quiz')">✕</button>
+  <!-- PROFESSEURS -->
+  <section id="section-teachers" class="content-section">
+    <div class="section-toolbar">
+      <input type="text" id="search-teachers" placeholder="Rechercher un professeur..." class="search-input" oninput="filterTeachers()"/>
+      <button class="btn-primary" onclick="openModal('modal-add-user','teacher')">+ Nouveau prof</button>
+    </div>
+    <div id="teachers-alert" class="alert hidden"></div>
+    <div class="table-card">
+      <div class="table-responsive">
+        <table class="data-table">
+          <thead><tr><th>Nom</th><th class="hide-mobile">Email</th><th>Spécialité</th><th class="hide-mobile">Groupes</th><th>Actions</th></tr></thead>
+          <tbody id="teachers-tbody"><tr><td colspan="5" class="table-loading">Chargement...</td></tr></tbody>
+        </table>
       </div>
-      <div id="modal-quiz-error" class="alert alert-error hidden"></div>
-      <div class="form-group"><label>Titre du quiz</label><input type="text" id="new-quiz-title" placeholder="Ex: Quiz protection différentielle"/></div>
-      <div class="form-group"><label>Cours associé</label><select id="new-quiz-course"><option value="">— Choisir un cours —</option></select></div>
-      <div id="questions-container">
-        <div class="question-block" id="question-1">
-          <div class="question-header"><strong>Question 1</strong></div>
-          <div class="form-group"><input type="text" class="q-text" placeholder="Texte de la question"/></div>
-          <div class="options-list">
-            <div class="option-row"><input type="radio" name="q1-correct" value="0"/><input type="text" class="q-option" placeholder="Option A"/></div>
-            <div class="option-row"><input type="radio" name="q1-correct" value="1"/><input type="text" class="q-option" placeholder="Option B"/></div>
-            <div class="option-row"><input type="radio" name="q1-correct" value="2"/><input type="text" class="q-option" placeholder="Option C"/></div>
-            <div class="option-row"><input type="radio" name="q1-correct" value="3"/><input type="text" class="q-option" placeholder="Option D"/></div>
+    </div>
+  </section>
+
+  <!-- PARENTS -->
+  <section id="section-parents" class="content-section">
+    <div class="section-toolbar">
+      <div style="flex:1"></div>
+      <button class="btn-primary" onclick="openModal('modal-add-user','parent')">+ Compte parent</button>
+      <button class="btn-secondary" onclick="openModal('modal-link-parent')">🔗 Lier parent</button>
+    </div>
+    <div id="parents-alert" class="alert hidden"></div>
+    <div class="table-card">
+      <div class="table-responsive">
+        <table class="data-table">
+          <thead><tr><th>Parent</th><th class="hide-mobile">Email</th><th>Élève(s) liés</th><th>Actions</th></tr></thead>
+          <tbody id="parents-tbody"><tr><td colspan="4" class="table-loading">Chargement...</td></tr></tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- MES GROUPES (teacher) -->
+  <section id="section-mygroups" class="content-section">
+    <div class="courses-grid" id="mygroups-grid"><div class="table-loading">Chargement...</div></div>
+  </section>
+
+  <!-- PRÉSENCES (teacher) -->
+  <section id="section-attendance" class="content-section">
+    <div class="section-toolbar">
+      <select id="att-group-select" onchange="loadAttendanceForm()" style="flex:1;max-width:300px">
+        <option value="">— Choisir un groupe —</option>
+      </select>
+      <div style="display:flex;gap:0.5rem;align-items:center;flex-wrap:wrap">
+        <input type="text" id="att-session-name" placeholder="Ex: Séance 1 - Câblage" style="width:200px;padding:0.65rem 1rem;background:var(--bg3);border:1px solid var(--border);border-radius:var(--radius-sm);color:var(--text);outline:none"/>
+        <input type="date" id="att-date" style="padding:0.65rem 1rem;background:var(--bg3);border:1px solid var(--border);border-radius:var(--radius-sm);color:var(--text);outline:none"/>
+      </div>
+    </div>
+    <div id="attendance-form-container"><div class="empty-state">Choisissez un groupe pour prendre les présences.</div></div>
+    <div id="attendance-history-container" style="margin-top:1.5rem"></div>
+  </section>
+
+  <!-- SUIVI ÉLÈVES (teacher) -->
+  <section id="section-tracking" class="content-section">
+    <div class="section-toolbar">
+      <select id="tracking-group-select" onchange="loadTrackingStudents(this.value)" style="flex:1;max-width:300px">
+        <option value="">— Choisir un groupe —</option>
+      </select>
+    </div>
+    <div id="tracking-content"><div class="empty-state">Sélectionnez un groupe.</div></div>
+  </section>
+
+  <!-- COURS -->
+  <section id="section-courses" class="content-section">
+    <div class="section-toolbar">
+      <input type="text" id="search-courses" placeholder="Rechercher un cours..." class="search-input" oninput="filterCourses()"/>
+      <button class="btn-primary" onclick="openModal('modal-add-course')">+ Nouveau cours</button>
+    </div>
+    <div id="courses-alert" class="alert hidden"></div>
+    <div class="courses-grid" id="courses-grid"><div class="table-loading">Chargement...</div></div>
+  </section>
+
+  <!-- EXERCICES -->
+  <section id="section-exercises" class="content-section">
+    <div class="section-toolbar">
+      <input type="text" id="search-exercises" placeholder="Rechercher un exercice..." class="search-input" oninput="filterExercises()"/>
+      <button class="btn-primary" onclick="openModal('modal-add-exercise')">+ Nouvel exercice</button>
+    </div>
+    <div id="exercises-alert" class="alert hidden"></div>
+    <div class="courses-grid" id="exercises-grid"><div class="table-loading">Chargement...</div></div>
+  </section>
+
+  <!-- SOUMISSIONS -->
+  <section id="section-submissions" class="content-section">
+    <div class="section-toolbar">
+      <select id="sub-exercise-filter" onchange="filterSubmissions()" style="flex:1;max-width:300px">
+        <option value="">— Tous les exercices —</option>
+      </select>
+      <select id="sub-status-filter" onchange="filterSubmissions()" style="max-width:180px">
+        <option value="">Tous les statuts</option>
+        <option value="submitted">À corriger</option>
+        <option value="graded">Corrigé</option>
+      </select>
+    </div>
+    <div id="submissions-container"><div class="table-loading">Chargement...</div></div>
+  </section>
+
+  <!-- SONDAGES -->
+  <section id="section-polls" class="content-section">
+    <div class="section-toolbar">
+      <input type="text" id="search-polls" placeholder="Rechercher un sondage..." class="search-input" oninput="filterPolls()"/>
+      <button class="btn-primary" onclick="openModal('modal-add-poll')">+ Nouveau sondage</button>
+    </div>
+    <div id="polls-alert" class="alert hidden"></div>
+    <div class="courses-grid" id="polls-grid"><div class="table-loading">Chargement...</div></div>
+  </section>
+
+  <!-- QUIZ -->
+  <section id="section-quizzes" class="content-section">
+    <div class="section-toolbar">
+      <input type="text" id="search-quizzes" placeholder="Rechercher un quiz..." class="search-input" oninput="filterQuizzes()"/>
+      <button class="btn-primary" onclick="openModal('modal-add-quiz')">+ Nouveau quiz</button>
+    </div>
+    <div id="quizzes-alert" class="alert hidden"></div>
+    <div class="table-card">
+      <div class="table-responsive">
+        <table class="data-table">
+          <thead><tr><th>Titre</th><th class="hide-mobile">Cours lié</th><th>Questions</th><th class="hide-mobile">Groupe</th><th>Actions</th></tr></thead>
+          <tbody id="quizzes-tbody"><tr><td colspan="5" class="table-loading">Chargement...</td></tr></tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- ATTESTATIONS (admin) -->
+  <section id="section-certificates" class="content-section">
+    <div class="section-toolbar">
+      <input type="text" id="search-certs" placeholder="Rechercher par élève..." class="search-input" oninput="filterCertificates()"/>
+      <button class="btn-primary" onclick="openModal('modal-add-cert')">+ Délivrer attestation</button>
+    </div>
+    <div id="certs-alert" class="alert hidden"></div>
+    <div id="certs-list"><div class="table-loading">Chargement...</div></div>
+  </section>
+
+  <!-- STATS (admin) -->
+  <section id="section-stats" class="content-section">
+    <div class="stats-grid" style="margin-bottom:1.5rem">
+      <div class="stat-card"><div class="stat-icon">🏫</div><div class="stat-val" id="stat-formations">—</div><div class="stat-label">Formations</div></div>
+      <div class="stat-card"><div class="stat-icon">👥</div><div class="stat-val" id="stat-students">—</div><div class="stat-label">Élèves</div></div>
+      <div class="stat-card"><div class="stat-icon">🎓</div><div class="stat-val" id="stat-teachers">—</div><div class="stat-label">Professeurs</div></div>
+      <div class="stat-card"><div class="stat-icon">📚</div><div class="stat-val" id="stat-courses">—</div><div class="stat-label">Cours</div></div>
+      <div class="stat-card"><div class="stat-icon">✏️</div><div class="stat-val" id="stat-exercises">—</div><div class="stat-label">Exercices</div></div>
+      <div class="stat-card"><div class="stat-icon">📤</div><div class="stat-val" id="stat-submissions">—</div><div class="stat-label">Soumissions</div></div>
+    </div>
+    <div class="table-card">
+      <h3 style="margin-bottom:1rem;font-family:'Syne',sans-serif">Top élèves</h3>
+      <div class="table-responsive">
+        <table class="data-table">
+          <thead><tr><th>Élève</th><th>Groupe</th><th>Quiz</th><th>Score</th></tr></thead>
+          <tbody id="top-students-tbody"><tr><td colspan="4" class="table-loading">Chargement...</td></tr></tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+</main>
+
+<!-- MODAL: Compte utilisateur -->
+<div class="modal-overlay hidden" id="modal-add-user">
+  <div class="modal">
+    <div class="modal-header">
+      <h3 id="modal-user-title">Créer un compte</h3>
+      <button class="modal-close" onclick="closeModal('modal-add-user')">✕</button>
+    </div>
+    <div id="modal-user-error" class="alert alert-error hidden"></div>
+    <div style="margin-bottom:1rem"><span id="modal-role-badge" class="badge">—</span></div>
+    <input type="hidden" id="new-user-role" value="student"/>
+    <div class="form-group"><label>Nom complet</label><input type="text" id="new-fullname" placeholder="Ex: Kofi Mensah"/></div>
+    <div class="form-group"><label>Email</label><input type="email" id="new-email" placeholder="kofi@ecole.tg" inputmode="email"/></div>
+    <div class="form-group"><label>Mot de passe</label><input type="password" id="new-password" placeholder="Minimum 6 caractères"/></div>
+    <div class="form-group" id="field-class-wrap">
+      <label id="field-class-label">Filière / Classe</label>
+      <input type="text" id="new-class" placeholder="Ex: Électricité Industrielle — L2"/>
+    </div>
+    <div class="form-group" id="field-group-wrap" style="display:none">
+      <label>Groupe (optionnel)</label>
+      <select id="new-student-group"><option value="">— Aucun groupe —</option></select>
+    </div>
+    <div class="modal-actions">
+      <button class="btn-secondary" onclick="closeModal('modal-add-user')">Annuler</button>
+      <button class="btn-primary" id="create-user-btn" onclick="createUser()">Créer le compte</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL: Formation -->
+<div class="modal-overlay hidden" id="modal-add-formation">
+  <div class="modal">
+    <div class="modal-header">
+      <h3>Créer une formation</h3>
+      <button class="modal-close" onclick="closeModal('modal-add-formation')">✕</button>
+    </div>
+    <div id="modal-formation-error" class="alert alert-error hidden"></div>
+    <div class="form-group"><label>Titre</label><input type="text" id="new-formation-title" placeholder="Ex: Électricité industrielle niveau 1"/></div>
+    <div class="form-group"><label>Description</label><textarea id="new-formation-desc" rows="3" placeholder="Présentation de la formation..."></textarea></div>
+    <div class="form-group"><label>Catégorie</label><input type="text" id="new-formation-cat" placeholder="Ex: Électricité, Automatisme, Domotique..."/></div>
+    <div class="form-group"><label>Durée</label><input type="text" id="new-formation-duration" placeholder="Ex: 3 mois, 120h..."/></div>
+    <div class="modal-actions">
+      <button class="btn-secondary" onclick="closeModal('modal-add-formation')">Annuler</button>
+      <button class="btn-primary" onclick="createFormation()">Créer</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL: Classe -->
+<div class="modal-overlay hidden" id="modal-add-class">
+  <div class="modal">
+    <div class="modal-header">
+      <h3>Ajouter une classe</h3>
+      <button class="modal-close" onclick="closeModal('modal-add-class')">✕</button>
+    </div>
+    <div id="modal-class-error" class="alert alert-error hidden"></div>
+    <div class="form-group"><label>Formation</label><select id="new-class-formation"><option value="">— Choisir —</option></select></div>
+    <div class="form-group"><label>Titre de la classe</label><input type="text" id="new-class-title" placeholder="Ex: Module A — Câblage basique"/></div>
+    <div class="form-group"><label>Ordre (numéro)</label><input type="number" id="new-class-order" value="1" min="1"/></div>
+    <div class="form-group"><label>Description (optionnel)</label><textarea id="new-class-desc" rows="2" placeholder="Contenu abordé..."></textarea></div>
+    <div class="modal-actions">
+      <button class="btn-secondary" onclick="closeModal('modal-add-class')">Annuler</button>
+      <button class="btn-primary" onclick="createClass()">Ajouter</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL: Groupe -->
+<div class="modal-overlay hidden" id="modal-add-group">
+  <div class="modal modal-wide">
+    <div class="modal-header">
+      <h3>Créer un groupe</h3>
+      <button class="modal-close" onclick="closeModal('modal-add-group')">✕</button>
+    </div>
+    <div id="modal-group-error" class="alert alert-error hidden"></div>
+    <div class="form-group"><label>Nom du groupe</label><input type="text" id="new-group-name" placeholder="Ex: Groupe A — Promotion 2025"/></div>
+    <div class="form-row">
+      <div class="form-group"><label>Formation</label><select id="new-group-formation"><option value="">— Choisir —</option></select></div>
+      <div class="form-group"><label>Professeur responsable</label><select id="new-group-teacher"><option value="">— Choisir —</option></select></div>
+    </div>
+    <div class="form-group">
+      <label>Élèves du groupe</label>
+      <div id="group-students-list" style="max-height:200px;overflow-y:auto;background:var(--bg3);border:1px solid var(--border);border-radius:var(--radius-sm);padding:0.5rem">
+        <div class="table-loading">Chargement des élèves...</div>
+      </div>
+    </div>
+    <div class="modal-actions">
+      <button class="btn-secondary" onclick="closeModal('modal-add-group')">Annuler</button>
+      <button class="btn-primary" onclick="createGroup()">Créer le groupe</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL: Lier parent -->
+<div class="modal-overlay hidden" id="modal-link-parent">
+  <div class="modal">
+    <div class="modal-header">
+      <h3>Lier un parent à un élève</h3>
+      <button class="modal-close" onclick="closeModal('modal-link-parent')">✕</button>
+    </div>
+    <div id="modal-link-error" class="alert alert-error hidden"></div>
+    <div class="form-group"><label>Compte parent</label><select id="link-parent-select"><option value="">— Choisir —</option></select></div>
+    <div class="form-group"><label>Élève</label><select id="link-student-select"><option value="">— Choisir —</option></select></div>
+    <div class="modal-actions">
+      <button class="btn-secondary" onclick="closeModal('modal-link-parent')">Annuler</button>
+      <button class="btn-primary" onclick="createParentLink()">Lier</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL: Cours -->
+<div class="modal-overlay hidden" id="modal-add-course">
+  <div class="modal">
+    <div class="modal-header">
+      <h3>Ajouter un cours</h3>
+      <button class="modal-close" onclick="closeModal('modal-add-course')">✕</button>
+    </div>
+    <div id="modal-course-error" class="alert alert-error hidden"></div>
+    <div class="form-group"><label>Titre</label><input type="text" id="new-course-title" placeholder="Ex: Protection différentielle"/></div>
+    <div class="form-group"><label>Description courte</label><input type="text" id="new-course-desc" placeholder="Résumé en une phrase"/></div>
+    <div class="form-group"><label>Catégorie</label><input type="text" id="new-course-cat" placeholder="Ex: Haute tension, Domotique..."/></div>
+    <div class="form-group"><label>Groupe (optionnel)</label><select id="new-course-group"><option value="">— Tous les groupes —</option></select></div>
+    <div class="form-group"><label>Contenu (texte ou lien YouTube)</label><textarea id="new-course-content" rows="5" placeholder="Contenu du cours ou lien YouTube..."></textarea></div>
+    <div class="modal-actions">
+      <button class="btn-secondary" onclick="closeModal('modal-add-course')">Annuler</button>
+      <button class="btn-primary" onclick="createCourse()">Publier</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL: Exercice -->
+<div class="modal-overlay hidden" id="modal-add-exercise">
+  <div class="modal modal-wide">
+    <div class="modal-header">
+      <h3>Créer un exercice</h3>
+      <button class="modal-close" onclick="closeModal('modal-add-exercise')">✕</button>
+    </div>
+    <div id="modal-exercise-error" class="alert alert-error hidden"></div>
+    <div class="form-group"><label>Titre</label><input type="text" id="new-exercise-title" placeholder="Ex: TD — Calcul de section de câble"/></div>
+    <div class="form-group"><label>Description / Consigne</label><textarea id="new-exercise-desc" rows="4" placeholder="Décrivez l'exercice et les consignes..."></textarea></div>
+    <div class="form-row">
+      <div class="form-group"><label>Groupe</label><select id="new-exercise-group"><option value="">— Choisir —</option></select></div>
+      <div class="form-group"><label>Type</label>
+        <select id="new-exercise-type" onchange="toggleExerciseType(this.value)">
+          <option value="submission">Soumission PDF</option>
+          <option value="qcm">QCM en ligne</option>
+        </select>
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="form-group"><label>Score maximum</label><input type="number" id="new-exercise-maxscore" value="20" min="1"/></div>
+      <div class="form-group"><label>Date limite (optionnel)</label><input type="datetime-local" id="new-exercise-deadline"/></div>
+    </div>
+    <div id="exercise-qcm-section" style="display:none">
+      <div style="border-top:1px solid var(--border);padding-top:1rem;margin-top:0.5rem">
+        <div style="font-size:0.82rem;color:var(--text-muted);font-weight:600;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:0.8rem">Questions QCM</div>
+        <div id="exercise-questions-container">
+          <div class="question-block" id="exq-1">
+            <div class="question-header"><strong>Question 1</strong></div>
+            <div class="form-group"><input type="text" class="q-text" placeholder="Texte de la question"/></div>
+            <div class="options-list">
+              <div class="option-row"><input type="radio" name="exq1-correct" value="0"/><input type="text" class="q-option" placeholder="Option A"/></div>
+              <div class="option-row"><input type="radio" name="exq1-correct" value="1"/><input type="text" class="q-option" placeholder="Option B"/></div>
+              <div class="option-row"><input type="radio" name="exq1-correct" value="2"/><input type="text" class="q-option" placeholder="Option C"/></div>
+              <div class="option-row"><input type="radio" name="exq1-correct" value="3"/><input type="text" class="q-option" placeholder="Option D"/></div>
+            </div>
+            <small style="color:var(--text-muted)">● = bonne réponse</small>
           </div>
-          <small style="color:var(--text-muted)">● = bonne réponse</small>
         </div>
-      </div>
-      <button class="btn-secondary" style="margin-top:1rem;width:100%" onclick="addQuestion()">+ Ajouter une question</button>
-      <div class="modal-actions" style="margin-top:1.5rem">
-        <button class="btn-secondary" onclick="closeModal('modal-add-quiz')">Annuler</button>
-        <button class="btn-primary" onclick="createQuiz()">Publier le quiz</button>
+        <button class="btn-secondary" style="width:100%;margin-top:0.5rem" onclick="addExerciseQuestion()">+ Question</button>
       </div>
     </div>
-  </div>
-
-  <!-- MODAL: VIEW STUDENT -->
-  <div class="modal-overlay hidden" id="modal-view-student">
-    <div class="modal modal-wide">
-      <div class="modal-header">
-        <h3 id="view-student-name">Fiche élève</h3>
-        <button class="modal-close" onclick="closeModal('modal-view-student')">✕</button>
-      </div>
-      <div id="student-detail-content">Chargement...</div>
+    <div class="modal-actions">
+      <button class="btn-secondary" onclick="closeModal('modal-add-exercise')">Annuler</button>
+      <button class="btn-primary" onclick="createExercise()">Publier</button>
     </div>
   </div>
+</div>
 
-  <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-    import { getAuth, createUserWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
-    import { getFirestore, collection, doc, getDoc, getDocs, addDoc, setDoc, serverTimestamp, query, orderBy, where } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+<!-- MODAL: Note soumission -->
+<div class="modal-overlay hidden" id="modal-grade-submission">
+  <div class="modal">
+    <div class="modal-header">
+      <h3>Corriger la soumission</h3>
+      <button class="modal-close" onclick="closeModal('modal-grade-submission')">✕</button>
+    </div>
+    <input type="hidden" id="grade-submission-id"/>
+    <div id="grade-submission-info" style="background:var(--bg3);border-radius:var(--radius-sm);padding:1rem;margin-bottom:1rem;font-size:0.85rem"></div>
+    <div class="form-row">
+      <div class="form-group"><label>Note obtenue</label><input type="number" id="grade-score" min="0" placeholder="Ex: 15"/></div>
+      <div class="form-group"><label id="grade-maxlabel">Sur 20</label><input type="number" id="grade-max" value="20" readonly style="opacity:0.5"/></div>
+    </div>
+    <div class="form-group"><label>Commentaire</label><textarea id="grade-comment" rows="3" placeholder="Feedback pour l'élève..."></textarea></div>
+    <div class="modal-actions">
+      <button class="btn-secondary" onclick="closeModal('modal-grade-submission')">Annuler</button>
+      <button class="btn-primary" onclick="saveGrade()">Enregistrer la note</button>
+    </div>
+  </div>
+</div>
 
-    const firebaseConfig = {
-      apiKey: "AIzaSyD2Xh778RDqztmHPBLcw96DWew03PkL2qU",
-      authDomain: "edupro-school.firebaseapp.com",
-      projectId: "edupro-school",
-      storageBucket: "edupro-school.firebasestorage.app",
-      messagingSenderId: "552814359641",
-      appId: "1:552814359641:web:2c47cb3835953679776d48"
-    };
+<!-- MODAL: Sondage -->
+<div class="modal-overlay hidden" id="modal-add-poll">
+  <div class="modal modal-wide">
+    <div class="modal-header">
+      <h3>Créer un sondage</h3>
+      <button class="modal-close" onclick="closeModal('modal-add-poll')">✕</button>
+    </div>
+    <div id="modal-poll-error" class="alert alert-error hidden"></div>
+    <div class="form-group"><label>Titre / Question</label><input type="text" id="new-poll-title" placeholder="Ex: Comment trouvez-vous le rythme du cours ?"/></div>
+    <div class="form-group"><label>Description (optionnel)</label><textarea id="new-poll-desc" rows="2" placeholder="Précisions..."></textarea></div>
+    <div class="form-group"><label>Groupe</label><select id="new-poll-group"><option value="">— Tous les groupes —</option></select></div>
+    <div class="form-row">
+      <div class="form-group"><label>Ouverture (optionnel)</label><input type="datetime-local" id="new-poll-open"/></div>
+      <div class="form-group"><label>Clôture (optionnel)</label><input type="datetime-local" id="new-poll-close"/></div>
+    </div>
+    <div class="form-group">
+      <label>Options de réponse</label>
+      <div id="poll-options-container">
+        <div class="option-row" style="margin-bottom:0.4rem"><input type="text" class="poll-opt-input" placeholder="Option 1"/></div>
+        <div class="option-row" style="margin-bottom:0.4rem"><input type="text" class="poll-opt-input" placeholder="Option 2"/></div>
+      </div>
+      <button class="btn-secondary btn-sm" onclick="addPollOption()" style="margin-top:0.4rem">+ Option</button>
+    </div>
+    <div class="modal-actions">
+      <button class="btn-secondary" onclick="closeModal('modal-add-poll')">Annuler</button>
+      <button class="btn-primary" onclick="createPoll()">Publier</button>
+    </div>
+  </div>
+</div>
 
-    const app = initializeApp(firebaseConfig);
-    const auth = getAuth(app);
-    const db = getFirestore(app);
-    const secondaryApp = initializeApp(firebaseConfig, "secondary");
-    const secondaryAuth = getAuth(secondaryApp);
+<!-- MODAL: Quiz -->
+<div class="modal-overlay hidden" id="modal-add-quiz">
+  <div class="modal modal-wide">
+    <div class="modal-header">
+      <h3>Créer un quiz</h3>
+      <button class="modal-close" onclick="closeModal('modal-add-quiz')">✕</button>
+    </div>
+    <div id="modal-quiz-error" class="alert alert-error hidden"></div>
+    <div class="form-group"><label>Titre du quiz</label><input type="text" id="new-quiz-title" placeholder="Ex: Quiz protection différentielle"/></div>
+    <div class="form-row">
+      <div class="form-group"><label>Cours associé</label><select id="new-quiz-course"><option value="">— Choisir un cours —</option></select></div>
+      <div class="form-group"><label>Groupe (optionnel)</label><select id="new-quiz-group"><option value="">— Tous —</option></select></div>
+    </div>
+    <div id="questions-container">
+      <div class="question-block" id="question-1">
+        <div class="question-header"><strong>Question 1</strong></div>
+        <div class="form-group"><input type="text" class="q-text" placeholder="Texte de la question"/></div>
+        <div class="options-list">
+          <div class="option-row"><input type="radio" name="q1-correct" value="0"/><input type="text" class="q-option" placeholder="Option A"/></div>
+          <div class="option-row"><input type="radio" name="q1-correct" value="1"/><input type="text" class="q-option" placeholder="Option B"/></div>
+          <div class="option-row"><input type="radio" name="q1-correct" value="2"/><input type="text" class="q-option" placeholder="Option C"/></div>
+          <div class="option-row"><input type="radio" name="q1-correct" value="3"/><input type="text" class="q-option" placeholder="Option D"/></div>
+        </div>
+        <small style="color:var(--text-muted)">● = bonne réponse</small>
+      </div>
+    </div>
+    <button class="btn-secondary" style="margin-top:1rem;width:100%" onclick="addQuestion()">+ Ajouter une question</button>
+    <div class="modal-actions" style="margin-top:1.5rem">
+      <button class="btn-secondary" onclick="closeModal('modal-add-quiz')">Annuler</button>
+      <button class="btn-primary" onclick="createQuiz()">Publier le quiz</button>
+    </div>
+  </div>
+</div>
 
-    window._auth = auth; window._secondaryAuth = secondaryAuth; window._db = db;
-    window._createUser = createUserWithEmailAndPassword; window._signOut = signOut;
-    window._collection = collection; window._doc = doc; window._getDoc = getDoc;
-    window._getDocs = getDocs; window._addDoc = addDoc; window._setDoc = setDoc;
-    window._serverTimestamp = serverTimestamp; window._query = query;
-    window._orderBy = orderBy; window._where = where;
+<!-- MODAL: Attestation -->
+<div class="modal-overlay hidden" id="modal-add-cert">
+  <div class="modal">
+    <div class="modal-header">
+      <h3>Délivrer une attestation</h3>
+      <button class="modal-close" onclick="closeModal('modal-add-cert')">✕</button>
+    </div>
+    <div id="modal-cert-error" class="alert alert-error hidden"></div>
+    <div class="form-group"><label>Élève</label><select id="cert-student"><option value="">— Choisir —</option></select></div>
+    <div class="form-group"><label>Formation</label><select id="cert-formation"><option value="">— Choisir —</option></select></div>
+    <div class="form-group"><label>Mention / Observation (optionnel)</label><input type="text" id="cert-note" placeholder="Ex: Mention bien, Très satisfaisant..."/></div>
+    <div class="modal-actions">
+      <button class="btn-secondary" onclick="closeModal('modal-add-cert')">Annuler</button>
+      <button class="btn-primary" onclick="createCertificate()">Délivrer</button>
+    </div>
+  </div>
+</div>
 
-    onAuthStateChanged(auth, async (user) => {
-      if (!user) { window.location.href = "index.html"; return; }
-      const userDoc = await getDoc(doc(db, "users", user.uid));
-      const data = userDoc.data();
-      if (!userDoc.exists() || (data.role !== "admin" && data.role !== "teacher")) {
-        window.location.href = "index.html"; return;
-      }
-      window._currentRole = data.role;
-      window._currentUID = user.uid;
-      window._currentName = data.fullName || data.role;
-      const name = data.fullName || (data.role === "teacher" ? "Professeur" : "Admin");
-      document.getElementById("admin-name").textContent = name;
-      document.getElementById("admin-avatar-letter").textContent = name[0].toUpperCase();
-      document.getElementById("topbar-avatar-admin").textContent = name[0].toUpperCase();
-      const badge = document.getElementById("role-badge");
-      if (data.role === "teacher") {
-        badge.textContent = "Professeur";
-        badge.style.cssText = "background:rgba(64,96,240,0.15);color:#6888f8";
-        document.querySelectorAll(".admin-only").forEach(el => el.style.display = "none");
-        document.querySelectorAll(".nav-item").forEach(i => i.classList.remove("active"));
-        document.querySelectorAll(".content-section").forEach(s => s.classList.remove("active"));
-        document.querySelector('[data-section="courses"]').classList.add("active");
-        document.getElementById("section-courses").classList.add("active");
-        document.getElementById("section-title").textContent = "Gestion des Cours";
-        document.getElementById("section-sub").textContent = "Publiez vos modules de formation";
-      } else {
-        badge.textContent = "Administrateur";
-      }
-      loadAllData();
-    });
-  </script>
-  <script src="admin.js"></script>
+<!-- MODAL: Détail groupe -->
+<div class="modal-overlay hidden" id="modal-view-group">
+  <div class="modal modal-wide">
+    <div class="modal-header">
+      <h3 id="view-group-name">Détail du groupe</h3>
+      <button class="modal-close" onclick="closeModal('modal-view-group')">✕</button>
+    </div>
+    <div id="view-group-content">Chargement...</div>
+  </div>
+</div>
+
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+  import { getAuth, createUserWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+  import { getFirestore, collection, doc, getDoc, getDocs, addDoc, setDoc, updateDoc, deleteDoc, serverTimestamp, query, orderBy, where } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+  import { getStorage } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-storage.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyD2Xh778RDqztmHPBLcw96DWew03PkL2qU",
+    authDomain: "edupro-school.firebaseapp.com",
+    projectId: "edupro-school",
+    storageBucket: "edupro-school.firebasestorage.app",
+    messagingSenderId: "552814359641",
+    appId: "1:552814359641:web:2c47cb3835953679776d48"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+  const db = getFirestore(app);
+  const storage = getStorage(app);
+  const secondaryApp = initializeApp(firebaseConfig, "secondary");
+  const secondaryAuth = getAuth(secondaryApp);
+
+  window._auth = auth; window._secondaryAuth = secondaryAuth;
+  window._db = db; window._storage = storage;
+  window._createUser = createUserWithEmailAndPassword;
+  window._signOut = signOut;
+  window._collection = collection; window._doc = doc;
+  window._getDoc = getDoc; window._getDocs = getDocs;
+  window._addDoc = addDoc; window._setDoc = setDoc;
+  window._updateDoc = updateDoc; window._deleteDoc = deleteDoc;
+  window._serverTimestamp = serverTimestamp;
+  window._query = query; window._orderBy = orderBy; window._where = where;
+
+  onAuthStateChanged(auth, async (user) => {
+    if (!user) { window.location.href = "index.html"; return; }
+    const userDoc = await getDoc(doc(db, "users", user.uid));
+    const data = userDoc.data();
+    if (!userDoc.exists() || (data.role !== "admin" && data.role !== "teacher")) {
+      window.location.href = "index.html"; return;
+    }
+    window._currentRole = data.role;
+    window._currentUID = user.uid;
+    window._currentName = data.fullName || data.role;
+    const name = data.fullName || "Admin";
+    document.getElementById("admin-name").textContent = name;
+    document.getElementById("admin-avatar-letter").textContent = name[0].toUpperCase();
+    document.getElementById("topbar-avatar-admin").textContent = name[0].toUpperCase();
+
+    const badge = document.getElementById("role-badge");
+    if (data.role === "teacher") {
+      badge.textContent = "Professeur";
+      badge.style.cssText = "background:rgba(64,96,240,0.15);color:#6888f8";
+      document.querySelectorAll(".admin-only").forEach(el => el.style.display = "none");
+      document.querySelectorAll(".teacher-only").forEach(el => el.style.display = "flex");
+      // Switch default section to mygroups
+      document.querySelectorAll(".content-section").forEach(s => s.classList.remove("active"));
+      document.querySelectorAll(".nav-item").forEach(i => i.classList.remove("active"));
+      const mgNav = document.querySelector('[data-section="mygroups"]');
+      if (mgNav) { mgNav.classList.add("active"); document.getElementById("section-mygroups").classList.add("active"); }
+      document.getElementById("section-title").textContent = "Mes groupes";
+      document.getElementById("section-sub").textContent = "Classes qui vous sont attribuées";
+    } else {
+      badge.textContent = "Administrateur";
+      document.querySelectorAll(".teacher-only").forEach(el => el.style.display = "none");
+      document.querySelector('[data-section="formations"]').classList.add("active");
+    }
+    loadAllData();
+  });
+</script>
+<script src="admin.js"></script>
 </body>
 </html>

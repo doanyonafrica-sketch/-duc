@@ -9,151 +9,168 @@
 </head>
 <body class="parent-page">
 
-  <!-- Topbar mobile -->
-  <div class="topbar">
-    <button class="hamburger" onclick="openMobileSidebar()">☰</button>
-    <div class="topbar-brand"><span class="brand-icon">⚡</span><span class="brand-name">EduPro</span></div>
-    <div class="topbar-right"><div class="admin-avatar parent-av" id="topbar-avatar-parent">P</div></div>
+<div class="topbar">
+  <button class="hamburger" onclick="openMobileSidebar()">☰</button>
+  <div class="topbar-brand"><span class="brand-icon">⚡</span><span class="brand-name">EduPro</span></div>
+  <div class="topbar-right"><div class="admin-avatar parent-av" id="topbar-avatar-parent">P</div></div>
+</div>
+<div class="sidebar-overlay"></div>
+
+<aside class="sidebar">
+  <div class="sidebar-brand"><span class="brand-icon">⚡</span><span class="brand-name">EduPro</span></div>
+  <nav class="sidebar-nav">
+    <div class="nav-section-title">Suivi</div>
+    <a href="#" class="nav-item active" data-section="overview"><span class="nav-icon">🏠</span> Vue d'ensemble</a>
+    <a href="#" class="nav-item" data-section="grades"><span class="nav-icon">📊</span> Notes</a>
+    <a href="#" class="nav-item" data-section="attendance"><span class="nav-icon">📋</span> Présences</a>
+    <a href="#" class="nav-item" data-section="exercises"><span class="nav-icon">✏️</span> Exercices</a>
+    <a href="#" class="nav-item" data-section="progress"><span class="nav-icon">📈</span> Progression</a>
+    <div class="nav-section-title">Contact</div>
+    <a href="#" class="nav-item" data-section="messages"><span class="nav-icon">✉</span> Contacter</a>
+  </nav>
+  <div class="sidebar-role-badge" style="background:rgba(61,214,140,0.12);color:var(--success)">Parent</div>
+  <button class="btn-logout" onclick="logout()"><span>↩</span> Déconnexion</button>
+</aside>
+
+<main class="admin-main">
+  <div class="admin-header">
+    <div><h1 id="parent-title">Suivi de mon enfant</h1><p id="parent-sub">Vue complète de la scolarité</p></div>
+    <div class="admin-user"><span id="parent-name">—</span><div class="admin-avatar parent-av" id="parent-avatar">P</div></div>
   </div>
-  <div class="sidebar-overlay"></div>
 
-  <aside class="sidebar">
-    <div class="sidebar-brand"><span class="brand-icon">⚡</span><span class="brand-name">EduPro</span></div>
-    <nav class="sidebar-nav">
-      <a href="#" class="nav-item active" data-section="overview"><span class="nav-icon">🏠</span> Vue d'ensemble</a>
-      <a href="#" class="nav-item" data-section="grades"><span class="nav-icon">📊</span> Notes</a>
-      <a href="#" class="nav-item" data-section="attendance"><span class="nav-icon">📋</span> Présences</a>
-      <a href="#" class="nav-item" data-section="progress"><span class="nav-icon">📈</span> Progression</a>
-      <a href="#" class="nav-item" data-section="messages"><span class="nav-icon">✉</span> Contacter</a>
-    </nav>
-    <div class="sidebar-role-badge" style="background:rgba(61,214,140,0.12);color:var(--success)">Parent</div>
-    <button class="btn-logout" onclick="logout()"><span>↩</span> Déconnexion</button>
-  </aside>
+  <div class="child-selector" id="child-selector"></div>
 
-  <main class="admin-main">
-    <div class="admin-header">
-      <div><h1 id="parent-title">Suivi de mon enfant</h1><p id="parent-sub">Vue complète de la scolarité</p></div>
-      <div class="admin-user"><span id="parent-name">—</span><div class="admin-avatar parent-av" id="parent-avatar">P</div></div>
+  <!-- OVERVIEW -->
+  <section id="section-overview" class="content-section active">
+    <div class="parent-child-header" id="child-header" style="display:none">
+      <div class="child-avatar" id="child-av-letter">?</div>
+      <div style="flex:1">
+        <div class="child-name" id="child-name-display">—</div>
+        <div class="child-class" id="child-class-display">—</div>
+        <div style="font-size:0.78rem;color:var(--text-muted);margin-top:0.2rem" id="child-group-display"></div>
+      </div>
+      <div style="text-align:right">
+        <div style="font-family:'Syne',sans-serif;font-size:1.6rem;font-weight:800;color:var(--accent)" id="child-progress-pct">—</div>
+        <div style="font-size:0.75rem;color:var(--text-muted)">Progression</div>
+      </div>
     </div>
+    <div class="stats-grid" style="margin-bottom:1.5rem">
+      <div class="stat-card"><div class="stat-icon">📚</div><div class="stat-val" id="ov-courses">—</div><div class="stat-label">Cours vus</div></div>
+      <div class="stat-card"><div class="stat-icon">✏️</div><div class="stat-val" id="ov-exercises">—</div><div class="stat-label">Exercices soumis</div></div>
+      <div class="stat-card"><div class="stat-icon">🏆</div><div class="stat-val" id="ov-score">—</div><div class="stat-label">Score quiz moy.</div></div>
+      <div class="stat-card"><div class="stat-icon">📊</div><div class="stat-val" id="ov-grade">—</div><div class="stat-label">Moyenne /20</div></div>
+    </div>
+    <div class="table-card">
+      <h3 style="font-family:'Syne',sans-serif;margin-bottom:0.8rem">Activité récente</h3>
+      <div id="parent-activity">Sélectionnez un enfant.</div>
+    </div>
+  </section>
 
-    <div class="child-selector" id="child-selector"></div>
+  <!-- NOTES -->
+  <section id="section-grades" class="content-section">
+    <div id="parent-grades-content">Chargement...</div>
+  </section>
 
-    <!-- OVERVIEW -->
-    <section id="section-overview" class="content-section active">
-      <div class="parent-child-header" id="child-header" style="display:none">
-        <div class="child-avatar" id="child-av-letter">?</div>
-        <div style="flex:1">
-          <div class="child-name" id="child-name-display">—</div>
-          <div class="child-class" id="child-class-display">—</div>
-        </div>
-        <div style="text-align:right">
-          <div style="font-family:'Syne',sans-serif;font-size:1.6rem;font-weight:800;color:var(--accent)" id="child-progress-pct">—</div>
-          <div style="font-size:0.75rem;color:var(--text-muted)">Progression</div>
-        </div>
+  <!-- PRESENCES -->
+  <section id="section-attendance" class="content-section">
+    <div class="attendance-summary">
+      <div class="att-stat"><div class="att-stat-val" id="p-att-present" style="color:var(--success)">0</div><div class="att-stat-label">Présences</div></div>
+      <div class="att-stat"><div class="att-stat-val" id="p-att-absent" style="color:var(--error)">0</div><div class="att-stat-label">Absences</div></div>
+      <div class="att-stat"><div class="att-stat-val" id="p-att-late" style="color:var(--accent)">0</div><div class="att-stat-label">Retards</div></div>
+      <div class="att-stat"><div class="att-stat-val" id="p-att-rate" style="color:var(--accent)">—</div><div class="att-stat-label">Taux</div></div>
+    </div>
+    <div class="table-card">
+      <div class="table-responsive">
+        <table class="data-table">
+          <thead><tr><th>Date</th><th>Séance</th><th>Statut</th><th class="hide-mobile">Note</th></tr></thead>
+          <tbody id="parent-att-tbody"><tr><td colspan="4" class="table-loading">Chargement...</td></tr></tbody>
+        </table>
       </div>
-      <div class="stats-grid" style="margin-bottom:1.5rem">
-        <div class="stat-card"><div class="stat-icon">📚</div><div class="stat-val" id="ov-courses">—</div><div class="stat-label">Cours vus</div></div>
-        <div class="stat-card"><div class="stat-icon">📝</div><div class="stat-val" id="ov-quizzes">—</div><div class="stat-label">Quiz faits</div></div>
-        <div class="stat-card"><div class="stat-icon">🏆</div><div class="stat-val" id="ov-score">—</div><div class="stat-label">Score moy.</div></div>
-        <div class="stat-card"><div class="stat-icon">📊</div><div class="stat-val" id="ov-grade">—</div><div class="stat-label">Moyenne</div></div>
-      </div>
-      <div class="table-card">
-        <h3 style="font-family:'Syne',sans-serif;margin-bottom:0.8rem">Activité récente</h3>
-        <div id="parent-activity">Chargement...</div>
-      </div>
-    </section>
+    </div>
+  </section>
 
-    <!-- NOTES -->
-    <section id="section-grades" class="content-section">
-      <div id="parent-grades-content">Chargement...</div>
-    </section>
+  <!-- EXERCICES -->
+  <section id="section-exercises" class="content-section">
+    <div id="parent-exercises-content">Chargement...</div>
+  </section>
 
-    <!-- PRESENCES -->
-    <section id="section-attendance" class="content-section">
-      <div class="attendance-summary">
-        <div class="att-stat"><div class="att-stat-val" id="p-att-present" style="color:var(--success)">0</div><div class="att-stat-label">Présences</div></div>
-        <div class="att-stat"><div class="att-stat-val" id="p-att-absent" style="color:var(--error)">0</div><div class="att-stat-label">Absences</div></div>
-        <div class="att-stat"><div class="att-stat-val" id="p-att-late" style="color:var(--accent)">0</div><div class="att-stat-label">Retards</div></div>
-        <div class="att-stat"><div class="att-stat-val" id="p-att-rate" style="color:var(--accent)">—</div><div class="att-stat-label">Taux</div></div>
+  <!-- PROGRESSION -->
+  <section id="section-progress" class="content-section">
+    <div class="table-card" style="margin-bottom:1.5rem">
+      <h3 style="font-family:'Syne',sans-serif;margin-bottom:0.8rem">Progression globale</h3>
+      <div class="progress-bar-wrap">
+        <div class="progress-bar-track"><div class="progress-bar-fill" id="p-prog-bar" style="width:0%"></div></div>
+        <span id="p-prog-pct">0%</span>
       </div>
-      <div class="table-card">
-        <div class="table-responsive">
-          <table class="data-table">
-            <thead><tr><th>Date</th><th>Séance</th><th>Statut</th><th class="hide-mobile">Note</th></tr></thead>
-            <tbody id="parent-att-tbody"><tr><td colspan="4" class="table-loading">Chargement...</td></tr></tbody>
-          </table>
-        </div>
+    </div>
+    <div class="table-card" style="margin-bottom:1rem">
+      <h3 style="font-family:'Syne',sans-serif;margin-bottom:0.8rem">Exercices notés</h3>
+      <div class="table-responsive">
+        <table class="data-table">
+          <thead><tr><th>Exercice</th><th>Type</th><th>Note</th><th>Date</th></tr></thead>
+          <tbody id="parent-exo-tbody"><tr><td colspan="4" class="table-loading">Chargement...</td></tr></tbody>
+        </table>
       </div>
-    </section>
+    </div>
+    <div class="table-card">
+      <h3 style="font-family:'Syne',sans-serif;margin-bottom:0.8rem">Résultats des quiz</h3>
+      <div class="table-responsive">
+        <table class="data-table">
+          <thead><tr><th>Quiz</th><th>Score</th><th>Date</th></tr></thead>
+          <tbody id="parent-quiz-tbody"><tr><td colspan="3" class="table-loading">Chargement...</td></tr></tbody>
+        </table>
+      </div>
+    </div>
+  </section>
 
-    <!-- PROGRESSION -->
-    <section id="section-progress" class="content-section">
-      <div class="table-card" style="margin-bottom:1.5rem">
-        <h3 style="font-family:'Syne',sans-serif;margin-bottom:0.8rem">Progression globale</h3>
-        <div class="progress-bar-wrap">
-          <div class="progress-bar-track"><div class="progress-bar-fill" id="p-prog-bar" style="width:0%"></div></div>
-          <span id="p-prog-pct">0%</span>
-        </div>
-      </div>
-      <div class="table-card">
-        <h3 style="font-family:'Syne',sans-serif;margin-bottom:0.8rem">Résultats des quiz</h3>
-        <div class="table-responsive">
-          <table class="data-table">
-            <thead><tr><th>Quiz</th><th>Score</th><th>Date</th></tr></thead>
-            <tbody id="parent-quiz-tbody"><tr><td colspan="3" class="table-loading">Chargement...</td></tr></tbody>
-          </table>
-        </div>
-      </div>
-    </section>
+  <!-- CONTACT -->
+  <section id="section-messages" class="content-section">
+    <div class="table-card">
+      <h3 style="font-family:'Syne',sans-serif;margin-bottom:1rem">Contacter un responsable</h3>
+      <div class="form-group"><label>Destinataire</label><select id="parent-msg-to"><option value="">— Choisir —</option></select></div>
+      <div class="form-group"><label>Objet</label><input type="text" id="parent-msg-subject" placeholder="Ex: Question sur les notes de mon enfant"/></div>
+      <div class="form-group"><label>Message</label><textarea id="parent-msg-body" rows="4" placeholder="Votre message..."></textarea></div>
+      <div style="text-align:right"><button class="btn-primary" onclick="sendParentMessage()">Envoyer</button></div>
+      <div id="parent-msg-alert" class="alert hidden" style="margin-top:1rem"></div>
+    </div>
+    <div class="table-card" style="margin-top:1.2rem">
+      <h3 style="font-family:'Syne',sans-serif;margin-bottom:0.8rem">Messages envoyés</h3>
+      <div id="parent-sent-msgs">Chargement...</div>
+    </div>
+  </section>
+</main>
 
-    <!-- CONTACT -->
-    <section id="section-messages" class="content-section">
-      <div class="table-card">
-        <h3 style="font-family:'Syne',sans-serif;margin-bottom:1rem">Contacter un responsable</h3>
-        <div class="form-group"><label>Destinataire</label><select id="parent-msg-to"><option value="">— Choisir —</option></select></div>
-        <div class="form-group"><label>Objet</label><input type="text" id="parent-msg-subject" placeholder="Ex: Question sur les notes de mon enfant"/></div>
-        <div class="form-group"><label>Message</label><textarea id="parent-msg-body" rows="4" placeholder="Votre message..."></textarea></div>
-        <div style="text-align:right"><button class="btn-primary" onclick="sendParentMessage()">Envoyer</button></div>
-        <div id="parent-msg-alert" class="alert hidden" style="margin-top:1rem"></div>
-      </div>
-      <div class="table-card" style="margin-top:1.2rem">
-        <h3 style="font-family:'Syne',sans-serif;margin-bottom:0.8rem">Messages envoyés</h3>
-        <div id="parent-sent-msgs">Chargement...</div>
-      </div>
-    </section>
-  </main>
-
-  <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-    import { getAuth, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
-    import { getFirestore, collection, doc, getDoc, getDocs, addDoc, serverTimestamp, query, orderBy, where }
-      from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
-    const firebaseConfig = {
-      apiKey: "AIzaSyD2Xh778RDqztmHPBLcw96DWew03PkL2qU",
-      authDomain: "edupro-school.firebaseapp.com",
-      projectId: "edupro-school",
-      storageBucket: "edupro-school.firebasestorage.app",
-      messagingSenderId: "552814359641",
-      appId: "1:552814359641:web:2c47cb3835953679776d48"
-    };
-    const app=initializeApp(firebaseConfig); const auth=getAuth(app); const db=getFirestore(app);
-    window._auth=auth; window._db=db; window._signOut=signOut;
-    window._collection=collection; window._doc=doc; window._getDoc=getDoc; window._getDocs=getDocs;
-    window._addDoc=addDoc; window._serverTimestamp=serverTimestamp;
-    window._query=query; window._orderBy=orderBy; window._where=where;
-    onAuthStateChanged(auth, async user => {
-      if (!user) { window.location.href="index.html"; return; }
-      const d = await getDoc(doc(db,"users",user.uid));
-      if (!d.exists()||d.data().role!=="parent") { window.location.href="index.html"; return; }
-      const data = d.data();
-      window._currentUser = { uid: user.uid, ...data };
-      const name = data.fullName || "Parent";
-      document.getElementById("parent-name").textContent = name;
-      document.getElementById("parent-avatar").textContent = name[0].toUpperCase();
-      document.getElementById("topbar-avatar-parent").textContent = name[0].toUpperCase();
-      initParentDashboard();
-    });
-  </script>
-  <script src="parent.js"></script>
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+  import { getAuth, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+  import { getFirestore, collection, doc, getDoc, getDocs, addDoc, serverTimestamp, query, orderBy, where }
+    from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+  const firebaseConfig = {
+    apiKey: "AIzaSyD2Xh778RDqztmHPBLcw96DWew03PkL2qU",
+    authDomain: "edupro-school.firebaseapp.com",
+    projectId: "edupro-school",
+    storageBucket: "edupro-school.firebasestorage.app",
+    messagingSenderId: "552814359641",
+    appId: "1:552814359641:web:2c47cb3835953679776d48"
+  };
+  const app=initializeApp(firebaseConfig); const auth=getAuth(app); const db=getFirestore(app);
+  window._auth=auth; window._db=db; window._signOut=signOut;
+  window._collection=collection; window._doc=doc; window._getDoc=getDoc; window._getDocs=getDocs;
+  window._addDoc=addDoc; window._serverTimestamp=serverTimestamp;
+  window._query=query; window._orderBy=orderBy; window._where=where;
+  onAuthStateChanged(auth, async user => {
+    if (!user) { window.location.href="index.html"; return; }
+    const d = await getDoc(doc(db,"users",user.uid));
+    if (!d.exists()||d.data().role!=="parent") { window.location.href="index.html"; return; }
+    const data = d.data();
+    window._currentUser = { uid: user.uid, ...data };
+    const name = data.fullName || "Parent";
+    document.getElementById("parent-name").textContent = name;
+    document.getElementById("parent-avatar").textContent = name[0].toUpperCase();
+    document.getElementById("topbar-avatar-parent").textContent = name[0].toUpperCase();
+    initParentDashboard();
+  });
+</script>
+<script src="parent.js"></script>
 </body>
 </html>

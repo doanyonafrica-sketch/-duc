@@ -4,20 +4,20 @@
   <meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>EduPro — Planning</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700;800&family=IBM+Plex+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles.css"/>
 </head>
-<body class="student-page">
+<body>
 
 <div class="topbar">
   <button class="hamburger" onclick="openMobileSidebar()">☰</button>
-  <div class="topbar-brand"><span class="brand-icon">⚡</span><span class="brand-name">EduPro</span></div>
+  <div class="topbar-brand"><span class="brand-icon"></span><span class="brand-name">EduPro</span></div>
   <div class="topbar-right"><div class="admin-avatar" id="topbar-avatar-plan">?</div></div>
 </div>
 <div class="sidebar-overlay"></div>
 
 <aside class="sidebar">
-  <div class="sidebar-brand"><span class="brand-icon">⚡</span><span class="brand-name">EduPro</span></div>
+  <div class="sidebar-brand"><span class="brand-icon"></span><span class="brand-name" style="color:#fff">EduPro</span></div>
   <nav class="sidebar-nav">
     <a href="#" class="nav-item" id="planning-back-link"><span class="nav-icon">🏠</span> Accueil</a>
     <a href="messages.html" class="nav-item"><span class="nav-icon">✉</span> Messages</a>
@@ -29,8 +29,14 @@
 
 <main class="admin-main">
   <div class="admin-header">
-    <div><h1>Planning des cours</h1><p>Calendrier hebdomadaire</p></div>
-    <div class="admin-user"><span id="plan-user-name">—</span><div class="admin-avatar" id="plan-avatar">?</div></div>
+    <div>
+      <h1>Planning des cours</h1>
+      <p>Calendrier hebdomadaire de l'établissement</p>
+    </div>
+    <div class="admin-user">
+      <span id="plan-user-name">—</span>
+      <div class="admin-avatar" id="plan-avatar">?</div>
+    </div>
   </div>
 
   <!-- Navigation semaine -->
@@ -38,28 +44,28 @@
     <button class="btn-secondary btn-sm" onclick="changeWeek(-1)">← Préc.</button>
     <div class="week-label" id="week-label">—</div>
     <button class="btn-secondary btn-sm" onclick="changeWeek(1)">Suiv. →</button>
-    <select id="planning-group-filter" onchange="renderPlanning()" style="padding:0.4rem 0.8rem;background:var(--bg3);border:1px solid var(--border);border-radius:var(--radius-sm);color:var(--text);outline:none;font-size:0.85rem;max-width:200px">
+    <select id="planning-group-filter" onchange="renderPlanning()" style="padding:0.45rem 0.85rem;background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius-sm);color:var(--text);outline:none;font-size:0.82rem;max-width:210px;font-family:inherit">
       <option value="">— Tous les groupes —</option>
     </select>
     <button class="btn-primary btn-sm admin-teacher-only hidden" onclick="openModal('modal-add-slot')">+ Séance</button>
   </div>
 
-  <!-- Grille planning -->
-  <div style="overflow-x:auto;-webkit-overflow-scrolling:touch">
+  <!-- Grille -->
+  <div style="overflow-x:auto;-webkit-overflow-scrolling:touch;border-radius:var(--radius)">
     <div class="planning-week" id="planning-week" style="min-width:700px">
-      <div class="table-loading" style="grid-column:1/-1">Chargement...</div>
+      <div class="table-loading" style="grid-column:1/-1;padding:3rem">Chargement...</div>
     </div>
   </div>
 
   <!-- Légende -->
-  <div style="display:flex;gap:1rem;margin-top:1rem;flex-wrap:wrap;font-size:0.78rem;color:var(--text-muted)">
-    <div style="display:flex;align-items:center;gap:0.4rem"><div style="width:12px;height:12px;background:var(--accent-muted);border-left:3px solid var(--accent);border-radius:2px"></div>Séance planifiée</div>
-    <div style="display:flex;align-items:center;gap:0.4rem"><div style="width:12px;height:12px;background:var(--bg3);border:1px solid var(--border);border-radius:2px"></div>Créneau libre</div>
-    <div style="display:flex;align-items:center;gap:0.4rem"><div style="width:12px;height:12px;background:var(--accent-muted);border-radius:2px;border:2px solid var(--accent)"></div>Aujourd'hui</div>
+  <div style="display:flex;gap:1.25rem;margin-top:1rem;flex-wrap:wrap;font-size:0.75rem;color:var(--text-dim)">
+    <div style="display:flex;align-items:center;gap:0.4rem"><div style="width:12px;height:12px;background:var(--gold-bg);border-left:3px solid var(--gold);border-radius:2px"></div>Séance planifiée</div>
+    <div style="display:flex;align-items:center;gap:0.4rem"><div style="width:12px;height:12px;background:var(--bg2);border:1px solid var(--border);border-radius:2px"></div>Créneau libre</div>
+    <div style="display:flex;align-items:center;gap:0.4rem"><div style="width:12px;height:12px;background:var(--navy);border-radius:2px"></div>Aujourd'hui</div>
   </div>
 </main>
 
-<!-- MODAL: Ajouter séance -->
+<!-- Modal: Ajouter séance -->
 <div class="modal-overlay hidden" id="modal-add-slot">
   <div class="modal">
     <div class="modal-header">
@@ -96,7 +102,7 @@
     <div class="form-group"><label>Semaine (lundi)</label><input type="date" id="slot-week"/></div>
     <div class="modal-actions">
       <button class="btn-secondary" onclick="closeModal('modal-add-slot')">Annuler</button>
-      <button class="btn-primary" onclick="addSlot()">Ajouter</button>
+      <button class="btn-primary" onclick="addSlot()">Ajouter la séance</button>
     </div>
   </div>
 </div>
@@ -138,7 +144,6 @@
     document.getElementById("plan-avatar").textContent = name[0].toUpperCase();
     document.getElementById("topbar-avatar-plan").textContent = name[0].toUpperCase();
 
-    // Lien retour selon rôle
     const backLink = document.getElementById("planning-back-link");
     if (data.role === "admin" || data.role === "teacher") backLink.href = "admin.html";
     else if (data.role === "parent") backLink.href = "parent.html";
@@ -147,15 +152,16 @@
     const badge = document.getElementById("role-badge-plan");
     if (data.role === "admin" || data.role === "teacher") {
       badge.textContent = data.role === "admin" ? "Administrateur" : "Professeur";
-      badge.style.cssText = "background:rgba(64,96,240,0.15);color:#6888f8";
+      badge.style.cssText = data.role === "admin"
+        ? "background:rgba(184,137,42,0.15);color:var(--gold3);border-color:rgba(184,137,42,0.3)"
+        : "background:rgba(26,52,100,0.2);color:#6888f8;border-color:rgba(26,52,100,0.3)";
       document.querySelector(".admin-teacher-only").classList.remove("hidden");
     } else if (data.role === "parent") {
       badge.textContent = "Parent";
-      badge.style.cssText = "background:rgba(61,214,140,0.12);color:var(--success)";
+      badge.style.cssText = "background:var(--success-bg);color:var(--success);border-color:#a7d7bc";
     } else {
       badge.textContent = "Élève";
     }
-
     initPlanning();
   });
 </script>

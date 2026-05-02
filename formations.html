@@ -1,0 +1,630 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Toutes nos formations — IFEP Shekina & Bovann Group</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=DM+Sans:wght@300;400;500;600&family=Oswald:wght@500;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --rouge: #CC0000;
+  --rouge-dark: #990000;
+  --or: #C9A84C;
+  --noir: #0C0C0C;
+  --blanc: #FAFAF8;
+  --creme: #F2EDE4;
+  --texte: #1C1C1C;
+  --texte-sec: #5A5A5A;
+  --bordure: #DDD8CF;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body { font-family: 'DM Sans', sans-serif; color: var(--texte); background: var(--blanc); overflow-x: hidden; }
+h1, h2, h3 { font-family: 'Cormorant Garamond', serif; }
+
+/* NAV */
+nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  background: rgba(12,12,12,0.97); backdrop-filter: blur(20px);
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 56px; height: 68px;
+}
+.nav-logo { display: flex; align-items: center; gap: 14px; text-decoration: none; }
+.nav-logo-mark { width: 36px; height: 36px; background: var(--rouge); border-radius: 4px; display: flex; align-items: center; justify-content: center; font-family: 'Oswald', sans-serif; font-size: 1rem; color: white; font-weight: 700; }
+.nav-logo-text { font-size: 0.88rem; font-weight: 500; color: white; line-height: 1.2; }
+.nav-logo-text span { color: rgba(255,255,255,0.4); font-size: 0.72rem; font-weight: 300; display: block; }
+.nav-back { color: rgba(255,255,255,0.5); text-decoration: none; font-size: 0.78rem; font-weight: 500; letter-spacing: 1.5px; text-transform: uppercase; transition: color .2s; }
+.nav-back:hover { color: white; }
+.nav-cta { background: var(--rouge); color: white; padding: 10px 28px; border-radius: 2px; font-size: 0.8rem; font-weight: 600; text-decoration: none; letter-spacing: 1.5px; text-transform: uppercase; transition: background .2s; }
+.nav-cta:hover { background: var(--rouge-dark); }
+
+/* HERO */
+.page-hero { background: var(--noir); padding: 130px 56px 72px; position: relative; overflow: hidden; }
+.page-hero::before { content: 'FORMATIONS'; position: absolute; right: -20px; top: 50%; transform: translateY(-50%); font-family: 'Oswald', sans-serif; font-size: 10rem; font-weight: 700; color: rgba(255,255,255,0.03); letter-spacing: -4px; pointer-events: none; white-space: nowrap; }
+.hero-inner { max-width: 1200px; margin: 0 auto; display: flex; justify-content: space-between; align-items: flex-end; gap: 40px; }
+.label { display: inline-flex; align-items: center; gap: 10px; font-size: 0.7rem; font-weight: 600; letter-spacing: 3px; text-transform: uppercase; color: var(--rouge); margin-bottom: 16px; }
+.label::before { content: ''; width: 24px; height: 1px; background: var(--rouge); }
+.page-hero h1 { font-size: clamp(2.8rem, 5vw, 4.8rem); color: white; font-weight: 600; line-height: 1.0; }
+.page-hero h1 em { font-style: italic; color: var(--or); }
+.hero-count { text-align: right; flex-shrink: 0; }
+.hero-count-num { font-family: 'Cormorant Garamond', serif; font-size: 5rem; color: white; font-weight: 700; line-height: 1; }
+.hero-count-num span { color: var(--rouge); }
+.hero-count-label { font-size: 0.72rem; color: rgba(255,255,255,0.35); text-transform: uppercase; letter-spacing: 2px; margin-top: 4px; }
+
+/* FILTERS */
+.filters-bar { background: white; border-bottom: 1px solid var(--bordure); position: sticky; top: 68px; z-index: 50; }
+.filters-inner { max-width: 1200px; margin: 0 auto; padding: 0 56px; display: flex; overflow-x: auto; }
+.filters-inner::-webkit-scrollbar { display: none; }
+.filter-tab { padding: 18px 24px; font-family: 'DM Sans', sans-serif; font-size: 0.78rem; font-weight: 600; cursor: pointer; transition: all .2s; color: var(--texte-sec); letter-spacing: 0.8px; text-transform: uppercase; border: none; background: none; border-bottom: 3px solid transparent; white-space: nowrap; margin-bottom: -1px; }
+.filter-tab.active { color: var(--rouge); border-bottom-color: var(--rouge); }
+.filter-tab:hover { color: var(--texte); }
+
+/* MAIN */
+.main { background: var(--creme); }
+.container { max-width: 1200px; margin: 0 auto; padding: 0 56px; }
+
+/* CATEGORY SECTION */
+.cat-section { padding: 72px 0; border-bottom: 1px solid var(--bordure); }
+.cat-section:last-of-type { border-bottom: none; }
+.cat-header { display: flex; align-items: center; gap: 20px; margin-bottom: 48px; }
+.cat-icon { width: 52px; height: 52px; background: var(--rouge); border-radius: 4px; display: flex; align-items: center; justify-content: center; font-size: 1.4rem; flex-shrink: 0; }
+.cat-header h2 { font-size: 2rem; font-weight: 600; color: var(--texte); line-height: 1; }
+.cat-header h2 em { font-style: italic; color: var(--rouge); }
+.cat-count { margin-left: auto; font-family: 'Cormorant Garamond', serif; font-size: 4rem; font-weight: 700; color: rgba(0,0,0,0.06); line-height: 1; }
+
+/* CARDS */
+.cards-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 20px; }
+.fiche { background: white; border-radius: 4px; overflow: hidden; transition: transform .3s, box-shadow .3s; display: flex; flex-direction: column; }
+.fiche:hover { transform: translateY(-4px); box-shadow: 0 16px 48px rgba(0,0,0,0.12); }
+.fiche-img { position: relative; height: 200px; overflow: hidden; }
+.fiche-img img { width: 100%; height: 100%; object-fit: cover; transition: transform .5s ease; display: block; }
+.fiche:hover .fiche-img img { transform: scale(1.05); }
+.fiche-badge { position: absolute; top: 14px; left: 14px; background: var(--rouge); color: white; font-size: 0.62rem; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; padding: 5px 10px; border-radius: 2px; }
+.fiche-diplome { position: absolute; top: 14px; right: 14px; background: rgba(0,0,0,0.72); color: rgba(255,255,255,0.85); backdrop-filter: blur(6px); font-size: 0.6rem; font-weight: 600; letter-spacing: 1px; text-transform: uppercase; padding: 5px 9px; border-radius: 2px; }
+.fiche-body { padding: 24px; flex: 1; display: flex; flex-direction: column; }
+.fiche-nom { font-family: 'Cormorant Garamond', serif; font-size: 1.35rem; font-weight: 600; color: var(--texte); line-height: 1.2; margin-bottom: 10px; }
+.fiche-desc { font-size: 0.82rem; color: var(--texte-sec); line-height: 1.7; margin-bottom: 20px; flex: 1; }
+.fiche-footer { display: flex; justify-content: space-between; align-items: center; padding-top: 16px; border-top: 1px solid var(--bordure); }
+.fiche-meta { display: flex; flex-direction: column; gap: 2px; }
+.fiche-duree { font-size: 0.72rem; color: var(--texte-sec); }
+.fiche-prix { font-family: 'Cormorant Garamond', serif; font-size: 1.4rem; color: var(--rouge); font-weight: 700; line-height: 1; }
+.fiche-btn { background: var(--texte); color: white; padding: 9px 18px; border-radius: 2px; font-size: 0.7rem; font-weight: 600; text-decoration: none; letter-spacing: 1px; text-transform: uppercase; transition: background .2s; white-space: nowrap; }
+.fiche-btn:hover { background: var(--rouge); }
+
+/* CTA */
+.cta-bottom { background: var(--noir); padding: 80px 56px; text-align: center; }
+.cta-bottom h2 { font-size: clamp(2rem, 4vw, 3.2rem); color: white; margin-bottom: 12px; }
+.cta-bottom h2 em { font-style: italic; color: var(--or); }
+.cta-bottom p { color: rgba(255,255,255,0.45); margin-bottom: 36px; font-size: 0.92rem; letter-spacing: 1px; }
+.btn-rouge { background: var(--rouge); color: white; padding: 16px 40px; border-radius: 2px; font-size: 0.85rem; font-weight: 600; text-decoration: none; letter-spacing: 1.5px; text-transform: uppercase; transition: all .25s; display: inline-block; }
+.btn-rouge:hover { background: var(--rouge-dark); transform: translateY(-2px); }
+
+/* FOOTER */
+footer { background: #080808; }
+.footer-inner { max-width: 1200px; margin: 0 auto; padding: 32px 56px; }
+.footer-bottom { display: flex; justify-content: space-between; font-size: 0.78rem; color: rgba(255,255,255,0.25); }
+
+/* HIDDEN */
+.cat-section.hidden { display: none; }
+
+/* HAMBURGER */
+.nav-hamburger {
+  display: none;
+  flex-direction: column; gap: 5px; cursor: pointer;
+  padding: 8px; background: none; border: none; z-index: 200;
+}
+.nav-hamburger span {
+  display: block; width: 24px; height: 2px;
+  background: white; border-radius: 2px; transition: all .3s;
+}
+.nav-hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+.nav-hamburger.open span:nth-child(2) { opacity: 0; }
+.nav-hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+.nav-mobile-menu {
+  display: none;
+  position: fixed; top: 68px; left: 0; right: 0; z-index: 99;
+  background: rgba(12,12,12,0.98); backdrop-filter: blur(20px);
+  padding: 20px 24px 28px;
+  border-top: 1px solid rgba(255,255,255,0.08);
+  flex-direction: column; gap: 0;
+  opacity: 0; transform: translateY(-10px); transition: opacity .25s, transform .25s;
+}
+.nav-mobile-menu.open { opacity: 1; transform: translateY(0); }
+.nav-mobile-menu a {
+  color: rgba(255,255,255,0.65); text-decoration: none; font-size: 1rem;
+  font-weight: 500; padding: 14px 0;
+  border-bottom: 1px solid rgba(255,255,255,0.07); transition: color .2s;
+}
+.nav-mobile-menu a:last-child { border-bottom: none; }
+.nav-mobile-menu .nav-cta-mobile {
+  margin-top: 16px; text-align: center;
+  background: var(--rouge); color: white !important;
+  padding: 14px; border-radius: 2px; font-weight: 700;
+  letter-spacing: 1.5px; text-transform: uppercase; font-size: 0.85rem; border-bottom: none !important;
+}
+
+@media (max-width: 900px) {
+  nav { padding: 0 20px; }
+  .page-hero { padding: 110px 20px 56px; }
+  .hero-inner { flex-wrap: wrap; }
+  .filters-inner { padding: 0 20px; }
+  .container { padding: 0 20px; }
+  .cards-grid { grid-template-columns: 1fr 1fr; }
+  .cta-bottom { padding: 60px 20px; }
+  .footer-inner { padding: 24px 20px; }
+  .footer-bottom { flex-direction: column; gap: 6px; }
+}
+
+@media (max-width: 640px) {
+  /* NAV */
+  nav { padding: 0 16px; height: 60px; }
+  .nav-back { display: none; }
+  .nav-cta { display: none; }
+  .nav-hamburger { display: flex; }
+  .nav-mobile-menu { display: flex; top: 60px; }
+
+  /* HERO */
+  .page-hero { padding: 88px 16px 44px; }
+  .page-hero::before { font-size: 5rem; opacity: 0.04; }
+  .page-hero h1 { font-size: clamp(2.2rem, 10vw, 3rem); }
+  .hero-inner { flex-direction: column; align-items: flex-start; gap: 20px; }
+  .hero-count { text-align: left; }
+  .hero-count-num { font-size: 3.5rem; }
+
+  /* FILTERS BAR */
+  .filters-bar { top: 60px; }
+  .filters-inner { padding: 0 16px; gap: 0; }
+  .filter-tab { padding: 14px 14px; font-size: 0.72rem; }
+
+  /* MAIN */
+  .container { padding: 0 16px; }
+  .cat-section { padding: 48px 0; }
+  .cat-header { gap: 12px; margin-bottom: 28px; }
+  .cat-header h2 { font-size: 1.5rem; }
+  .cat-icon { width: 42px; height: 42px; font-size: 1.1rem; flex-shrink: 0; }
+  .cat-count { font-size: 2.5rem; }
+
+  /* CARDS */
+  .cards-grid { grid-template-columns: 1fr; gap: 14px; }
+  .fiche-img { height: 170px; }
+  .fiche-body { padding: 18px; }
+  .fiche-nom { font-size: 1.15rem; }
+  .fiche-desc { font-size: 0.8rem; margin-bottom: 14px; }
+  .fiche-footer { flex-direction: row; align-items: center; }
+  .fiche-prix { font-size: 1.2rem; }
+
+  /* CTA */
+  .cta-bottom { padding: 48px 16px; }
+  .cta-bottom h2 { font-size: clamp(1.8rem, 8vw, 2.4rem); }
+
+  /* FOOTER */
+  .footer-inner { padding: 20px 16px; }
+  .footer-bottom { flex-direction: column; gap: 6px; text-align: center; font-size: 0.72rem; }
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="index.html" class="nav-logo">
+    <div class="nav-logo-mark">IS</div>
+    <div class="nav-logo-text">IFEP Shekina <span>Bovann Group</span></div>
+  </a>
+  <a href="index.html" class="nav-back">← Retour accueil</a>
+  <a href="index.html#inscription" class="nav-cta">S'inscrire</a>
+  <button class="nav-hamburger" id="hamburger" aria-label="Menu" onclick="toggleMenu()">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+<!-- MOBILE MENU -->
+<div class="nav-mobile-menu" id="mobileMenu">
+  <a href="index.html" onclick="closeMenu()">← Retour accueil</a>
+  <a href="#sec-numerique" onclick="closeMenu()">💻 Numérique</a>
+  <a href="#sec-btp" onclick="closeMenu()">🏗️ BTP & Technique</a>
+  <a href="#sec-mode" onclick="closeMenu()">👗 Mode & Beauté</a>
+  <a href="#sec-sante" onclick="closeMenu()">🏥 Santé</a>
+  <a href="#sec-gestion" onclick="closeMenu()">💼 Gestion</a>
+  <a href="#sec-resto" onclick="closeMenu()">🍳 Restauration</a>
+  <a href="index.html#inscription" class="nav-cta-mobile">S'inscrire</a>
+</div>
+
+<div class="page-hero">
+  <div class="hero-inner">
+    <div>
+      <div class="label">Catalogue complet</div>
+      <h1>Nos <em>formations</em></h1>
+    </div>
+    <div class="hero-count">
+      <div class="hero-count-num">35<span>+</span></div>
+      <div class="hero-count-label">Filières disponibles</div>
+    </div>
+  </div>
+</div>
+
+<div class="filters-bar">
+  <div class="filters-inner">
+    <button class="filter-tab active" onclick="filterF('all',this)">Toutes</button>
+    <button class="filter-tab" onclick="filterF('numerique',this)">💻 Numérique</button>
+    <button class="filter-tab" onclick="filterF('btp',this)">🏗️ BTP & Technique</button>
+    <button class="filter-tab" onclick="filterF('mode',this)">👗 Mode & Beauté</button>
+    <button class="filter-tab" onclick="filterF('sante',this)">🏥 Santé</button>
+    <button class="filter-tab" onclick="filterF('gestion',this)">💼 Gestion</button>
+    <button class="filter-tab" onclick="filterF('resto',this)">🍳 Restauration</button>
+  </div>
+</div>
+
+<div class="main">
+<div class="container">
+
+<!-- NUMÉRIQUE -->
+<div class="cat-section" id="sec-numerique">
+  <div class="cat-header">
+    <div class="cat-icon">💻</div>
+    <h2>Numérique & <em>Digital</em></h2>
+    <div class="cat-count">07</div>
+  </div>
+  <div class="cards-grid">
+    <div class="fiche">
+      <div class="fiche-img"><img src="https://images.unsplash.com/photo-1587620962725-abab7fe55159?w=600&q=80" alt="Dev Web" loading="lazy"><div class="fiche-badge">💻 Numérique</div><div class="fiche-diplome">BT · CQP</div></div>
+      <div class="fiche-body">
+        <div class="fiche-nom">Développement Web & Application Mobile</div>
+        <div class="fiche-desc">Maîtrisez HTML, CSS, JavaScript, React et les technologies mobiles. Créez des sites web professionnels et des applications Android/iOS adaptées au marché togolais et africain.</div>
+        <div class="fiche-footer"><div class="fiche-meta"><div class="fiche-duree">⏱ 9 mois · Jour ou Soir</div><div class="fiche-prix">400 000 F</div></div><a href="index.html#inscription" class="fiche-btn">S'inscrire</a></div>
+      </div>
+    </div>
+    <div class="fiche">
+      <div class="fiche-img"><img src="https://images.unsplash.com/photo-1611162617474-5b21e879e113?w=600&q=80" alt="Community Management" loading="lazy"><div class="fiche-badge">💻 Numérique</div><div class="fiche-diplome">CAP · CQP</div></div>
+      <div class="fiche-body">
+        <div class="fiche-nom">Community Management & Marketing Digital</div>
+        <div class="fiche-desc">Gérez les réseaux sociaux, créez des campagnes publicitaires en ligne et analysez les données marketing. Devenez le pilier digital des entreprises togolaises et africaines en pleine croissance.</div>
+        <div class="fiche-footer"><div class="fiche-meta"><div class="fiche-duree">⏱ 9 mois · Jour ou Soir</div><div class="fiche-prix">350 000 F</div></div><a href="index.html#inscription" class="fiche-btn">S'inscrire</a></div>
+      </div>
+    </div>
+    <div class="fiche">
+      <div class="fiche-img"><img src="https://images.unsplash.com/photo-1518770660439-4636190af475?w=600&q=80" alt="Maintenance Info" loading="lazy"><div class="fiche-badge">💻 Numérique</div><div class="fiche-diplome">BT · CAP</div></div>
+      <div class="fiche-body">
+        <div class="fiche-nom">Maintenance Informatique & Réseaux</div>
+        <div class="fiche-desc">Diagnostiquez, réparez et configurez des équipements informatiques et réseaux locaux. Compétences très demandées dans les entreprises, administrations et centres d'appel à Lomé.</div>
+        <div class="fiche-footer"><div class="fiche-meta"><div class="fiche-duree">⏱ 9 mois · Jour ou Soir</div><div class="fiche-prix">300 000 F</div></div><a href="index.html#inscription" class="fiche-btn">S'inscrire</a></div>
+      </div>
+    </div>
+    <div class="fiche">
+      <div class="fiche-img"><img src="https://images.unsplash.com/photo-1558655146-9f40138edfeb?w=600&q=80" alt="Graphisme" loading="lazy"><div class="fiche-badge">💻 Numérique</div><div class="fiche-diplome">CAP · CQP</div></div>
+      <div class="fiche-body">
+        <div class="fiche-nom">Graphisme & Design Multimédia</div>
+        <div class="fiche-desc">Maîtrisez Photoshop, Illustrator et After Effects. Créez logos, affiches, vidéos et contenus visuels percutants pour agences, marques et médias africains. Un atout créatif indispensable.</div>
+        <div class="fiche-footer"><div class="fiche-meta"><div class="fiche-duree">⏱ 9 mois · Jour ou Soir</div><div class="fiche-prix">300 000 F</div></div><a href="index.html#inscription" class="fiche-btn">S'inscrire</a></div>
+      </div>
+    </div>
+    <div class="fiche">
+      <div class="fiche-img"><img src="https://images.unsplash.com/photo-1478737270239-2f02b77fc618?w=600&q=80" alt="Journalisme" loading="lazy"><div class="fiche-badge">💻 Numérique</div><div class="fiche-diplome">BT · CFA</div></div>
+      <div class="fiche-body">
+        <div class="fiche-nom">Journalisme & Production Audiovisuelle</div>
+        <div class="fiche-desc">Reportage, montage vidéo, podcast, prise de son et de vue professionnelle. Formez-vous pour intégrer les médias, les chaînes TV et créer vos propres contenus à fort impact.</div>
+        <div class="fiche-footer"><div class="fiche-meta"><div class="fiche-duree">⏱ 9 mois · Jour ou Soir</div><div class="fiche-prix">350 000 F</div></div><a href="index.html#inscription" class="fiche-btn">S'inscrire</a></div>
+      </div>
+    </div>
+    <div class="fiche">
+      <div class="fiche-img"><img src="https://images.unsplash.com/photo-1550751827-4bd374c3f58b?w=600&q=80" alt="Cybersécurité" loading="lazy"><div class="fiche-badge">💻 Numérique</div><div class="fiche-diplome">BT · CQP</div></div>
+      <div class="fiche-body">
+        <div class="fiche-nom">Cybersécurité & Administration Systèmes</div>
+        <div class="fiche-desc">Protégez les systèmes informatiques, administrez des serveurs Linux/Windows et sécurisez les données. Un métier en très forte demande en Afrique et à l'international.</div>
+        <div class="fiche-footer"><div class="fiche-meta"><div class="fiche-duree">⏱ 9 mois · Jour ou Soir</div><div class="fiche-prix">380 000 F</div></div><a href="index.html#inscription" class="fiche-btn">S'inscrire</a></div>
+      </div>
+    </div>
+    <div class="fiche">
+      <div class="fiche-img"><img src="https://images.unsplash.com/photo-1677442135703-1787eea5ce01?w=600&q=80" alt="IA Data" loading="lazy"><div class="fiche-badge">💻 Numérique</div><div class="fiche-diplome">BT · CQP</div></div>
+      <div class="fiche-body">
+        <div class="fiche-nom">Intelligence Artificielle & Data Science</div>
+        <div class="fiche-desc">Analysez des données massives, construisez des modèles prédictifs et maîtrisez Python et les outils d'IA. La filière d'avenir pour piloter la transformation digitale des organisations africaines.</div>
+        <div class="fiche-footer"><div class="fiche-meta"><div class="fiche-duree">⏱ 9 mois · Jour ou Soir</div><div class="fiche-prix">420 000 F</div></div><a href="index.html#inscription" class="fiche-btn">S'inscrire</a></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- BTP -->
+<div class="cat-section" id="sec-btp">
+  <div class="cat-header">
+    <div class="cat-icon">🏗️</div>
+    <h2>BTP & <em>Technique</em></h2>
+    <div class="cat-count">08</div>
+  </div>
+  <div class="cards-grid">
+    <div class="fiche">
+      <div class="fiche-img"><img src="https://images.unsplash.com/photo-1504307651254-35680f356dfd?w=600&q=80" alt="Maçonnerie" loading="lazy"><div class="fiche-badge">🏗️ BTP</div><div class="fiche-diplome">CAP · BT</div></div>
+      <div class="fiche-body">
+        <div class="fiche-nom">Maçonnerie & Carrelage</div>
+        <div class="fiche-desc">Construisez, montez des murs, posez du carrelage et réalisez des finitions de qualité. Formation pratique sur chantier réel. Débouchés garantis dans le secteur de la construction au Togo.</div>
+        <div class="fiche-footer"><div class="fiche-meta"><div class="fiche-duree">⏱ 9 mois · Jour ou Soir</div><div class="fiche-prix">200 000 F</div></div><a href="index.html#inscription" class="fiche-btn">S'inscrire</a></div>
+      </div>
+    </div>
+    <div class="fiche">
+      <div class="fiche-img"><img src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=600&q=80" alt="Plomberie" loading="lazy"><div class="fiche-badge">🏗️ BTP</div><div class="fiche-diplome">CAP · BT</div></div>
+      <div class="fiche-body">
+        <div class="fiche-nom">Plomberie Sanitaire</div>
+        <div class="fiche-desc">Installez et entretenez les réseaux d'eau, gaz et sanitaires dans les bâtiments. Un métier essentiel, très recherché dans les villes en expansion rapide comme Lomé et ses environs.</div>
+        <div class="fiche-footer"><div class="fiche-meta"><div class="fiche-duree">⏱ 9 mois · Jour ou Soir</div><div class="fiche-prix">200 000 F</div></div><a href="index.html#inscription" class="fiche-btn">S'inscrire</a></div>
+      </div>
+    </div>
+    <div class="fiche">
+      <div class="fiche-img"><img src="https://images.unsplash.com/photo-1621905251189-08b45d6a269e?w=600&q=80" alt="Electricité Bâtiment" loading="lazy"><div class="fiche-badge">🏗️ BTP</div><div class="fiche-diplome">CAP · BT</div></div>
+      <div class="fiche-body">
+        <div class="fiche-nom">Électricité du Bâtiment</div>
+        <div class="fiche-desc">Câblage, installation électrique, tableau de distribution, domotique et énergie solaire. Formez-vous pour intervenir sur les chantiers résidentiels, industriels et les projets d'électrification rurale.</div>
+        <div class="fiche-footer"><div class="fiche-meta"><div class="fiche-duree">⏱ 9 mois · Jour ou Soir</div><div class="fiche-prix">200 000 F</div></div><a href="index.html#inscription" class="fiche-btn">S'inscrire</a></div>
+      </div>
+    </div>
+    <div class="fiche">
+      <div class="fiche-img"><img src="https://images.unsplash.com/photo-1503387762-592deb58ef4e?w=600&q=80" alt="Menuiserie" loading="lazy"><div class="fiche-badge">🏗️ BTP</div><div class="fiche-diplome">CAP · BT</div></div>
+      <div class="fiche-body">
+        <div class="fiche-nom">Menuiserie & Ébénisterie</div>
+        <div class="fiche-desc">Fabriquez portes, meubles et fenêtres avec des techniques modernes. Un savoir-faire artisanal prisé qui ouvre des portes vers l'entrepreneuriat et les marchés de l'aménagement intérieur.</div>
+        <div class="fiche-footer"><div class="fiche-meta"><div class="fiche-duree">⏱ 9 mois · Jour ou Soir</div><div class="fiche-prix">180 000 F</div></div><a href="index.html#inscription" class="fiche-btn">S'inscrire</a></div>
+      </div>
+    </div>
+    <div class="fiche">
+      <div class="fiche-img"><img src="https://images.unsplash.com/photo-1565193566173-7a0ee3dbe261?w=600&q=80" alt="Soudure" loading="lazy"><div class="fiche-badge">🏗️ BTP</div><div class="fiche-diplome">CAP · BT</div></div>
+      <div class="fiche-body">
+        <div class="fiche-nom">Soudure & Chaudronnerie</div>
+        <div class="fiche-desc">Assemblez et façonnez des structures métalliques pour la construction et l'industrie. Compétences polyvalentes applicables aux chantiers, usines et ateliers de fabrication métallique.</div>
+        <div class="fiche-footer"><div class="fiche-meta"><div class="fiche-duree">⏱ 9 mois · Jour ou Soir</div><div class="fiche-prix">190 000 F</div></div><a href="index.html#inscription" class="fiche-btn">S'inscrire</a></div>
+      </div>
+    </div>
+    <div class="fiche">
+      <div class="fiche-img"><img src="https://images.unsplash.com/photo-1631248055158-89b27e9a6701?w=600&q=80" alt="Climatisation" loading="lazy"><div class="fiche-badge">🏗️ BTP</div><div class="fiche-diplome">CAP · BT</div></div>
+      <div class="fiche-body">
+        <div class="fiche-nom">Climatisation & Froid Industriel</div>
+        <div class="fiche-desc">Installez et maintenez des systèmes de climatisation et chambres froides. Métier très porteur sous les tropiques avec une demande croissante dans l'hôtellerie et l'agroalimentaire.</div>
+        <div class="fiche-footer"><div class="fiche-meta"><div class="fiche-duree">⏱ 9 mois · Jour ou Soir</div><div class="fiche-prix">220 000 F</div></div><a href="index.html#inscription" class="fiche-btn">S'inscrire</a></div>
+      </div>
+    </div>
+    <div class="fiche">
+      <div class="fiche-img"><img src="https://images.unsplash.com/photo-1486325212027-8081e485255e?w=600&q=80" alt="Dessin Technique" loading="lazy"><div class="fiche-badge">🏗️ BTP</div><div class="fiche-diplome">BT · CAP</div></div>
+      <div class="fiche-body">
+        <div class="fiche-nom">Dessin Technique & Architecture</div>
+        <div class="fiche-desc">Réalisez des plans de bâtiments et maîtrisez les logiciels de CAO/DAO (AutoCAD, SketchUp). Indispensable pour les cabinets d'architecture et les bureaux d'études en plein essor au Togo.</div>
+        <div class="fiche-footer"><div class="fiche-meta"><div class="fiche-duree">⏱ 9 mois · Jour ou Soir</div><div class="fiche-prix">250 000 F</div></div><a href="index.html#inscription" class="fiche-btn">S'inscrire</a></div>
+      </div>
+    </div>
+    <div class="fiche">
+      <div class="fiche-img"><img src="https://images.unsplash.com/photo-1619642751034-765dfdf7c58e?w=600&q=80" alt="Mécanique Auto" loading="lazy"><div class="fiche-badge">🏗️ BTP</div><div class="fiche-diplome">CAP · BT</div></div>
+      <div class="fiche-body">
+        <div class="fiche-nom">Mécanique Auto & Électronique</div>
+        <div class="fiche-desc">Diagnostiquez et réparez tous types de véhicules, moteurs thermiques et systèmes électroniques embarqués. Ouvrez votre propre garage ou intégrez les grandes structures automobiles de la région.</div>
+        <div class="fiche-footer"><div class="fiche-meta"><div class="fiche-duree">⏱ 9 mois · Jour ou Soir</div><div class="fiche-prix">210 000 F</div></div><a href="index.html#inscription" class="fiche-btn">S'inscrire</a></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- MODE -->
+<div class="cat-section" id="sec-mode">
+  <div class="cat-header">
+    <div class="cat-icon">👗</div>
+    <h2>Mode & <em>Beauté</em></h2>
+    <div class="cat-count">05</div>
+  </div>
+  <div class="cards-grid">
+    <div class="fiche">
+      <div class="fiche-img"><img src="https://images.unsplash.com/photo-1558769132-cb1aea458c5e?w=600&q=80" alt="Stylisme" loading="lazy"><div class="fiche-badge">👗 Mode</div><div class="fiche-diplome">CAP · CQP</div></div>
+      <div class="fiche-body">
+        <div class="fiche-nom">Stylisme & Modélisme</div>
+        <div class="fiche-desc">Concevez des collections, réalisez des patrons et créez des vêtements sur mesure. Maîtrisez les codes de la mode africaine et internationale pour lancer votre propre marque.</div>
+        <div class="fiche-footer"><div class="fiche-meta"><div class="fiche-duree">⏱ 9 mois · Jour ou Soir</div><div class="fiche-prix">250 000 F</div></div><a href="index.html#inscription" class="fiche-btn">S'inscrire</a></div>
+      </div>
+    </div>
+    <div class="fiche">
+      <div class="fiche-img"><img src="https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?w=600&q=80" alt="Coiffure" loading="lazy"><div class="fiche-badge">👗 Mode</div><div class="fiche-diplome">CAP · CQP</div></div>
+      <div class="fiche-body">
+        <div class="fiche-nom">Coiffure & Soins Capillaires</div>
+        <div class="fiche-desc">Coupes, colorations, tresses africaines et soins capillaires professionnels. Un métier entrepreneurial par excellence — ouvrez votre salon ou intégrez les meilleurs instituts de beauté.</div>
+        <div class="fiche-footer"><div class="fiche-meta"><div class="fiche-duree">⏱ 9 mois · Jour ou Soir</div><div class="fiche-prix">220 000 F</div></div><a href="index.html#inscription" class="fiche-btn">S'inscrire</a></div>
+      </div>
+    </div>
+    <div class="fiche">
+      <div class="fiche-img"><img src="https://images.unsplash.com/photo-1487412720507-e7ab37603c6f?w=600&q=80" alt="Esthétique" loading="lazy"><div class="fiche-badge">👗 Mode</div><div class="fiche-diplome">CAP · CQP</div></div>
+      <div class="fiche-body">
+        <div class="fiche-nom">Esthétique & Maquillage Professionnel</div>
+        <div class="fiche-desc">Soins du visage, épilation, manucure et maquillage de scène et de mariage. Techniques modernes adaptées aux peaux africaines. Débouchés dans les instituts, mariages, cinéma et médias.</div>
+        <div class="fiche-footer"><div class="fiche-meta"><div class="fiche-duree">⏱ 9 mois · Jour ou Soir</div><div class="fiche-prix">220 000 F</div></div><a href="index.html#inscription" class="fiche-btn">S'inscrire</a></div>
+      </div>
+    </div>
+    <div class="fiche">
+      <div class="fiche-img"><img src="https://images.unsplash.com/photo-1574634534894-89d7576c8259?w=600&q=80" alt="Couture" loading="lazy"><div class="fiche-badge">👗 Mode</div><div class="fiche-diplome">CAP · BT</div></div>
+      <div class="fiche-body">
+        <div class="fiche-nom">Couture Industrielle & Prêt-à-Porter</div>
+        <div class="fiche-desc">Machines industrielles, coupe en série et standards qualité du prêt-à-porter. Idéal pour intégrer les usines textiles et les ateliers de confection à grande échelle en Afrique de l'Ouest.</div>
+        <div class="fiche-footer"><div class="fiche-meta"><div class="fiche-duree">⏱ 9 mois · Jour ou Soir</div><div class="fiche-prix">200 000 F</div></div><a href="index.html#inscription" class="fiche-btn">S'inscrire</a></div>
+      </div>
+    </div>
+    <div class="fiche">
+      <div class="fiche-img"><img src="https://images.unsplash.com/photo-1617038260897-41a1f14a8ca0?w=600&q=80" alt="Broderie" loading="lazy"><div class="fiche-badge">👗 Mode</div><div class="fiche-diplome">CAP · CQP</div></div>
+      <div class="fiche-body">
+        <div class="fiche-nom">Broderie & Décoration Textile</div>
+        <div class="fiche-desc">Broderie à la main et à la machine, tie-dye, batik et impression sur tissu. Un art qui rencontre la mode africaine contemporaine et ouvre des marchés à l'export international.</div>
+        <div class="fiche-footer"><div class="fiche-meta"><div class="fiche-duree">⏱ 9 mois · Jour ou Soir</div><div class="fiche-prix">180 000 F</div></div><a href="index.html#inscription" class="fiche-btn">S'inscrire</a></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SANTÉ -->
+<div class="cat-section" id="sec-sante">
+  <div class="cat-header">
+    <div class="cat-icon">🏥</div>
+    <h2>Santé & <em>Paramédical</em></h2>
+    <div class="cat-count">04</div>
+  </div>
+  <div class="cards-grid">
+    <div class="fiche">
+      <div class="fiche-img"><img src="https://images.unsplash.com/photo-1559839734-2b71ea197ec2?w=600&q=80" alt="Aide-Soignant" loading="lazy"><div class="fiche-badge">🏥 Santé</div><div class="fiche-diplome">CAP · CFA</div></div>
+      <div class="fiche-body">
+        <div class="fiche-nom">Aide-Soignant & Auxiliaire de Santé</div>
+        <div class="fiche-desc">Assistez les infirmiers dans les soins aux patients, la prise en charge et le suivi clinique. Stages en milieu hospitalier réel inclus. Un métier noble, stable et à fort impact social.</div>
+        <div class="fiche-footer"><div class="fiche-meta"><div class="fiche-duree">⏱ 9 mois · Jour ou Soir</div><div class="fiche-prix">280 000 F</div></div><a href="index.html#inscription" class="fiche-btn">S'inscrire</a></div>
+      </div>
+    </div>
+    <div class="fiche">
+      <div class="fiche-img"><img src="https://images.unsplash.com/photo-1576091160550-2173dba999ef?w=600&q=80" alt="Pharmacie" loading="lazy"><div class="fiche-badge">🏥 Santé</div><div class="fiche-diplome">CAP · BT</div></div>
+      <div class="fiche-body">
+        <div class="fiche-nom">Pharmacie Assistante</div>
+        <div class="fiche-desc">Gestion des médicaments, conseil aux patients et réglementation pharmaceutique. Intégrez les pharmacies, hôpitaux et structures de santé publiques et privées du Togo et de la sous-région.</div>
+        <div class="fiche-footer"><div class="fiche-meta"><div class="fiche-duree">⏱ 9 mois · Jour ou Soir</div><div class="fiche-prix">300 000 F</div></div><a href="index.html#inscription" class="fiche-btn">S'inscrire</a></div>
+      </div>
+    </div>
+    <div class="fiche">
+      <div class="fiche-img"><img src="https://images.unsplash.com/photo-1504439468489-c8920d796a29?w=600&q=80" alt="Secrétariat Médical" loading="lazy"><div class="fiche-badge">🏥 Santé</div><div class="fiche-diplome">CAP · CQP</div></div>
+      <div class="fiche-body">
+        <div class="fiche-nom">Secrétariat Médical</div>
+        <div class="fiche-desc">Accueil des patients, gestion des dossiers médicaux et facturation dans les établissements de santé. L'alliance parfaite entre compétences médicales et organisationnelles au service des patients.</div>
+        <div class="fiche-footer"><div class="fiche-meta"><div class="fiche-duree">⏱ 9 mois · Jour ou Soir</div><div class="fiche-prix">260 000 F</div></div><a href="index.html#inscription" class="fiche-btn">S'inscrire</a></div>
+      </div>
+    </div>
+    <div class="fiche">
+      <div class="fiche-img"><img src="https://images.unsplash.com/photo-1579684385127-1ef15d508118?w=600&q=80" alt="Labo" loading="lazy"><div class="fiche-badge">🏥 Santé</div><div class="fiche-diplome">BT · CFA</div></div>
+      <div class="fiche-body">
+        <div class="fiche-nom">Technicien de Laboratoire</div>
+        <div class="fiche-desc">Réalisez des analyses biologiques et hématologiques sur équipements professionnels. Un profil rare et très recherché dans les hôpitaux, cliniques et centres d'analyse au Togo et à l'international.</div>
+        <div class="fiche-footer"><div class="fiche-meta"><div class="fiche-duree">⏱ 9 mois · Jour ou Soir</div><div class="fiche-prix">320 000 F</div></div><a href="index.html#inscription" class="fiche-btn">S'inscrire</a></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- GESTION -->
+<div class="cat-section" id="sec-gestion">
+  <div class="cat-header">
+    <div class="cat-icon">💼</div>
+    <h2>Gestion & <em>Business</em></h2>
+    <div class="cat-count">05</div>
+  </div>
+  <div class="cards-grid">
+    <div class="fiche">
+      <div class="fiche-img"><img src="https://images.unsplash.com/photo-1554224155-6726b3ff858f?w=600&q=80" alt="Comptabilité" loading="lazy"><div class="fiche-badge">💼 Gestion</div><div class="fiche-diplome">BT · CAP</div></div>
+      <div class="fiche-body">
+        <div class="fiche-nom">Comptabilité & Gestion d'Entreprise</div>
+        <div class="fiche-desc">Comptabilité générale, fiscalité SYSCOHADA, paie et gestion financière. Un profil indispensable dans toute entreprise, ONG, administration et cabinet comptable au Togo.</div>
+        <div class="fiche-footer"><div class="fiche-meta"><div class="fiche-duree">⏱ 9 mois · Jour ou Soir</div><div class="fiche-prix">300 000 F</div></div><a href="index.html#inscription" class="fiche-btn">S'inscrire</a></div>
+      </div>
+    </div>
+    <div class="fiche">
+      <div class="fiche-img"><img src="https://images.unsplash.com/photo-1551836022-deb4988cc6c0?w=600&q=80" alt="Secrétariat" loading="lazy"><div class="fiche-badge">💼 Gestion</div><div class="fiche-diplome">BT · CAP</div></div>
+      <div class="fiche-body">
+        <div class="fiche-nom">Secrétariat & Assistanat de Direction</div>
+        <div class="fiche-desc">Gestion d'agenda, rédaction de rapports et coordination professionnelle. Devenez le bras droit indispensable des directeurs et managers dans les grandes organisations publiques et privées.</div>
+        <div class="fiche-footer"><div class="fiche-meta"><div class="fiche-duree">⏱ 9 mois · Jour ou Soir</div><div class="fiche-prix">280 000 F</div></div><a href="index.html#inscription" class="fiche-btn">S'inscrire</a></div>
+      </div>
+    </div>
+    <div class="fiche">
+      <div class="fiche-img"><img src="https://images.unsplash.com/photo-1543013309-0d1f4edeb868?w=600&q=80" alt="Commerce" loading="lazy"><div class="fiche-badge">💼 Gestion</div><div class="fiche-diplome">CAP · BT</div></div>
+      <div class="fiche-body">
+        <div class="fiche-nom">Commerce & Gestion des Stocks</div>
+        <div class="fiche-desc">Techniques de vente, approvisionnement et relation client. Idéal pour gérer un commerce, intégrer la grande distribution ou lancer votre activité commerciale sur le marché togolais.</div>
+        <div class="fiche-footer"><div class="fiche-meta"><div class="fiche-duree">⏱ 9 mois · Jour ou Soir</div><div class="fiche-prix">270 000 F</div></div><a href="index.html#inscription" class="fiche-btn">S'inscrire</a></div>
+      </div>
+    </div>
+    <div class="fiche">
+      <div class="fiche-img"><img src="https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?w=600&q=80" alt="Logistique" loading="lazy"><div class="fiche-badge">💼 Gestion</div><div class="fiche-diplome">BT · CQP</div></div>
+      <div class="fiche-body">
+        <div class="fiche-nom">Logistique & Supply Chain</div>
+        <div class="fiche-desc">Planifiez les flux de marchandises, gérez les entrepôts et coordonnez les transports. Profil stratégique pour le port de Lomé, les importateurs et les distributeurs régionaux.</div>
+        <div class="fiche-footer"><div class="fiche-meta"><div class="fiche-duree">⏱ 9 mois · Jour ou Soir</div><div class="fiche-prix">280 000 F</div></div><a href="index.html#inscription" class="fiche-btn">S'inscrire</a></div>
+      </div>
+    </div>
+    <div class="fiche">
+      <div class="fiche-img"><img src="https://images.unsplash.com/photo-1600880292203-757bb62b4baf?w=600&q=80" alt="RH" loading="lazy"><div class="fiche-badge">💼 Gestion</div><div class="fiche-diplome">BT · CQP</div></div>
+      <div class="fiche-body">
+        <div class="fiche-nom">Ressources Humaines & Droit du Travail</div>
+        <div class="fiche-desc">Recrutement, paie, droit OHADA du travail et développement des compétences. Un profil RH complet, très sollicité par les entreprises en croissance et les ONG actives au Togo.</div>
+        <div class="fiche-footer"><div class="fiche-meta"><div class="fiche-duree">⏱ 9 mois · Jour ou Soir</div><div class="fiche-prix">290 000 F</div></div><a href="index.html#inscription" class="fiche-btn">S'inscrire</a></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- RESTAURATION -->
+<div class="cat-section" id="sec-resto">
+  <div class="cat-header">
+    <div class="cat-icon">🍳</div>
+    <h2>Restauration & <em>Hôtellerie</em></h2>
+    <div class="cat-count">04</div>
+  </div>
+  <div class="cards-grid">
+    <div class="fiche">
+      <div class="fiche-img"><img src="https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=600&q=80" alt="Cuisine" loading="lazy"><div class="fiche-badge">🍳 Restauration</div><div class="fiche-diplome">CAP · BT</div></div>
+      <div class="fiche-body">
+        <div class="fiche-nom">Cuisine & Arts Culinaires</div>
+        <div class="fiche-desc">Cuisines africaine, européenne et asiatique, techniques de chef et hygiène HACCP. Formez-vous pour travailler dans les restaurants haut de gamme, hôtels et créer votre propre établissement.</div>
+        <div class="fiche-footer"><div class="fiche-meta"><div class="fiche-duree">⏱ 9 mois · Jour ou Soir</div><div class="fiche-prix">230 000 F</div></div><a href="index.html#inscription" class="fiche-btn">S'inscrire</a></div>
+      </div>
+    </div>
+    <div class="fiche">
+      <div class="fiche-img"><img src="https://images.unsplash.com/photo-1509440159596-0249088772ff?w=600&q=80" alt="Pâtisserie" loading="lazy"><div class="fiche-badge">🍳 Restauration</div><div class="fiche-diplome">CAP · BT</div></div>
+      <div class="fiche-body">
+        <div class="fiche-nom">Pâtisserie & Boulangerie</div>
+        <div class="fiche-desc">Pains, viennoiseries, gâteaux de mariage et chocolaterie. Maîtrisez l'art de la pâtisserie française et africaine pour ouvrir votre boulangerie ou rejoindre les grands hôtels et traiteurs de Lomé.</div>
+        <div class="fiche-footer"><div class="fiche-meta"><div class="fiche-duree">⏱ 9 mois · Jour ou Soir</div><div class="fiche-prix">220 000 F</div></div><a href="index.html#inscription" class="fiche-btn">S'inscrire</a></div>
+      </div>
+    </div>
+    <div class="fiche">
+      <div class="fiche-img"><img src="https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=600&q=80" alt="Service Salle" loading="lazy"><div class="fiche-badge">🍳 Restauration</div><div class="fiche-diplome">CAP · CQP</div></div>
+      <div class="fiche-body">
+        <div class="fiche-nom">Service en Salle & Hôtellerie</div>
+        <div class="fiche-desc">Art de la table, accueil client et protocole hôtelier. Formation orientée vers les hôtels 3 à 5 étoiles, restaurants gastronomiques et le tourisme d'affaires en plein développement à Lomé.</div>
+        <div class="fiche-footer"><div class="fiche-meta"><div class="fiche-duree">⏱ 9 mois · Jour ou Soir</div><div class="fiche-prix">210 000 F</div></div><a href="index.html#inscription" class="fiche-btn">S'inscrire</a></div>
+      </div>
+    </div>
+    <div class="fiche">
+      <div class="fiche-img"><img src="https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=600&q=80" alt="Barista" loading="lazy"><div class="fiche-badge">🍳 Restauration</div><div class="fiche-diplome">CAP · CQP</div></div>
+      <div class="fiche-body">
+        <div class="fiche-nom">Barista & Arts du Bar</div>
+        <div class="fiche-desc">Café de spécialité, cocktails et mixologie professionnelle. Une niche en plein essor à Lomé avec l'émergence des coffee shops, bars branchés et lieux de vie urbains ciblant la jeunesse togolaise.</div>
+        <div class="fiche-footer"><div class="fiche-meta"><div class="fiche-duree">⏱ 9 mois · Jour ou Soir</div><div class="fiche-prix">200 000 F</div></div><a href="index.html#inscription" class="fiche-btn">S'inscrire</a></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+</div>
+</div>
+
+<div class="cta-bottom">
+  <h2>Votre avenir commence <em>maintenant</em></h2>
+  <p>Stage payant garanti &nbsp;·&nbsp; Diplôme d'État &nbsp;·&nbsp; Immigration possible</p>
+  <a href="index.html#inscription" class="btn-rouge">S'inscrire dès aujourd'hui →</a>
+</div>
+
+<footer>
+  <div class="footer-inner">
+    <div class="footer-bottom">
+      <p>© 2026 IFEP Shekina & Bovann Group SAS. Tous droits réservés.</p>
+      <p>Lomé, Togo · isesgroup.com · bovanngroup.com</p>
+    </div>
+  </div>
+</footer>
+
+<script>
+function toggleMenu() {
+  const menu = document.getElementById('mobileMenu');
+  const btn = document.getElementById('hamburger');
+  const open = menu.classList.toggle('open');
+  btn.classList.toggle('open', open);
+  document.body.style.overflow = open ? 'hidden' : '';
+}
+function closeMenu() {
+  document.getElementById('mobileMenu').classList.remove('open');
+  document.getElementById('hamburger').classList.remove('open');
+  document.body.style.overflow = '';
+}
+function filterF(cat, btn) {
+  document.querySelectorAll('.filter-tab').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  document.querySelectorAll('.cat-section').forEach(sec => {
+    sec.classList.toggle('hidden', cat !== 'all' && sec.id !== 'sec-' + cat);
+  });
+}
+</script>
+</body>
+</html>

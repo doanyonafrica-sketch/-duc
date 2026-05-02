@@ -4,22 +4,21 @@
   <meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>EduPro — Messagerie</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700;800&family=IBM+Plex+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles.css"/>
 </head>
-<body class="student-page">
+<body>
 
 <div class="topbar">
   <button class="hamburger" onclick="openMobileSidebar()">☰</button>
-  <div class="topbar-brand"><span class="brand-icon">⚡</span><span class="brand-name">EduPro</span></div>
+  <div class="topbar-brand"><span class="brand-icon"></span><span class="brand-name">EduPro</span></div>
   <div class="topbar-right"><div class="admin-avatar" id="topbar-avatar">?</div></div>
 </div>
 <div class="sidebar-overlay"></div>
 
 <aside class="sidebar">
-  <div class="sidebar-brand"><span class="brand-icon">⚡</span><span class="brand-name">EduPro</span></div>
+  <div class="sidebar-brand"><span class="brand-icon"></span><span class="brand-name" style="color:#fff">EduPro</span></div>
   <nav class="sidebar-nav">
-    <!-- Lien retour dynamique selon rôle -->
     <a href="#" class="nav-item" id="back-home-link"><span class="nav-icon">🏠</span> Accueil</a>
     <div class="nav-section-title">Messagerie</div>
     <a href="#" class="nav-item active" data-section="inbox"><span class="nav-icon">✉</span> Messages</a>
@@ -44,8 +43,8 @@
 
   <!-- INBOX -->
   <section id="section-inbox" class="content-section active">
-    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1.2rem">
-      <div style="font-family:'Syne',sans-serif;font-weight:700;font-size:1rem">Conversations</div>
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1.1rem">
+      <div style="font-family:'Playfair Display',serif;font-weight:700;font-size:0.95rem;color:var(--navy)">Conversations</div>
       <button class="btn-primary btn-sm" onclick="openNewMessage()">+ Nouveau</button>
     </div>
     <div class="messages-layout">
@@ -53,8 +52,10 @@
         <div class="table-loading">Chargement...</div>
       </div>
       <div class="chat-panel" id="chat-panel">
-        <div style="display:flex;align-items:center;justify-content:center;height:100%;color:var(--text-muted);font-size:0.9rem;padding:1rem;text-align:center">
-          Sélectionnez une conversation
+        <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;gap:0.75rem;color:var(--text-dim);padding:2rem;text-align:center">
+          <div style="font-size:2rem;opacity:0.4">✉</div>
+          <div style="font-size:0.875rem">Sélectionnez une conversation</div>
+          <div style="font-size:0.78rem;color:var(--text-dim);opacity:0.7">ou démarrez-en une nouvelle</div>
         </div>
       </div>
     </div>
@@ -62,17 +63,17 @@
 
   <!-- ANNONCES -->
   <section id="section-announces" class="content-section">
-    <div id="announce-create-btn-wrap" class="hidden" style="margin-bottom:1.2rem">
+    <div id="announce-create-btn-wrap" class="hidden" style="margin-bottom:1.1rem">
       <button class="btn-primary btn-sm" onclick="toggleAnnounceForm()">+ Créer une annonce</button>
     </div>
     <div id="new-announce-form" class="hidden" style="margin-bottom:1.5rem">
-      <div class="table-card">
-        <h3 style="font-family:'Syne',sans-serif;margin-bottom:1rem">Nouvelle annonce</h3>
+      <div class="table-card" style="padding:1.5rem">
+        <h3 style="font-family:'Playfair Display',serif;margin-bottom:1.1rem;font-size:1rem">Nouvelle annonce</h3>
         <div class="form-group"><label>Titre</label><input type="text" id="ann-title" placeholder="Ex: Examen la semaine prochaine"/></div>
         <div class="form-group"><label>Message</label><textarea id="ann-body" rows="4" placeholder="Contenu de l'annonce..."></textarea></div>
-        <div class="modal-actions">
+        <div class="modal-actions" style="border:none;margin:0;padding:0">
           <button class="btn-secondary" onclick="toggleAnnounceForm()">Annuler</button>
-          <button class="btn-primary" onclick="publishAnnounce()">Publier</button>
+          <button class="btn-primary" onclick="publishAnnounce()">Publier l'annonce</button>
         </div>
       </div>
     </div>
@@ -80,7 +81,7 @@
   </section>
 </main>
 
-<!-- MODAL: Nouveau message -->
+<!-- Modal: Nouveau message -->
 <div class="modal-overlay hidden" id="modal-new-msg">
   <div class="modal">
     <div class="modal-header">
@@ -140,32 +141,26 @@
     document.getElementById("msg-avatar").textContent = name[0].toUpperCase();
     document.getElementById("topbar-avatar").textContent = name[0].toUpperCase();
 
-    // Lien retour selon rôle
     const backLink = document.getElementById("back-home-link");
-    if (data.role === "admin" || data.role === "teacher") {
-      backLink.href = "admin.html";
-    } else if (data.role === "parent") {
-      backLink.href = "parent.html";
-    } else {
-      backLink.href = "dashboard.html";
-    }
+    if (data.role === "admin" || data.role === "teacher") backLink.href = "admin.html";
+    else if (data.role === "parent") backLink.href = "parent.html";
+    else backLink.href = "dashboard.html";
 
     const badge = document.getElementById("role-badge-msg");
     if (data.role === "admin") {
       badge.textContent = "Administrateur";
-      badge.style.cssText = "background:rgba(64,96,240,0.15);color:#6888f8";
+      badge.style.cssText = "background:rgba(184,137,42,0.15);color:var(--gold3);border-color:rgba(184,137,42,0.3)";
       document.getElementById("announce-create-btn-wrap").classList.remove("hidden");
     } else if (data.role === "teacher") {
       badge.textContent = "Professeur";
-      badge.style.cssText = "background:rgba(64,96,240,0.15);color:#6888f8";
+      badge.style.cssText = "background:rgba(26,52,100,0.2);color:#6888f8;border-color:rgba(26,52,100,0.3)";
       document.getElementById("announce-create-btn-wrap").classList.remove("hidden");
     } else if (data.role === "parent") {
       badge.textContent = "Parent";
-      badge.style.cssText = "background:rgba(61,214,140,0.12);color:var(--success)";
+      badge.style.cssText = "background:var(--success-bg);color:var(--success);border-color:#a7d7bc";
     } else {
       badge.textContent = "Élève";
     }
-
     initMessaging();
   });
 </script>

@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>EduPro — Connexion</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700;800&family=IBM+Plex+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css"/>
+</head>
+<body class="login-page">
+
+  <div class="login-container">
+    <!-- Brand -->
+    <a href="accueil.html" class="login-brand" style="text-decoration:none">
+      <span class="brand-icon"></span>
+      <span class="brand-name" style="color:#fff">EduPro</span>
+    </a>
+    <p class="login-subtitle">Plateforme de gestion scolaire</p>
+
+    <!-- Card -->
+    <div class="login-card">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1.75rem;padding-bottom:1.25rem;border-bottom:1px solid var(--border)">
+        <h2 class="login-title" style="margin:0">Connexion</h2>
+        <div style="display:flex;gap:0.4rem">
+          <div style="width:8px;height:8px;border-radius:50%;background:var(--gold3)"></div>
+          <div style="width:8px;height:8px;border-radius:50%;background:rgba(232,192,96,0.4)"></div>
+          <div style="width:8px;height:8px;border-radius:50%;background:rgba(232,192,96,0.2)"></div>
+        </div>
+      </div>
+
+      <div id="login-error" class="alert alert-error hidden"></div>
+
+      <div class="form-group">
+        <label>Identifiant</label>
+        <input type="text" id="login-username" placeholder="Votre identifiant ou email" autocomplete="off" inputmode="email"/>
+      </div>
+
+      <div class="form-group" style="margin-bottom:1.5rem">
+        <label>Mot de passe</label>
+        <div style="position:relative">
+          <input type="password" id="login-password" placeholder="••••••••" autocomplete="current-password" style="padding-right:2.8rem"/>
+          <button onclick="togglePassword()" type="button" style="position:absolute;right:0.8rem;top:50%;transform:translateY(-50%);background:none;border:none;color:var(--text-dim);cursor:pointer;font-size:0.95rem;line-height:1;padding:0" id="pw-toggle">👁</button>
+        </div>
+      </div>
+
+      <button class="btn-primary btn-block" id="login-btn" onclick="handleLogin()" style="padding:0.8rem;font-size:0.9rem;background:var(--navy);letter-spacing:0.03em">
+        Se connecter
+      </button>
+
+      <!-- Role pills -->
+      <div style="margin-top:1.5rem;padding-top:1.25rem;border-top:1px solid var(--border)">
+        <div style="font-size:0.7rem;color:var(--text-dim);text-align:center;letter-spacing:0.06em;text-transform:uppercase;margin-bottom:0.75rem">Rôles disponibles</div>
+        <div style="display:flex;gap:0.4rem;justify-content:center;flex-wrap:wrap">
+          <span style="padding:0.22rem 0.75rem;border-radius:100px;font-size:0.7rem;font-weight:600;background:var(--bg3);color:var(--text-muted);border:1px solid var(--border)">👤 Élève</span>
+          <span style="padding:0.22rem 0.75rem;border-radius:100px;font-size:0.7rem;font-weight:600;background:var(--info-bg);color:var(--info);border:1px solid #c5d1e8">🎓 Professeur</span>
+          <span style="padding:0.22rem 0.75rem;border-radius:100px;font-size:0.7rem;font-weight:600;background:var(--success-bg);color:var(--success);border:1px solid #a7d7bc">👨‍👩‍👧 Parent</span>
+          <span style="padding:0.22rem 0.75rem;border-radius:100px;font-size:0.7rem;font-weight:600;background:var(--gold-bg);color:var(--gold);border:1px solid var(--gold-border)">⚙ Admin</span>
+        </div>
+      </div>
+    </div>
+
+    <a href="accueil.html" style="margin-top:1.5rem;font-size:0.72rem;color:rgba(255,255,255,0.25);text-decoration:none;letter-spacing:0.04em;transition:color 0.2s" onmouseover="this.style.color='rgba(255,255,255,0.5)'" onmouseout="this.style.color='rgba(255,255,255,0.25)'">
+      ← Retour à l'accueil
+    </a>
+    <p class="login-note">Accès réservé aux membres de l'établissement</p>
+  </div>
+
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+    import { getAuth, signInWithEmailAndPassword, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+    import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyD2Xh778RDqztmHPBLcw96DWew03PkL2qU",
+      authDomain: "edupro-school.firebaseapp.com",
+      projectId: "edupro-school",
+      storageBucket: "edupro-school.firebasestorage.app",
+      messagingSenderId: "552814359641",
+      appId: "1:552814359641:web:2c47cb3835953679776d48"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db = getFirestore(app);
+
+    window._auth = auth; window._db = db;
+    window._signIn = signInWithEmailAndPassword;
+    window._doc = doc; window._getDoc = getDoc;
+
+    onAuthStateChanged(auth, async (user) => {
+      if (user) {
+        const userDoc = await getDoc(doc(db, "users", user.uid));
+        if (userDoc.exists()) redirectByRole(userDoc.data().role);
+      }
+    });
+  </script>
+  <script src="login.js"></script>
+</body>
+</html>
